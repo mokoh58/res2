@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# Res.
-=======
 # Getting started on Google Cloud Platform for Java®
 
 [![CircleCI Build Status](https://circleci.com/gh/GoogleCloudPlatform/getting-started-java.svg?style=shield&circle-token=51b789e102291cbeae6817678d02da0f4cf25f1f)](https://circleci.com/gh/GoogleCloudPlatform/getting-started-java)
@@ -25,4 +22,3 @@ Managed VMs on Google Cloud Platform use the [Java Servlets](http://www.oracle.c
 * See [LICENSE](LICENSE)
 
 Java is a registered trademark of Oracle Corporation and/or its affiliates.
->>>>>>> Stashed changes
