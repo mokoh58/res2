@@ -122,6 +122,7 @@ limitations under the License.
     <outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+    <pluginManagement>
     <plugins>
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -175,6 +176,7 @@ limitations under the License.
         </configuration>
       </plugin>
     </plugins>
+    </pluginManagement>
   </build>
 
 </project>
