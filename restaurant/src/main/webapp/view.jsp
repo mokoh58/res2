@@ -39,6 +39,7 @@ Copyright 2019 Google LLC
       </h4>
       <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
       <p class="res-address">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
+      <p class="res-address">Current Capacity: ${currCapacity}</p>
     </div>
         <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>

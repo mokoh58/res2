@@ -72,7 +72,8 @@ public class CreateRestaurantServlet extends HttpServlet {
 
         Restaurant res = new Restaurant.Builder().restName(params.get("restName"))
                 .address(params.get("address"))
-				.maxCapacity(params.get("maxCapacity"))
+                .maxCapacity(params.get("maxCapacity"))
+                .occupiedSeats("0")
                 .imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl)
                 .createdBy(createdByString)
                 .createdById(createdByIdString)

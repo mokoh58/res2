@@ -39,7 +39,14 @@ public class ReadRestaurantServlet extends HttpServlet {
 		String id = req.getParameter("id");
 		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 		Restaurant res = dao.readRestaurant(id);
-		logger.log(Level.INFO, "Read restaurant with id {0}", id);
+        logger.log(Level.INFO, "Read restaurant with id {0}", id);
+
+        Integer maxCap = Integer.parseInt(res.getMaxCapacity());
+        Integer occSeats = Integer.parseInt(res.getOccSeats());
+
+        Integer currCapacity = maxCap - occSeats;
+
+        req.setAttribute("currCapacity", currCapacity.toString());
 		req.setAttribute("restaurant", res);
 		req.setAttribute("page", "view");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);

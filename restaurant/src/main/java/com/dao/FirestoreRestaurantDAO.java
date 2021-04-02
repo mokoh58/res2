@@ -46,7 +46,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
                 .restName((String) data.get(Restaurant.REST_NAME))
                 .address((String) data.get(Restaurant.ADDRESS))
                 .maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
-                .currentCapacity((String) data.get(Restaurant.CURR_CAPACITY))
+                .occupiedSeats((String) data.get(Restaurant.OCC_SEATS))
                 .imageUrl((String) data.get(Restaurant.IMAGE_URL))
                 .createdBy((String) data.get(Restaurant.CREATED_BY))
 				.createdById((String) data.get(Restaurant.CREATED_BY_ID))
@@ -65,7 +65,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		data.put(Restaurant.REST_NAME, rest.getRestName());
 		data.put(Restaurant.ADDRESS, rest.getAddress());
         data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-        data.put(Restaurant.CURR_CAPACITY, rest.getCurrCapacity());
+        data.put(Restaurant.OCC_SEATS, rest.getOccSeats());
 		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
 		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
 		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());

@@ -1,25 +1,10 @@
-/* Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.objects;
 
 public class Restaurant {
 	private String restName;
 	private String address;
     private String maxCapacity;
-    private String currentCapacity;
+    private String occupiedSeats;
 	private String contactNumber;
 	private String createdBy;
 	private String createdById;
@@ -33,7 +18,7 @@ public class Restaurant {
 	public static final String CREATED_BY_ID = "createdById";
 	public static final String CONTACT_NUMBER = "contactNumber";
     public static final String MAX_CAPACITY = "maxCapacity";
-    public static final String CURR_CAPACITY = "currentCapacity";
+    public static final String OCC_SEATS = "occupiedSeats";
 	public static final String ID = "id";
 	public static final String IMAGE_URL = "imageUrl";
 
@@ -45,7 +30,7 @@ public class Restaurant {
 		this.createdBy = builder.createdBy;
 		this.createdById = builder.createdById;
         this.maxCapacity = builder.maxCapacity;
-        this.currentCapacity = builder.currentCapacity;
+        this.occupiedSeats = builder.occupiedSeats;
 		this.contactNumber = builder.contactNumber;
 		this.id = builder.id;
 		this.imageUrl = builder.imageUrl;
@@ -58,7 +43,7 @@ public class Restaurant {
 		private String createdBy;
 		private String createdById;
         private String maxCapacity;
-        private String currentCapacity;
+        private String occupiedSeats;
 		private String contactNumber;
 		private String id;
 		private String imageUrl;
@@ -89,8 +74,8 @@ public class Restaurant {
 			return this;
         }
         
-        public Builder currentCapacity(String currentCapacity) {
-			this.currentCapacity = currentCapacity;
+        public Builder occupiedSeats(String occupiedSeats) {
+			this.occupiedSeats = occupiedSeats;
 			return this;
 		}
 
@@ -159,12 +144,12 @@ public class Restaurant {
 		this.maxCapacity = maxCapacity;
     }
     
-    public String getCurrCapacity() {
-		return currentCapacity;
+    public String getOccSeats() {
+		return occupiedSeats;
 	}
 
-	public void setCurrCapacity(String currentCapacity) {
-		this.currentCapacity = currentCapacity;
+	public void setOccSeats(String occupiedSeats) {
+		this.occupiedSeats = occupiedSeats;
 	}
 
 	public String getContactNumber() {
@@ -201,7 +186,7 @@ public class Restaurant {
 
 	@Override
 	public String toString() {
-		return "Restaurant [restName=" + restName + ", address=" + address + ", maxCapacity=" + maxCapacity
+		return "Restaurant [restName=" + restName + ", address=" + address + ", maxCapacity=" + maxCapacity + ", occupiedSeats= " + occupiedSeats
 				+ ", contactNumber=" + contactNumber + ", createdBy=" + createdBy + ", createdById=" + createdById
 				+ ", id=" + id + ", imageUrl=" + imageUrl + "]";
 	}

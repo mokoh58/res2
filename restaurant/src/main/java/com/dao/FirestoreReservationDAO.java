@@ -136,7 +136,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	public Result<Reservation> listReservations(String startName) {
         logger.log(Level.INFO, "In listReservations");
 
-		Query restQuery = resoCol.orderBy("resoName").limit(10);
+		Query restQuery = resoCol.orderBy("restId");
 		if (startName != null) {
 			restQuery = restQuery.startAfter(startName);
 		}
@@ -145,7 +145,28 @@ public class FirestoreReservationDAO implements ReservationDAO {
 			List<Reservation> results = documentsToReservations(snapshot.getDocuments());
 			String newCursor = null;
 			if (results.size() > 0) {
-				newCursor = results.get(results.size() - 1).getResoName();
+				newCursor = results.get(results.size() - 1).getRestId();
+			}
+			return new Result<>(results, newCursor);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new Result<>(Lists.newArrayList(), null);
+    }
+    
+    public Result<Reservation> listReservationsByRestaurant(String restId ,String startName) {
+        logger.log(Level.INFO, "In listReservations");
+
+		Query resoQuery = resoCol.orderBy("restId").whereEqualTo(Reservation.REST_ID, restId);
+		if (startName != null) {
+			resoQuery = resoQuery.startAfter(startName);
+		}
+		try {
+			QuerySnapshot snapshot = resoQuery.get().get();
+			List<Reservation> results = documentsToReservations(snapshot.getDocuments());
+			String newCursor = null;
+			if (results.size() > 0) {
+				newCursor = results.get(results.size() - 1).getRestId();
 			}
 			return new Result<>(results, newCursor);
 		} catch (InterruptedException | ExecutionException e) {
