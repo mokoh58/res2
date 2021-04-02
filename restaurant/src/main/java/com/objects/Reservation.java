@@ -19,7 +19,8 @@ import java.util.Date;
 
 public class Reservation {
 	private String resoName;
-	private String resoContact;
+    private String resoContact;
+    private String numPax;
 	private String resoDate;
 	private String resoTime;
 	private String createdBy;
@@ -28,7 +29,8 @@ public class Reservation {
 	private String id;
 	
 	public static final String RESO_NAME = "resoName";
-	public static final String RESO_CONTACT = "resoContact";
+    public static final String RESO_CONTACT = "resoContact";
+    public static final String NUM_PAX = "numPax";
 	public static final String RESO_DATE = "resoDate";
 	public static final String RESO_TIME = "resoTime";
 	public static final String CREATED_BY = "createdBy";
@@ -41,7 +43,8 @@ public class Reservation {
 	// Book objects.
 	private Reservation(Builder builder) {
 		this.resoName = builder.resoName;
-		this.resoContact = builder.resoContact;
+        this.resoContact = builder.resoContact;
+        this.numPax = builder.numPax;
 		this.createdBy = builder.createdBy;
 		this.createdById = builder.createdById;
 		this.resoDate = builder.resoDate;
@@ -52,9 +55,10 @@ public class Reservation {
 
 	public static class Builder {
 		private String resoName;
-		private String resoContact;
+        private String resoContact;
+        private String numPax;
 		private String resoDate;
-		private String resoTime;
+        private String resoTime;
 		private String createdBy;
 		private String createdById;
 		private String restId;
@@ -67,6 +71,11 @@ public class Reservation {
 
 		public Builder resoContact(String resoContact) {
 			this.resoContact = resoContact;
+			return this;
+        }
+        
+        public Builder numPax(String numPax) {
+			this.numPax = numPax;
 			return this;
 		}
 		
@@ -119,6 +128,14 @@ public class Reservation {
 
 	public void setResoContact(String resoContact) {
 		this.resoContact = resoContact;
+    }
+    
+    public String getNumPax() {
+		return numPax;
+	}
+
+	public void setNumPax(String numPax) {
+		this.numPax = numPax;
 	}
 
 	public String getResoDate() {
@@ -171,7 +188,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [resoName=" + resoName + ", resoContact=" + resoContact + ", resoDate=" + resoDate
+		return "Reservation [resoName=" + resoName + ", resoContact=" + resoContact + ", numPax= " + numPax + ", resoDate=" + resoDate
 				+ ", resoTime=" + resoTime + ", createdBy=" + createdBy + ", createdById=" + createdById + ", restId="
 				+ restId + ", id=" + id + "]";
 	}

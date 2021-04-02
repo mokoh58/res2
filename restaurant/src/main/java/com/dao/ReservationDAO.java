@@ -27,7 +27,7 @@ public interface ReservationDAO {
 
 	void deleteReservation(String resID);
 
-	//Result<Reservation> listRestaurants(String startCursor);
+	Result<Reservation> listReservations(String startCursor);
 
 	// Result<Restaurant> listBooksByUser(String userId, String startCursor);
 }

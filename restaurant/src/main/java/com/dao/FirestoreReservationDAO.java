@@ -133,26 +133,26 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	}
 
 	// @Override
-	// public Result<Reservation> listReservations(String startName) {
-    //     logger.log(Level.INFO, "In listReservations");
+	public Result<Reservation> listReservations(String startName) {
+        logger.log(Level.INFO, "In listReservations");
 
-	// 	Query restQuery = ReservationCol.orderBy("resoName").limit(10);
-	// 	if (startName != null) {
-	// 		restQuery = restQuery.startAfter(startName);
-	// 	}
-	// 	try {
-	// 		QuerySnapshot snapshot = restQuery.get().get();
-	// 		List<Reservation> results = documentsToReservations(snapshot.getDocuments());
-	// 		String newCursor = null;
-	// 		if (results.size() > 0) {
-	// 			newCursor = results.get(results.size() - 1).getResoName();
-	// 		}
-	// 		return new Result<>(results, newCursor);
-	// 	} catch (InterruptedException | ExecutionException e) {
-	// 		e.printStackTrace();
-	// 	}
-	// 	return new Result<>(Lists.newArrayList(), null);
-	// }
+		Query restQuery = resoCol.orderBy("resoName").limit(10);
+		if (startName != null) {
+			restQuery = restQuery.startAfter(startName);
+		}
+		try {
+			QuerySnapshot snapshot = restQuery.get().get();
+			List<Reservation> results = documentsToReservations(snapshot.getDocuments());
+			String newCursor = null;
+			if (results.size() > 0) {
+				newCursor = results.get(results.size() - 1).getResoName();
+			}
+			return new Result<>(results, newCursor);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new Result<>(Lists.newArrayList(), null);
+	}
 
 //  @Override
 //  public Result<Book> listBooksByUser(String userId, String startTitle) {

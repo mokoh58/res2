@@ -34,21 +34,27 @@ public class CreateReservationServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {        
-		req.setAttribute("action", "Add");
-		req.setAttribute("destination", "create");
-		req.setAttribute("page", "MakeReso");
-		req.getRequestDispatcher("/base.jsp").forward(req, resp);
+        RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+        try {
+            Restaurant res = dao.readRestaurant(req.getParameter("id"));
+
+            //logger.log(Level.INFO, "reservation id:", res.getId());
+
+            req.setAttribute("restId", req.getParameter("id"));
+            req.setAttribute("action", "Add");
+            req.setAttribute("destination", "make-reso");
+            req.setAttribute("page", "MakeReso");
+            req.getRequestDispatcher("/base.jsp").forward(req, resp);
+        } catch (Exception e) {
+			throw new ServletException("Error loading restaurant for editing", e);
+		}
 	}
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		assert ServletFileUpload.isMultipartContent(req);
+        
+        assert ServletFileUpload.isMultipartContent(req);
 		CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
-
-        String restId = req.getParameter("restId");
-
-        logger.log(Level.INFO, "Restaurant ID: ", restId);
-
 
 		Map<String, String> params = new HashMap<String, String>();
 		try {
@@ -71,6 +77,8 @@ public class CreateReservationServlet extends HttpServlet {
 			createdByIdString = (String) session.getAttribute("userId");
         }
         
+        String restId = params.get("restId");
+
         Reservation reso = new Reservation.Builder()
                 .resoName(params.get("resoName"))
                 .resoContact(params.get("resoContact"))

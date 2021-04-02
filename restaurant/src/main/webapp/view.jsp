@@ -40,9 +40,9 @@ Copyright 2019 Google LLC
       <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
       <p class="res-address">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
     </div>
-        <a href="/make-reso?page=MakeReso&restId=${restaurant.id}" class="btn btn-success btn-sm">
+        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>
         Make Reservation
-    </a>
+        </a>
   </div>
 </div>

@@ -9,6 +9,11 @@
   <form method="POST" action="${destination}" enctype="multipart/form-data">
 
     <div class="form-group">
+      <label for="resoName">Id</label>
+      <input type="text" name="restId" id="restId" value="${restId}" class="form-control" />
+    </div>
+
+    <div class="form-group">
       <label for="resoName">Name</label>
       <input type="text" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control" />
     </div>
@@ -34,7 +39,6 @@
         </select>
     </div>
 
-    <input type="hidden" name="restId" value="${restaurant.id}" />
     <button type="submit" class="btn btn-success">Save</button>
   </form>
 </div>
