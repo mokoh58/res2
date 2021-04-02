@@ -37,62 +37,58 @@ import org.joda.time.format.DateTimeFormatter;
 // [START bookshelf_cloud_storage_client]
 public class CloudStorageHelper {
 
-  private final Logger logger = Logger.getLogger(CloudStorageHelper.class.getName());
-  private static Storage storage = null;
+	private final Logger logger = Logger.getLogger(CloudStorageHelper.class.getName());
+	private static Storage storage = null;
 
-  // [START bookshelf_cloud_storage_client_init]
-  static {
-    storage = StorageOptions.getDefaultInstance().getService();
-  }
-  // [END bookshelf_cloud_storage_client_init]
+	// [START bookshelf_cloud_storage_client_init]
+	static {
+		storage = StorageOptions.getDefaultInstance().getService();
+	}
+	// [END bookshelf_cloud_storage_client_init]
 
-  // [START bookshelf_cloud_storage_client_upload_file]
+	// [START bookshelf_cloud_storage_client_upload_file]
 
-  /**
-   * Uploads a file to Google Cloud Storage to the bucket specified in the BUCKET_NAME environment
-   * variable, appending a timestamp to end of the uploaded filename.
-   */
-  public String uploadFile(FileItemStream fileStream, final String bucketName)
-      throws IOException, ServletException {
-    checkFileExtension(fileStream.getName());
+	/**
+	 * Uploads a file to Google Cloud Storage to the bucket specified in the
+	 * BUCKET_NAME environment variable, appending a timestamp to end of the
+	 * uploaded filename.
+	 */
+	public String uploadFile(FileItemStream fileStream, final String bucketName) throws IOException, ServletException {
+		checkFileExtension(fileStream.getName());
 
-    System.out.println("FileStream name: " + fileStream.getName() + "\nBucket name: " + bucketName);
+		System.out.println("FileStream name: " + fileStream.getName() + "\nBucket name: " + bucketName);
 
-    DateTimeFormatter dtf = DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS");
-    DateTime dt = DateTime.now(DateTimeZone.UTC);
-    String dtString = dt.toString(dtf);
-    final String fileName = fileStream.getName() + dtString;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("-YYYY-MM-dd-HHmmssSSS");
+		DateTime dt = DateTime.now(DateTimeZone.UTC);
+		String dtString = dt.toString(dtf);
+		final String fileName = fileStream.getName() + dtString;
 
-    // the inputstream is closed by default, so we don't need to close it here
-    @SuppressWarnings("deprecation")
-    BlobInfo blobInfo =
-        storage.create(
-            BlobInfo.newBuilder(bucketName, fileName)
-                // Modify access list to allow all users with link to read file
-                .setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER))))
-                .build(),
-            fileStream.openStream());
-    logger.log(
-        Level.INFO, "Uploaded file {0} as {1}", new Object[] {fileStream.getName(), fileName});
-    // return the public download link
-    return blobInfo.getMediaLink();
-  }
-  // [END bookshelf_cloud_storage_client_upload_file]
+		// the inputstream is closed by default, so we don't need to close it here
+		@SuppressWarnings("deprecation")
+		BlobInfo blobInfo = storage.create(BlobInfo.newBuilder(bucketName, fileName)
+				// Modify access list to allow all users with link to read file
+				.setAcl(new ArrayList<>(Arrays.asList(Acl.of(User.ofAllUsers(), Role.READER)))).build(),
+				fileStream.openStream());
+		logger.log(Level.INFO, "Uploaded file {0} as {1}", new Object[] { fileStream.getName(), fileName });
+		// return the public download link
+		return blobInfo.getMediaLink();
+	}
+	// [END bookshelf_cloud_storage_client_upload_file]
 
-  // [START bookshelf_cloud_storage_client_check_file_extension]
+	// [START bookshelf_cloud_storage_client_check_file_extension]
 
-  /** Checks that the file extension is supported. */
-  private void checkFileExtension(String fileName) throws ServletException {
-    if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {
-      String[] allowedExt = {".jpg", ".jpeg", ".png", ".gif"};
-      for (String ext : allowedExt) {
-        if (fileName.endsWith(ext)) {
-          return;
-        }
-      }
-      throw new ServletException("file must be an image");
-    }
-  }
-  // [END bookshelf_cloud_storage_client_check_file_extension]
+	/** Checks that the file extension is supported. */
+	private void checkFileExtension(String fileName) throws ServletException {
+		if (fileName != null && !fileName.isEmpty() && fileName.contains(".")) {
+			String[] allowedExt = { ".jpg", ".jpeg", ".png", ".gif" };
+			for (String ext : allowedExt) {
+				if (fileName.endsWith(ext)) {
+					return;
+				}
+			}
+			throw new ServletException("file must be an image");
+		}
+	}
+	// [END bookshelf_cloud_storage_client_check_file_extension]
 }
 // [END bookshelf_cloud_storage_client]

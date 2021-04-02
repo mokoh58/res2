@@ -89,7 +89,7 @@ public class Restaurant {
 			this.contactNumber = contactNumber;
 			return this;
 		}
-		
+
 		public Builder cuisine(String cuisine) {
 			this.cuisine = cuisine;
 			return this;

@@ -26,27 +26,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dao.RestaurantDAO;
-import com.example.getstarted.objects.Book;
 import com.objects.Restaurant;
 
 @SuppressWarnings("serial")
-@WebServlet(
-    name = "read",
-    urlPatterns = {"/read"})
+@WebServlet(name = "read", urlPatterns = { "/read" })
 public class ReadRestaurantServlet extends HttpServlet {
 
-  private final Logger logger = Logger.getLogger(ReadRestaurantServlet.class.getName());
+	private final Logger logger = Logger.getLogger(ReadRestaurantServlet.class.getName());
 
-  @Override
-  public void doGet(HttpServletRequest req,
-                    HttpServletResponse resp) throws ServletException, IOException {
-    String id = req.getParameter("id");
-    RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
-    Restaurant res = dao.readRestaurant(id);
-    logger.log(Level.INFO, "Read restaurant with id {0}", id);
-    req.setAttribute("restaurant", res);
-    req.setAttribute("page", "view");
-    req.getRequestDispatcher("/base.jsp").forward(req, resp);
-  }
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("id");
+		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+		Restaurant res = dao.readRestaurant(id);
+		logger.log(Level.INFO, "Read restaurant with id {0}", id);
+		req.setAttribute("restaurant", res);
+		req.setAttribute("page", "view");
+		req.getRequestDispatcher("/base.jsp").forward(req, resp);
+	}
 }
 // [END bookshelf_read_servlet]

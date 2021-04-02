@@ -20,129 +20,123 @@ import com.objects.Restaurant;
 import com.objects.Result;
 
 public class FirestoreRestaurantDAO implements RestaurantDAO {
-  private CollectionReference restaurantCol;
+	private CollectionReference restaurantCol;
 
-  public FirestoreRestaurantDAO() {
-    Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
-    restaurantCol = firestore.collection("restaurants");
-  }
+	public FirestoreRestaurantDAO() {
+		Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
+		restaurantCol = firestore.collection("restaurants");
+	}
 
+	private Restaurant documentToRestaurant(DocumentSnapshot document) {
+		Map<String, Object> data = document.getData();
+		if (data == null) {
+			System.out.println("No data in document " + document.getId());
+			return null;
+		}
 
-  private Restaurant documentToRestaurant(DocumentSnapshot document) {
-    Map<String, Object> data = document.getData();
-    if (data == null) {
-      System.out.println("No data in document " + document.getId());
-      return null;
-    }
+		return new Restaurant.Builder().restName((String) data.get(Restaurant.REST_NAME))
+				.address((String) data.get(Restaurant.ADDRESS)).maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
+				.imageUrl((String) data.get(Restaurant.IMAGE_URL)).createdBy((String) data.get(Restaurant.CREATED_BY))
+				.createdById((String) data.get(Restaurant.CREATED_BY_ID))
+				.contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
+				.cuisine((String) data.get(Restaurant.CUISINE)).id(document.getId()).build();
+	}
 
-    return new Restaurant.Builder()
-        .restName((String) data.get(Restaurant.REST_NAME))
-        .address((String) data.get(Restaurant.ADDRESS))
-        .maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
-        .imageUrl((String) data.get(Restaurant.IMAGE_URL))
-        .createdBy((String) data.get(Restaurant.CREATED_BY))
-        .createdById((String) data.get(Restaurant.CREATED_BY_ID))
-        .contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
-        .cuisine((String) data.get(Restaurant.CUISINE))
-        .id(document.getId())
-        .build();
-  }
-  
-  @Override
-  public String createRestaurant(Restaurant rest) {
-    String id = UUID.randomUUID().toString();
-    DocumentReference document = restaurantCol.document(id);
-    Map<String, Object> data = Maps.newHashMap();
+	@Override
+	public String createRestaurant(Restaurant rest) {
+		String id = UUID.randomUUID().toString();
+		DocumentReference document = restaurantCol.document(id);
+		Map<String, Object> data = Maps.newHashMap();
 
-    data.put(Restaurant.REST_NAME, rest.getRestName());
-    data.put(Restaurant.ADDRESS, rest.getAddress());
-    data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-    data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
-    data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
-    data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
-    data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-    data.put(Restaurant.CUISINE, rest.getCuisine());
-    try {
-      document.set(data).get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
+		data.put(Restaurant.REST_NAME, rest.getRestName());
+		data.put(Restaurant.ADDRESS, rest.getAddress());
+		data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
+		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
+		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
+		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
+		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
+		data.put(Restaurant.CUISINE, rest.getCuisine());
+		try {
+			document.set(data).get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 
-    return id;
-  }
+		return id;
+	}
 
-  @Override
-  public Restaurant readRestaurant(String restID) {
-    try {
-      DocumentSnapshot document = restaurantCol.document(restID).get().get();
+	@Override
+	public Restaurant readRestaurant(String restID) {
+		try {
+			DocumentSnapshot document = restaurantCol.document(restID).get().get();
 
-      return documentToRestaurant(document);
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+			return documentToRestaurant(document);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-  @Override
-  public void updateRestaurant(Restaurant rest) {
-    DocumentReference document = restaurantCol.document(rest.getId());
-    Map<String, Object> data = Maps.newHashMap();
+	@Override
+	public void updateRestaurant(Restaurant rest) {
+		DocumentReference document = restaurantCol.document(rest.getId());
+		Map<String, Object> data = Maps.newHashMap();
 
-    data.put(Restaurant.REST_NAME, rest.getRestName());
-    data.put(Restaurant.ADDRESS, rest.getAddress());
-    data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-    data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
-    data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
-    data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
-    data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-    data.put(Restaurant.CUISINE, rest.getCuisine());
-    try {
-      document.set(data).get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-  }
-  // [END bookshelf_firestore_update]
+		data.put(Restaurant.REST_NAME, rest.getRestName());
+		data.put(Restaurant.ADDRESS, rest.getAddress());
+		data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
+		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
+		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
+		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
+		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
+		data.put(Restaurant.CUISINE, rest.getCuisine());
+		try {
+			document.set(data).get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+	// [END bookshelf_firestore_update]
 
-  // [START bookshelf_firestore_delete]
-  @Override
-  public void deleteRestaurant(String restID) {
-    try {
-      restaurantCol.document(restID).delete().get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-  }
-  // [END bookshelf_firestore_delete]
+	// [START bookshelf_firestore_delete]
+	@Override
+	public void deleteRestaurant(String restID) {
+		try {
+			restaurantCol.document(restID).delete().get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+	// [END bookshelf_firestore_delete]
 
-  // [START bookshelf_firestore_documents_to_books]
-  private List<Restaurant> documentsToRestaurants(List<QueryDocumentSnapshot> documents) {
-    List<Restaurant> resultRestaurants = new ArrayList<>();
-    for (QueryDocumentSnapshot snapshot : documents) {
-    	resultRestaurants.add(documentToRestaurant(snapshot));
-    }
-    return resultRestaurants;
-  }
+	// [START bookshelf_firestore_documents_to_books]
+	private List<Restaurant> documentsToRestaurants(List<QueryDocumentSnapshot> documents) {
+		List<Restaurant> resultRestaurants = new ArrayList<>();
+		for (QueryDocumentSnapshot snapshot : documents) {
+			resultRestaurants.add(documentToRestaurant(snapshot));
+		}
+		return resultRestaurants;
+	}
 
-  @Override
-  public Result<Restaurant> listRestaurants(String startName) {
-    Query restQuery = restaurantCol.orderBy("restName").limit(10);
-    if (startName != null) {
-    	restQuery = restQuery.startAfter(startName);
-    }
-    try {
-      QuerySnapshot snapshot = restQuery.get().get();
-      List<Restaurant> results = documentsToRestaurants(snapshot.getDocuments());
-      String newCursor = null;
-      if (results.size() > 0) {
-        newCursor = results.get(results.size() - 1).getRestName();
-      }
-      return new Result<>(results, newCursor);
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-    return new Result<>(Lists.newArrayList(), null);
-  }
+	@Override
+	public Result<Restaurant> listRestaurants(String startName) {
+		Query restQuery = restaurantCol.orderBy("restName").limit(10);
+		if (startName != null) {
+			restQuery = restQuery.startAfter(startName);
+		}
+		try {
+			QuerySnapshot snapshot = restQuery.get().get();
+			List<Restaurant> results = documentsToRestaurants(snapshot.getDocuments());
+			String newCursor = null;
+			if (results.size() > 0) {
+				newCursor = results.get(results.size() - 1).getRestName();
+			}
+			return new Result<>(results, newCursor);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new Result<>(Lists.newArrayList(), null);
+	}
 
 //  @Override
 //  public Result<Book> listBooksByUser(String userId, String startTitle) {

@@ -25,17 +25,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-@WebServlet(
-    name = "delete",
-    urlPatterns = {"/delete"})
+@WebServlet(name = "delete", urlPatterns = { "/delete" })
 public class DeleteRestaurantServlet extends HttpServlet {
 
-  @Override
-  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    String id = req.getParameter("id");
-    BookDao dao = (BookDao) this.getServletContext().getAttribute("resDAO");
-    dao.deleteBook(id);
-    resp.sendRedirect("/books");
-  }
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String id = req.getParameter("id");
+		BookDao dao = (BookDao) this.getServletContext().getAttribute("resDAO");
+		dao.deleteBook(id);
+		resp.sendRedirect("/books");
+	}
 }
 // [END bookshelf_delete_servlet]
