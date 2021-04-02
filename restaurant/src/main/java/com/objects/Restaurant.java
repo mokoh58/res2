@@ -18,7 +18,8 @@ package com.objects;
 public class Restaurant {
 	private String restName;
 	private String address;
-	private String maxCapacity;
+    private String maxCapacity;
+    private String currentCapacity;
 	private String contactNumber;
 	private String createdBy;
 	private String createdById;
@@ -31,7 +32,8 @@ public class Restaurant {
 	public static final String CREATED_BY = "createdBy";
 	public static final String CREATED_BY_ID = "createdById";
 	public static final String CONTACT_NUMBER = "contactNumber";
-	public static final String MAX_CAPACITY = "maxCapacity";
+    public static final String MAX_CAPACITY = "maxCapacity";
+    public static final String CURR_CAPACITY = "currentCapacity";
 	public static final String ID = "id";
 	public static final String IMAGE_URL = "imageUrl";
 
@@ -42,7 +44,8 @@ public class Restaurant {
 		this.address = builder.address;
 		this.createdBy = builder.createdBy;
 		this.createdById = builder.createdById;
-		this.maxCapacity = builder.maxCapacity;
+        this.maxCapacity = builder.maxCapacity;
+        this.currentCapacity = builder.currentCapacity;
 		this.contactNumber = builder.contactNumber;
 		this.id = builder.id;
 		this.imageUrl = builder.imageUrl;
@@ -54,7 +57,8 @@ public class Restaurant {
 		private String address;
 		private String createdBy;
 		private String createdById;
-		private String maxCapacity;
+        private String maxCapacity;
+        private String currentCapacity;
 		private String contactNumber;
 		private String id;
 		private String imageUrl;
@@ -82,6 +86,11 @@ public class Restaurant {
 
 		public Builder maxCapacity(String maxCapacity) {
 			this.maxCapacity = maxCapacity;
+			return this;
+        }
+        
+        public Builder currentCapacity(String currentCapacity) {
+			this.currentCapacity = currentCapacity;
 			return this;
 		}
 
@@ -148,6 +157,14 @@ public class Restaurant {
 
 	public void setMaxCapacity(String maxCapacity) {
 		this.maxCapacity = maxCapacity;
+    }
+    
+    public String getCurrCapacity() {
+		return currentCapacity;
+	}
+
+	public void setCurrCapacity(String currentCapacity) {
+		this.currentCapacity = currentCapacity;
 	}
 
 	public String getContactNumber() {

@@ -20,7 +20,7 @@ import java.util.Date;
 public class Reservation {
 	private String resoName;
 	private String resoContact;
-	private Date resoDate;
+	private String resoDate;
 	private String resoTime;
 	private String createdBy;
 	private String createdById;
@@ -53,7 +53,7 @@ public class Reservation {
 	public static class Builder {
 		private String resoName;
 		private String resoContact;
-		private Date resoDate;
+		private String resoDate;
 		private String resoTime;
 		private String createdBy;
 		private String createdById;
@@ -70,7 +70,7 @@ public class Reservation {
 			return this;
 		}
 		
-		public Builder resoDate(Date resoDate) {
+		public Builder resoDate(String resoDate) {
 			this.resoDate = resoDate;
 			return this;
 		}
@@ -121,11 +121,11 @@ public class Reservation {
 		this.resoContact = resoContact;
 	}
 
-	public Date getResoDate() {
+	public String getResoDate() {
 		return resoDate;
 	}
 
-	public void setResoDate(Date resoDate) {
+	public void setResoDate(String resoDate) {
 		this.resoDate = resoDate;
 	}
 

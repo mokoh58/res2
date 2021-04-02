@@ -16,7 +16,9 @@
 package com.util;
 
 import com.example.getstarted.daos.BookDao;
+import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
+import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
 import javax.servlet.ServletContextEvent;
@@ -31,14 +33,17 @@ public class RestaurantContextListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		// This function is called when the application starts and will safely set a few
-		// required
-		// context attributes such as the BookDao.
 
-		RestaurantDAO dao = (RestaurantDAO) event.getServletContext().getAttribute("resDAO");
-		if (dao == null) {
-			dao = new FirestoreRestaurantDAO();
-			event.getServletContext().setAttribute("resDAO", dao);
+		RestaurantDAO restDAO = (RestaurantDAO) event.getServletContext().getAttribute("resDAO");
+		if (restDAO == null) {
+			restDAO = new FirestoreRestaurantDAO();
+			event.getServletContext().setAttribute("resDAO", restDAO);
+        }
+        
+        ReservationDAO resoDAO = (ReservationDAO) event.getServletContext().getAttribute("resoDAO");
+		if (resoDAO == null) {
+			resoDAO = new FirestoreReservationDAO();
+			event.getServletContext().setAttribute("resoDAO", resoDAO);
 		}
 
 		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");
