@@ -19,11 +19,11 @@ Copyright 2019 Google LLC
 <div class="container">
   <h3>Restaurant</h3>
   <div class="btn-group">
-    <a href="/update?id=${book.id}" class="btn btn-primary btn-sm">
+    <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
       <i class="glyphicon glyphicon-edit"></i>
       Edit Restaurant
     </a>
-    <a href="/delete?id=${book.id}" class="btn btn-danger btn-sm">
+    <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
       <i class="glyphicon glyphicon-trash"></i>
       Delete Restaurant
     </a>
@@ -31,17 +31,19 @@ Copyright 2019 Google LLC
 
   <div class="media">
     <div class="media-left">
-      <img class="book-image" src="${fn:escapeXml(not empty book.imageUrl?book.imageUrl:'http://placekitten.com/g/128/192')}">
+      <img class="book-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
     </div>
     <div class="media-body">
-      <h4 class="book-title">
-        ${fn:escapeXml(book.restName)}
-        <small>${fn:escapeXml(book.address)}</small>
+      <h4 class="res-name">
+        ${fn:escapeXml(restaurant.restName)}
       </h4>
-      <h5 class="res-name">By ${fn:escapeXml(not empty restaurant.name?restaurant.name:'Unknown')}</h5>
-      <p class="res-address">${fn:escapeXml(restaurant.address)}</p>
-      <small class="book-added-by">Added by
-        ${fn:escapeXml(not empty restaurant.createdBy?restaurant.createdBy:'Anonymous')}</small>
+      <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
+      <p class="res-address">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
+      <p class="res-address">Current Capacity: ${currCapacity}</p>
     </div>
+        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
+        <i class="glyphicon glyphicon-plus"></i>
+        Make Reservation
+        </a>
   </div>
 </div>

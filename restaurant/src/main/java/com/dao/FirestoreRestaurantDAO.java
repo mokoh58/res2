@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -20,129 +22,141 @@ import com.objects.Restaurant;
 import com.objects.Result;
 
 public class FirestoreRestaurantDAO implements RestaurantDAO {
-  private CollectionReference restaurantCol;
 
-  public FirestoreRestaurantDAO() {
-    Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
-    restaurantCol = firestore.collection("restaurants");
-  }
+    private static final Logger logger = Logger.getLogger(FirestoreRestaurantDAO.class.getName());
 
+	private CollectionReference restaurantCol;
 
-  private Restaurant documentToRestaurant(DocumentSnapshot document) {
-    Map<String, Object> data = document.getData();
-    if (data == null) {
-      System.out.println("No data in document " + document.getId());
-      return null;
-    }
+	public FirestoreRestaurantDAO() {
+        logger.log(Level.INFO, "Creating FirestoreRestaurantDAO");
+		Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
+		restaurantCol = firestore.collection("restaurants");
+	}
 
-    return new Restaurant.Builder()
-        .restName((String) data.get(Restaurant.REST_NAME))
-        .address((String) data.get(Restaurant.ADDRESS))
-        .maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
-        .imageUrl((String) data.get(Restaurant.IMAGE_URL))
-        .createdBy((String) data.get(Restaurant.CREATED_BY))
-        .createdById((String) data.get(Restaurant.CREATED_BY_ID))
-        .contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
-        .cuisine((String) data.get(Restaurant.CUISINE))
-        .id(document.getId())
-        .build();
-  }
-  
-  @Override
-  public String createRestaurant(Restaurant rest) {
-    String id = UUID.randomUUID().toString();
-    DocumentReference document = restaurantCol.document(id);
-    Map<String, Object> data = Maps.newHashMap();
+	private Restaurant documentToRestaurant(DocumentSnapshot document) {
+		Map<String, Object> data = document.getData();
+		if (data == null) {
+			System.out.println("No data in document " + document.getId());
+			return null;
+        }
+        
+        logger.log(Level.INFO, "documentToRestaurant Document: " + data.toString());
 
-    data.put(Restaurant.REST_NAME, rest.getRestName());
-    data.put(Restaurant.ADDRESS, rest.getAddress());
-    data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-    data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
-    data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
-    data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
-    data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-    data.put(Restaurant.CUISINE, rest.getCuisine());
-    try {
-      document.set(data).get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
+        return new Restaurant.Builder()
+                .restName((String) data.get(Restaurant.REST_NAME))
+                .address((String) data.get(Restaurant.ADDRESS))
+                .maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
+                .occupiedSeats((String) data.get(Restaurant.OCC_SEATS))
+                .imageUrl((String) data.get(Restaurant.IMAGE_URL))
+                .createdBy((String) data.get(Restaurant.CREATED_BY))
+				.createdById((String) data.get(Restaurant.CREATED_BY_ID))
+				.contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
+                .cuisine((String) data.get(Restaurant.CUISINE))
+                .id(document.getId())
+                .build();
+	}
 
-    return id;
-  }
+	@Override
+	public String createRestaurant(Restaurant rest) {
+		String id = UUID.randomUUID().toString();
+		DocumentReference document = restaurantCol.document(id);
+		Map<String, Object> data = Maps.newHashMap();
 
-  @Override
-  public Restaurant readRestaurant(String restID) {
-    try {
-      DocumentSnapshot document = restaurantCol.document(restID).get().get();
+		data.put(Restaurant.REST_NAME, rest.getRestName());
+		data.put(Restaurant.ADDRESS, rest.getAddress());
+        data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
+        data.put(Restaurant.OCC_SEATS, rest.getOccSeats());
+		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
+		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
+		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
+		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
+		data.put(Restaurant.CUISINE, rest.getCuisine());
+		try {
+			document.set(data).get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 
-      return documentToRestaurant(document);
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+        logger.log(Level.INFO, "Created Restaurant with id: " + id);
 
-  @Override
-  public void updateRestaurant(Restaurant rest) {
-    DocumentReference document = restaurantCol.document(rest.getId());
-    Map<String, Object> data = Maps.newHashMap();
+		return id;
+	}
 
-    data.put(Restaurant.REST_NAME, rest.getRestName());
-    data.put(Restaurant.ADDRESS, rest.getAddress());
-    data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-    data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
-    data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
-    data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
-    data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-    data.put(Restaurant.CUISINE, rest.getCuisine());
-    try {
-      document.set(data).get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-  }
-  // [END bookshelf_firestore_update]
+	@Override
+	public Restaurant readRestaurant(String restID) {
+		try {
+             logger.log(Level.INFO, "readRestaurant id: " + restID);
 
-  // [START bookshelf_firestore_delete]
-  @Override
-  public void deleteRestaurant(String restID) {
-    try {
-      restaurantCol.document(restID).delete().get();
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-  }
-  // [END bookshelf_firestore_delete]
+			DocumentSnapshot document = restaurantCol.document(restID).get().get();
 
-  // [START bookshelf_firestore_documents_to_books]
-  private List<Restaurant> documentsToRestaurants(List<QueryDocumentSnapshot> documents) {
-    List<Restaurant> resultRestaurants = new ArrayList<>();
-    for (QueryDocumentSnapshot snapshot : documents) {
-    	resultRestaurants.add(documentToRestaurant(snapshot));
-    }
-    return resultRestaurants;
-  }
+			return documentToRestaurant(document);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-  @Override
-  public Result<Restaurant> listRestaurants(String startName) {
-    Query restQuery = restaurantCol.orderBy("restName").limit(10);
-    if (startName != null) {
-    	restQuery = restQuery.startAfter(startName);
-    }
-    try {
-      QuerySnapshot snapshot = restQuery.get().get();
-      List<Restaurant> results = documentsToRestaurants(snapshot.getDocuments());
-      String newCursor = null;
-      if (results.size() > 0) {
-        newCursor = results.get(results.size() - 1).getRestName();
-      }
-      return new Result<>(results, newCursor);
-    } catch (InterruptedException | ExecutionException e) {
-      e.printStackTrace();
-    }
-    return new Result<>(Lists.newArrayList(), null);
-  }
+	@Override
+	public void updateRestaurant(Restaurant rest) {
+
+         logger.log(Level.INFO, "In updateRestaurant");
+
+		DocumentReference document = restaurantCol.document(rest.getId());
+		Map<String, Object> data = Maps.newHashMap();
+
+		data.put(Restaurant.REST_NAME, rest.getRestName());
+		data.put(Restaurant.ADDRESS, rest.getAddress());
+		data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
+		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
+		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
+		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
+		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
+		data.put(Restaurant.CUISINE, rest.getCuisine());
+		try {
+			document.set(data).get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteRestaurant(String restID) {
+		try {
+			restaurantCol.document(restID).delete().get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<Restaurant> documentsToRestaurants(List<QueryDocumentSnapshot> documents) {
+		List<Restaurant> resultRestaurants = new ArrayList<>();
+		for (QueryDocumentSnapshot snapshot : documents) {
+			resultRestaurants.add(documentToRestaurant(snapshot));
+		}
+		return resultRestaurants;
+	}
+
+	@Override
+	public Result<Restaurant> listRestaurants(String startName) {
+        logger.log(Level.INFO, "In listRestaurants");
+
+		Query restQuery = restaurantCol.orderBy("restName").limit(10);
+		if (startName != null) {
+			restQuery = restQuery.startAfter(startName);
+		}
+		try {
+			QuerySnapshot snapshot = restQuery.get().get();
+			List<Restaurant> results = documentsToRestaurants(snapshot.getDocuments());
+			String newCursor = null;
+			if (results.size() > 0) {
+				newCursor = results.get(results.size() - 1).getRestName();
+			}
+			return new Result<>(results, newCursor);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new Result<>(Lists.newArrayList(), null);
+	}
 
 //  @Override
 //  public Result<Book> listBooksByUser(String userId, String startTitle) {

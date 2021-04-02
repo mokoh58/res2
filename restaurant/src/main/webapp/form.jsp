@@ -9,22 +9,27 @@
 
     <div class="form-group">
       <label for="restName">Name</label>
-      <input type="text" name="title" id="title" value="${fn:escapeXml(restaurant.resName)}" class="form-control" />
+      <input type="text" name="restName" id="restName" value="${restaurant.restName}" class="form-control" />
     </div>
 
     <div class="form-group">
-      <label for="Address">Address</label>
-      <input type="text" name="author" id="author" value="${fn:escapeXml(restaurant.author)}" class="form-control" />
+      <label for="address">Address</label>
+      <input type="text" name="address" id="address" value="${restaurant.address}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="maxCapacity">Max Capacity</label>
-      <input type="text" name="publishedDate" id="publishedDate" value="${fn:escapeXml(restaurant.maxCapacity)}" class="form-control" />
+      <input type="text" name="maxCapacity" id="maxCapacity" value="${restaurant.maxCapacity}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="contactNumber">Contact</label>
-      <textarea name="contactNumber" id="contactNumber" class="form-control">${fn:escapeXml(restaurant.contactNumber)}</textarea>
+      <input type="text" name="contactNumber" id="contactNumber" value="${restaurant.contactNumber}" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="cuisine">Cuisine</label>
+      <input type="text" name="cuisine" id="cuisine" value="${restaurant.cuisine}" class="form-control" />
     </div>
 
     <div class="form-group ${isCloudStorageConfigured ? '' : 'hidden'}">
@@ -34,8 +39,8 @@
 
     <div class="form-group hidden">
       <label for="imageUrl">Cover Image URL</label>
-      <input type="hidden" name="id" value="${book.id}" />
-      <input type="text" name="imageUrl" id="imageUrl" value="${fn:escapeXml(restaurant.imageUrl)}" class="form-control" />
+      <input type="hidden" name="id" value="${restaurant.id}" />
+      <input type="text" name="imageUrl" id="imageUrl" value="${restaurant.imageUrl}" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-success">Save</button>

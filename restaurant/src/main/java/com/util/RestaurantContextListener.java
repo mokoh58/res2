@@ -16,7 +16,9 @@
 package com.util;
 
 import com.example.getstarted.daos.BookDao;
+import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
+import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
 import javax.servlet.ServletContextEvent;
@@ -25,35 +27,35 @@ import javax.servlet.annotation.WebListener;
 
 @WebListener("Creates restDAO and other servlet context objects for reuse.")
 public class RestaurantContextListener implements ServletContextListener {
-  @Override
-  public void contextDestroyed(javax.servlet.ServletContextEvent event) {
-  }
+	@Override
+	public void contextDestroyed(javax.servlet.ServletContextEvent event) {
+	}
 
-  @Override
-  public void contextInitialized(ServletContextEvent event) {
-    // This function is called when the application starts and will safely set a few required
-    // context attributes such as the BookDao.
+	@Override
+	public void contextInitialized(ServletContextEvent event) {
 
-    RestaurantDAO dao = (RestaurantDAO) event.getServletContext().getAttribute("restDAO");
-    if (dao == null) {
-      dao = new FirestoreRestaurantDAO();
-      event.getServletContext().setAttribute("restDAO", dao);
-    }
+		RestaurantDAO restDAO = (RestaurantDAO) event.getServletContext().getAttribute("resDAO");
+		if (restDAO == null) {
+			restDAO = new FirestoreRestaurantDAO();
+			event.getServletContext().setAttribute("resDAO", restDAO);
+        }
+        
+        ReservationDAO resoDAO = (ReservationDAO) event.getServletContext().getAttribute("resoDAO");
+		if (resoDAO == null) {
+			resoDAO = new FirestoreReservationDAO();
+			event.getServletContext().setAttribute("resoDAO", resoDAO);
+		}
 
-    Boolean isCloudStorageConfigured = (Boolean) event.getServletContext()
-        .getAttribute("isCloudStorageConfigured");
-    if (isCloudStorageConfigured == null) {
-      event.getServletContext()
-          .setAttribute(
-              "isCloudStorageConfigured",
-              !Strings.isNullOrEmpty(System.getenv("BOOKSHELF_BUCKET")));
-    }
+		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");
+		if (isCloudStorageConfigured == null) {
+			event.getServletContext().setAttribute("isCloudStorageConfigured",
+					!Strings.isNullOrEmpty(System.getenv("RES_BUCKET")));
+		}
 
-    CloudStorageHelper storageHelper = (CloudStorageHelper) event.getServletContext().getAttribute(
-        "storageHelper");
-    if (storageHelper == null) {
-      storageHelper = new CloudStorageHelper();
-      event.getServletContext().setAttribute("storageHelper", storageHelper);
-    }
-  }
+		CloudStorageHelper storageHelper = (CloudStorageHelper) event.getServletContext().getAttribute("storageHelper");
+		if (storageHelper == null) {
+			storageHelper = new CloudStorageHelper();
+			event.getServletContext().setAttribute("storageHelper", storageHelper);
+		}
+	}
 }

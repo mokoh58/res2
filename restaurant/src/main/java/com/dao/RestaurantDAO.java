@@ -19,16 +19,15 @@ import com.objects.Restaurant;
 import com.objects.Result;
 
 public interface RestaurantDAO {
-  String createRestaurant(Restaurant book);
+	String createRestaurant(Restaurant res);
 
-  Restaurant readRestaurant(String bookId);
+	Restaurant readRestaurant(String resID);
 
-  void updateRestaurant(Restaurant book);
+	void updateRestaurant(Restaurant res);
 
-  void deleteRestaurant(String bookId);
+	void deleteRestaurant(String resID);
 
-  Result<Restaurant> listRestaurants(String startCursor);
+	Result<Restaurant> listRestaurants(String startCursor);
 
-  //Result<Restaurant> listBooksByUser(String userId, String startCursor);
+	// Result<Restaurant> listBooksByUser(String userId, String startCursor);
 }
-
