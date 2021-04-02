@@ -34,10 +34,10 @@ public class RestaurantContextListener implements ServletContextListener {
     // This function is called when the application starts and will safely set a few required
     // context attributes such as the BookDao.
 
-    RestaurantDAO dao = (RestaurantDAO) event.getServletContext().getAttribute("restDAO");
+    RestaurantDAO dao = (RestaurantDAO) event.getServletContext().getAttribute("resDAO");
     if (dao == null) {
       dao = new FirestoreRestaurantDAO();
-      event.getServletContext().setAttribute("restDAO", dao);
+      event.getServletContext().setAttribute("resDAO", dao);
     }
 
     Boolean isCloudStorageConfigured = (Boolean) event.getServletContext()
@@ -46,7 +46,7 @@ public class RestaurantContextListener implements ServletContextListener {
       event.getServletContext()
           .setAttribute(
               "isCloudStorageConfigured",
-              !Strings.isNullOrEmpty(System.getenv("BOOKSHELF_BUCKET")));
+              !Strings.isNullOrEmpty(System.getenv("RES_BUCKET")));
     }
 
     CloudStorageHelper storageHelper = (CloudStorageHelper) event.getServletContext().getAttribute(
