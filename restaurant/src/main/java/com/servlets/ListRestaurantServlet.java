@@ -24,7 +24,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("restDAO");
+		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 		String startCursor = req.getParameter("cursor");
 		List<Restaurant> restaurants = null;
 		String endCursor = null;

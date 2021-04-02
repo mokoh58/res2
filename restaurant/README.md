@@ -16,7 +16,7 @@ To run your project locally:
 
 * Set the `BOOKSHELF_BUCKET` environment variable:
 
-      export BOOKSHELF_BUCKET=<YOUR_BUCKET_NAME>
+      export RES_BUCKET=test3-308406_bucket
 
   Where <YOUR_BUCKET_NAME> is the bucket you created above.
 * Run with the Jetty Maven plugin:

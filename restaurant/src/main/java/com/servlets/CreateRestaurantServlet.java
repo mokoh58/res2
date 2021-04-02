@@ -70,11 +70,15 @@ public class CreateRestaurantServlet extends HttpServlet {
 			createdByIdString = (String) session.getAttribute("userId");
 		}
 
-		Restaurant res = new Restaurant.Builder().restName(params.get("restName")).address(params.get("address"))
+        Restaurant res = new Restaurant.Builder().restName(params.get("restName"))
+                .address(params.get("address"))
 				.maxCapacity(params.get("maxCapacity"))
-				.imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl).createdBy(createdByString)
-				.createdById(createdByIdString).contactNumber(params.get("contactNumber"))
-				.cuisine(params.get("cuisine")).build();
+                .imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl)
+                .createdBy(createdByString)
+                .createdById(createdByIdString)
+                .contactNumber(params.get("contactNumber"))
+                .cuisine(params.get("cuisine"))
+                .build();
 
 		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 		String id = dao.createRestaurant(res);

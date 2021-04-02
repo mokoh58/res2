@@ -3,6 +3,8 @@ package com.servlets;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +26,9 @@ import com.util.CloudStorageHelper;
 @SuppressWarnings("serial")
 @WebServlet(name = "update", urlPatterns = { "/update" })
 public class UpdateRestaurantServlet extends HttpServlet {
+
+    private final Logger logger = Logger.getLogger(UpdateRestaurantServlet.class.getName());
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
 		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
@@ -60,14 +65,21 @@ public class UpdateRestaurantServlet extends HttpServlet {
 			}
 		} catch (FileUploadException e) {
 			throw new IOException(e);
-		}
+        }
+        
+        logger.log(Level.INFO, "UpdateRestaurantServlet IMG URL: " + newImageUrl);
 
 		Restaurant oldRest = dao.readRestaurant(params.get("id"));
 
-		Restaurant res = new Restaurant.Builder().restName(params.get("restName")).address(params.get("address"))
+        Restaurant res = new Restaurant.Builder()
+                .restName(params.get("restName"))
+                .address(params.get("address"))
 				.maxCapacity(params.get("maxCapacity"))
-				.imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl).createdBy(oldRest.getCreatedBy())
-				.createdById(oldRest.getCreatedById()).contactNumber(params.get("contactNumber"))
+                .imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl)
+                .id(params.get("id"))
+                .createdBy(oldRest.getCreatedBy())
+                .createdById(oldRest.getCreatedById())
+                .contactNumber(params.get("contactNumber"))
 				.cuisine(params.get("cuisine")).build();
 
 		dao.updateRestaurant(res);

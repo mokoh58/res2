@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -20,9 +22,13 @@ import com.objects.Restaurant;
 import com.objects.Result;
 
 public class FirestoreRestaurantDAO implements RestaurantDAO {
+
+    private static final Logger logger = Logger.getLogger(FirestoreRestaurantDAO.class.getName());
+
 	private CollectionReference restaurantCol;
 
 	public FirestoreRestaurantDAO() {
+        logger.log(Level.INFO, "Creating FirestoreRestaurantDAO");
 		Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
 		restaurantCol = firestore.collection("restaurants");
 	}
@@ -32,14 +38,21 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		if (data == null) {
 			System.out.println("No data in document " + document.getId());
 			return null;
-		}
+        }
+        
+        logger.log(Level.INFO, "documentToRestaurant Document: " + data.toString());
 
-		return new Restaurant.Builder().restName((String) data.get(Restaurant.REST_NAME))
-				.address((String) data.get(Restaurant.ADDRESS)).maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
-				.imageUrl((String) data.get(Restaurant.IMAGE_URL)).createdBy((String) data.get(Restaurant.CREATED_BY))
+        return new Restaurant.Builder()
+                .restName((String) data.get(Restaurant.REST_NAME))
+                .address((String) data.get(Restaurant.ADDRESS))
+                .maxCapacity((String) data.get(Restaurant.MAX_CAPACITY))
+                .imageUrl((String) data.get(Restaurant.IMAGE_URL))
+                .createdBy((String) data.get(Restaurant.CREATED_BY))
 				.createdById((String) data.get(Restaurant.CREATED_BY_ID))
 				.contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
-				.cuisine((String) data.get(Restaurant.CUISINE)).id(document.getId()).build();
+                .cuisine((String) data.get(Restaurant.CUISINE))
+                .id(document.getId())
+                .build();
 	}
 
 	@Override
@@ -62,12 +75,16 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 			e.printStackTrace();
 		}
 
+        logger.log(Level.INFO, "Created Restaurant with id: " + id);
+
 		return id;
 	}
 
 	@Override
 	public Restaurant readRestaurant(String restID) {
 		try {
+             logger.log(Level.INFO, "readRestaurant id: " + restID);
+
 			DocumentSnapshot document = restaurantCol.document(restID).get().get();
 
 			return documentToRestaurant(document);
@@ -79,6 +96,9 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 
 	@Override
 	public void updateRestaurant(Restaurant rest) {
+
+         logger.log(Level.INFO, "In updateRestaurant");
+
 		DocumentReference document = restaurantCol.document(rest.getId());
 		Map<String, Object> data = Maps.newHashMap();
 
@@ -96,9 +116,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 			e.printStackTrace();
 		}
 	}
-	// [END bookshelf_firestore_update]
 
-	// [START bookshelf_firestore_delete]
 	@Override
 	public void deleteRestaurant(String restID) {
 		try {
@@ -107,9 +125,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 			e.printStackTrace();
 		}
 	}
-	// [END bookshelf_firestore_delete]
 
-	// [START bookshelf_firestore_documents_to_books]
 	private List<Restaurant> documentsToRestaurants(List<QueryDocumentSnapshot> documents) {
 		List<Restaurant> resultRestaurants = new ArrayList<>();
 		for (QueryDocumentSnapshot snapshot : documents) {
@@ -120,6 +136,8 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 
 	@Override
 	public Result<Restaurant> listRestaurants(String startName) {
+        logger.log(Level.INFO, "In listRestaurants");
+
 		Query restQuery = restaurantCol.orderBy("restName").limit(10);
 		if (startName != null) {
 			restQuery = restQuery.startAfter(startName);

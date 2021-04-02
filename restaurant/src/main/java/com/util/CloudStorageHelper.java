@@ -73,9 +73,6 @@ public class CloudStorageHelper {
 		// return the public download link
 		return blobInfo.getMediaLink();
 	}
-	// [END bookshelf_cloud_storage_client_upload_file]
-
-	// [START bookshelf_cloud_storage_client_check_file_extension]
 
 	/** Checks that the file extension is supported. */
 	private void checkFileExtension(String fileName) throws ServletException {
@@ -89,6 +86,4 @@ public class CloudStorageHelper {
 			throw new ServletException("file must be an image");
 		}
 	}
-	// [END bookshelf_cloud_storage_client_check_file_extension]
 }
-// [END bookshelf_cloud_storage_client]

@@ -45,4 +45,3 @@ public class ReadRestaurantServlet extends HttpServlet {
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
 	}
 }
-// [END bookshelf_read_servlet]

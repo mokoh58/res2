@@ -1,19 +1,4 @@
-<!--
-Copyright 2019 Google LLC
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
-<!-- [START bookshelf_jsp_list] -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="container">
@@ -23,7 +8,7 @@ Copyright 2019 Google LLC
     Add Restaurant
   </a>
   <c:choose>
-  <c:when test="${empty restaurant}">
+  <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
   </c:when>
   <c:otherwise>
@@ -31,7 +16,7 @@ Copyright 2019 Google LLC
   <div class="media">
     <a href="/read?id=${restaurant.id}">
       <div class="media-left">
-        <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?book.imageUrl:'http://placekitten.com/g/128/192')}">
+        <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
       </div>
       <div class="media-body">
         <h4>${fn:escapeXml(restaurant.restName)}</h4>
@@ -50,4 +35,3 @@ Copyright 2019 Google LLC
   </c:otherwise>
   </c:choose>
 </div>
-<!-- [END bookshelf_jsp_list] -->
