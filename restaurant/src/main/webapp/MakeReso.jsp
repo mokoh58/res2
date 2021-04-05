@@ -8,9 +8,9 @@
 
   <form method="POST" action="${destination}" enctype="multipart/form-data">
 
-    <div class="form-group">
+    <div class="form-group hidden">
       <label for="resoName">Id</label>
-      <input type="text" name="restId" id="restId" value="${restId}" class="form-control" />
+      <input type="hidden" name="restId" id="restId" value="${restId}" class="form-control" />
     </div>
 
     <div class="form-group">

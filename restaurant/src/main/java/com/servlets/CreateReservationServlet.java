@@ -13,6 +13,8 @@ import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import com.google.cloud.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -57,7 +59,9 @@ public class CreateReservationServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ReservationDAO dao = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
+        RestaurantDAO restDAO = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+        ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
+
         assert ServletFileUpload.isMultipartContent(req);
 		CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
 
@@ -97,9 +101,11 @@ public class CreateReservationServlet extends HttpServlet {
         }
         
         String restId = params.get("restId");
+        Restaurant res = null;
+        List<Reservation> resoList = null;
         try {
-            Restaurant res = dao.readRestaurant(restId);
-            List<Reservation> resoList = dao.getReservationsByRestaurant(restId);
+            res = restDAO.readRestaurant(restId);
+            resoList = resoDAO.getReservationsByRestaurant(restId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,13 +121,36 @@ public class CreateReservationServlet extends HttpServlet {
                 .numPax(params.get("numPax"))
                 .build();
 
-		String id = dao.createReservation(reso);
-		logger.log(Level.INFO, "Created reservation {0}", reso);
-		resp.sendRedirect("/read?id=" + restId);
+        if(checkSpace(reso, resoList, res)) {
+            String id = resoDAO.createReservation(reso);
+            logger.log(Level.INFO, "Created reservation {0}", reso);
+            resp.sendRedirect("/read?id=" + restId);
+        }
     }
 
-    private Boolean checkSpace(List<Reservation> resoList, Restaurant restaurant) {
-        Timestamp now = Timestamp.now();
-        return false;
+    private Boolean checkSpace(Reservation currReso, List<Reservation> resoList, Restaurant restaurant) {
+        try {
+            if(resoList!= null && resoList.size() > 0) {
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                Date currResoDate = sdf.parse(currReso.getResoDate() + " " + currReso.getResoTime());
+                LocalDateTime currResoLDT = convertToLocalDateTime(currResoDate);
+
+                for(Reservation reso : resoList) {
+                    Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
+                    LocalDateTime resoLDT = convertToLocalDateTime(resoDate);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    private LocalDateTime convertToLocalDateTime(Date dateToConvert) {
+        return dateToConvert.toInstant()
+        .atZone(ZoneId.of("Asia/Singapore"))
+        .toLocalDateTime();
     }
 }
