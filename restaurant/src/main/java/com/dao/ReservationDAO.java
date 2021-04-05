@@ -15,6 +15,8 @@
 
 package com.dao;
 
+import java.util.List;
+
 import com.objects.Reservation;
 import com.objects.Result;
 
@@ -29,5 +31,7 @@ public interface ReservationDAO {
 
 	Result<Reservation> listReservations(String startCursor);
 
-	Result<Reservation> listReservationsByRestaurant(String restId, String startCursor);
+    Result<Reservation> listReservationsByRestaurant(String restId, String startCursor);
+
+    List<Reservation> getReservationsByRestaurant(String restId);
 }

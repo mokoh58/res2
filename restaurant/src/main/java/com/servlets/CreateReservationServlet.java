@@ -11,6 +11,8 @@ import com.util.CloudStorageHelper;
 import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import com.google.cloud.Timestamp;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,11 +57,13 @@ public class CreateReservationServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        ReservationDAO dao = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         assert ServletFileUpload.isMultipartContent(req);
 		CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
 
-		Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
+        Timestamp resoTS = null;
+
 		try {
 			FileItemIterator iter = new ServletFileUpload().getItemIterator(req);
 			while (iter.hasNext()) {
@@ -73,14 +77,13 @@ public class CreateReservationServlet extends HttpServlet {
         }
         
         try {
-
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
             Date resoDate = sdf.parse(params.get("resoDate") + " " + params.get("resoTime"));
 
             logger.log(Level.INFO, "Date is " + resoDate.toString());
 
-            resoTS = Timestamp.of(resoDate);        
+            resoTS = Timestamp.of(resoDate); 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,6 +97,12 @@ public class CreateReservationServlet extends HttpServlet {
         }
         
         String restId = params.get("restId");
+        try {
+            Restaurant res = dao.readRestaurant(restId);
+            List<Reservation> resoList = dao.getReservationsByRestaurant(restId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Reservation reso = new Reservation.Builder()
                 .resoName(params.get("resoName"))
@@ -106,9 +115,13 @@ public class CreateReservationServlet extends HttpServlet {
                 .numPax(params.get("numPax"))
                 .build();
 
-		ReservationDAO dao = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
 		String id = dao.createReservation(reso);
 		logger.log(Level.INFO, "Created reservation {0}", reso);
 		resp.sendRedirect("/read?id=" + restId);
-	}
+    }
+
+    private Boolean checkSpace(List<Reservation> resoList, Restaurant restaurant) {
+        Timestamp now = Timestamp.now();
+        return false;
+    }
 }

@@ -22,6 +22,8 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.Timestamp;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.api.core.ApiFuture;
+import com.google.api.core.ApiFutures;
 import com.objects.Reservation;
 import com.objects.Reservation;
 import com.objects.Result;
@@ -30,16 +32,16 @@ public class FirestoreReservationDAO implements ReservationDAO {
 
     private static final Logger logger = Logger.getLogger(FirestoreReservationDAO.class.getName());
 
-	private CollectionReference resoCol;
+	private final CollectionReference resoCol;
 
 	public FirestoreReservationDAO() {
         logger.log(Level.INFO, "Creating FirestoreReservationDAO");
-		Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
+		final Firestore firestore = FirestoreOptions.getDefaultInstance().getService();
 		resoCol = firestore.collection("reservations");
 	}
 
-	private Reservation documentToReservation(DocumentSnapshot document) {
-		Map<String, Object> data = document.getData();
+	private Reservation documentToReservation(final DocumentSnapshot document) {
+		final Map<String, Object> data = document.getData();
 		if (data == null) {
 			System.out.println("No data in document " + document.getId());
 			return null;
@@ -61,21 +63,21 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	}
 
 	@Override
-	public String createReservation(Reservation reso) {
-		String id = UUID.randomUUID().toString();
-		DocumentReference document = resoCol.document(id);
-        Map<String, Object> data = Maps.newHashMap();
+	public String createReservation(final Reservation reso) {
+		final String id = UUID.randomUUID().toString();
+		final DocumentReference document = resoCol.document(id);
+        final Map<String, Object> data = Maps.newHashMap();
         Timestamp resoTS = null;
         try {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-            Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
+            final Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
 
             logger.log(Level.INFO, "Date is " + resoDate.toString());
 
             resoTS = Timestamp.of(resoDate);        
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
 		data.put(Reservation.RESO_NAME, reso.getResoName());
@@ -100,11 +102,11 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	}
 
 	@Override
-	public Reservation readReservation(String resoId) {
+	public Reservation readReservation(final String resoId) {
 		try {
              logger.log(Level.INFO, "readReservation id: " + resoId);
 
-			DocumentSnapshot document = resoCol.document(resoId).get().get();
+			final DocumentSnapshot document = resoCol.document(resoId).get().get();
 
 			return documentToReservation(document);
 		} catch (InterruptedException | ExecutionException e) {
@@ -114,12 +116,12 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	}
 
 	@Override
-	public void updateReservation(Reservation reso) {
+	public void updateReservation(final Reservation reso) {
 
         logger.log(Level.INFO, "In updateReservation");
 
-		DocumentReference document = resoCol.document(reso.getId());
-		Map<String, Object> data = Maps.newHashMap();
+		final DocumentReference document = resoCol.document(reso.getId());
+		final Map<String, Object> data = Maps.newHashMap();
 
 		data.put(Reservation.RESO_NAME, reso.getResoName());
 		data.put(Reservation.RESO_CONTACT, reso.getResoContact());
@@ -136,7 +138,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
 	}
 
 	@Override
-	public void deleteReservation(String resoId) {
+	public void deleteReservation(final String resoId) {
 		try {
 			resoCol.document(resoId).delete().get();
 		} catch (InterruptedException | ExecutionException e) {
@@ -144,16 +146,16 @@ public class FirestoreReservationDAO implements ReservationDAO {
 		}
 	}
 
-	private List<Reservation> documentsToReservations(List<QueryDocumentSnapshot> documents) {
-		List<Reservation> resultReservations = new ArrayList<>();
-		for (QueryDocumentSnapshot snapshot : documents) {
+	private List<Reservation> documentsToReservations(final List<QueryDocumentSnapshot> documents) {
+		final List<Reservation> resultReservations = new ArrayList<>();
+		for (final QueryDocumentSnapshot snapshot : documents) {
 			resultReservations.add(documentToReservation(snapshot));
 		}
 		return resultReservations;
 	}
 
-	// @Override
-	public Result<Reservation> listReservations(String startName) {
+	@Override
+	public Result<Reservation> listReservations(final String startName) {
         logger.log(Level.INFO, "In listReservations");
 
 		Query restQuery = resoCol.orderBy("restId");
@@ -161,8 +163,8 @@ public class FirestoreReservationDAO implements ReservationDAO {
 			restQuery = restQuery.startAfter(startName);
 		}
 		try {
-			QuerySnapshot snapshot = restQuery.get().get();
-			List<Reservation> results = documentsToReservations(snapshot.getDocuments());
+			final QuerySnapshot snapshot = restQuery.get().get();
+			final List<Reservation> results = documentsToReservations(snapshot.getDocuments());
 			String newCursor = null;
 			if (results.size() > 0) {
 				newCursor = results.get(results.size() - 1).getRestId();
@@ -174,7 +176,8 @@ public class FirestoreReservationDAO implements ReservationDAO {
 		return new Result<>(Lists.newArrayList(), null);
     }
     
-    public Result<Reservation> listReservationsByRestaurant(String restId ,String startName) {
+    @Override
+    public Result<Reservation> listReservationsByRestaurant(final String restId ,final String startName) {
         logger.log(Level.INFO, "In listReservations by " + restId);
 
 		Query resoQuery = resoCol.orderBy("resoTimeStamp", Query.Direction.ASCENDING).whereEqualTo(Reservation.REST_ID, restId);
@@ -182,11 +185,11 @@ public class FirestoreReservationDAO implements ReservationDAO {
 			resoQuery = resoQuery.startAfter(startName);
 		}
 		try {
-            QuerySnapshot snapshot = resoQuery.get().get();
+            final QuerySnapshot snapshot = resoQuery.get().get();
 
             logger.log(Level.INFO, "Size: " + snapshot.getDocuments().size());
 
-			List<Reservation> results = documentsToReservations(snapshot.getDocuments());
+			final List<Reservation> results = documentsToReservations(snapshot.getDocuments());
             String newCursor = null;
 
 			if (results.size() > 0) {
@@ -219,4 +222,16 @@ public class FirestoreReservationDAO implements ReservationDAO {
 //    }
 //    return new Result<>(Lists.newArrayList(), null);
 //  }
+    @Override
+    public List<Reservation> getReservationsByRestaurant(final String restId) {
+        final ApiFuture<QuerySnapshot> resos = resoCol.whereEqualTo(Reservation.REST_ID, restId).get();
+        try {
+            final List<QueryDocumentSnapshot> documents = resos.get().getDocuments();
+
+            return documentsToReservations(documents);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
