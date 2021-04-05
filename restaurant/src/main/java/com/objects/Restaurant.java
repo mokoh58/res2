@@ -10,7 +10,8 @@ public class Restaurant {
 	private String createdById;
 	private String id;
 	private String imageUrl;
-	private String cuisine;
+    private String cuisine;
+    private String operatingHours;
 	public static final String REST_NAME = "restName";
 	public static final String ADDRESS = "address";
 	public static final String CUISINE = "cuisine";
@@ -20,7 +21,8 @@ public class Restaurant {
     public static final String MAX_CAPACITY = "maxCapacity";
     public static final String OCC_SEATS = "occupiedSeats";
 	public static final String ID = "id";
-	public static final String IMAGE_URL = "imageUrl";
+    public static final String IMAGE_URL = "imageUrl";
+    public static final String OPERATING_HOURS = "operatingHours";
 
 	// We use a Builder pattern here to simplify and standardize construction of
 	// Book objects.
@@ -34,7 +36,8 @@ public class Restaurant {
 		this.contactNumber = builder.contactNumber;
 		this.id = builder.id;
 		this.imageUrl = builder.imageUrl;
-		this.cuisine = builder.cuisine;
+        this.cuisine = builder.cuisine;
+        this.operatingHours = builder.operatingHours;
 	}
 
 	public static class Builder {
@@ -47,7 +50,8 @@ public class Restaurant {
 		private String contactNumber;
 		private String id;
 		private String imageUrl;
-		private String cuisine;
+        private String cuisine;
+        private String operatingHours;
 
 		public Builder restName(String restName) {
 			this.restName = restName;
@@ -97,7 +101,12 @@ public class Restaurant {
 		public Builder imageUrl(String imageUrl) {
 			this.imageUrl = imageUrl;
 			return this;
-		}
+        }
+        
+        public Builder operatingHours(String operatingHours) {
+            this.operatingHours = operatingHours;
+            return this;
+        }
 
 		public Restaurant build() {
 			return new Restaurant(this);
@@ -182,6 +191,14 @@ public class Restaurant {
 
 	public void setCuisine(String cuisine) {
 		this.cuisine = cuisine;
+    }
+    
+    public String getOperatingHours() {
+		return operatingHours;
+	}
+
+	public void setOperatingHours(String operatingHours) {
+		this.operatingHours = operatingHours;
 	}
 
 	@Override

@@ -29,5 +29,5 @@ public interface ReservationDAO {
 
 	Result<Reservation> listReservations(String startCursor);
 
-	// Result<Restaurant> listBooksByUser(String userId, String startCursor);
+	Result<Reservation> listReservationsByRestaurant(String restId, String startCursor);
 }

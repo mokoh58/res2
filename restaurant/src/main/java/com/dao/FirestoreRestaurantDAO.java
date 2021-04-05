@@ -53,6 +53,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 				.contactNumber((String) data.get(Restaurant.CONTACT_NUMBER))
                 .cuisine((String) data.get(Restaurant.CUISINE))
                 .id(document.getId())
+                .operatingHours((String) data.get(Restaurant.OPERATING_HOURS))
                 .build();
 	}
 
@@ -70,7 +71,8 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
 		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
 		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-		data.put(Restaurant.CUISINE, rest.getCuisine());
+        data.put(Restaurant.CUISINE, rest.getCuisine());
+        data.put(Restaurant.OPERATING_HOURS, rest.getOperatingHours());
 		try {
 			document.set(data).get();
 		} catch (InterruptedException | ExecutionException e) {
@@ -111,7 +113,8 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
 		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
 		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
-		data.put(Restaurant.CUISINE, rest.getCuisine());
+        data.put(Restaurant.CUISINE, rest.getCuisine());
+        data.put(Restaurant.OPERATING_HOURS, rest.getOperatingHours());
 		try {
 			document.set(data).get();
 		} catch (InterruptedException | ExecutionException e) {

@@ -8,6 +8,9 @@ import com.google.common.base.Strings;
 import com.objects.Reservation;
 import com.objects.Restaurant;
 import com.util.CloudStorageHelper;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -67,7 +70,20 @@ public class CreateReservationServlet extends HttpServlet {
 			}
 		} catch (FileUploadException e) {
 			throw new IOException(e);
-		}
+        }
+        
+        try {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+            Date resoDate = sdf.parse(params.get("resoDate") + " " + params.get("resoTime"));
+
+            logger.log(Level.INFO, "Date is " + resoDate.toString());
+
+            resoTS = Timestamp.of(resoDate);        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 		String createdByString = "";
 		String createdByIdString = "";
@@ -87,6 +103,7 @@ public class CreateReservationServlet extends HttpServlet {
                 .restId(restId)
                 .createdBy(createdByString)
                 .createdById(createdByIdString)
+                .numPax(params.get("numPax"))
                 .build();
 
 		ReservationDAO dao = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");

@@ -28,6 +28,11 @@
     </div>
 
     <div class="form-group">
+      <label for="operatingHours">Operating Hours</label>
+      <input type="text" name="operatingHours" id="operatingHours" value="${restaurant.operatingHours}" class="form-control" />
+    </div>
+
+    <div class="form-group">
       <label for="cuisine">Cuisine</label>
       <input type="text" name="cuisine" id="cuisine" value="${restaurant.cuisine}" class="form-control" />
     </div>

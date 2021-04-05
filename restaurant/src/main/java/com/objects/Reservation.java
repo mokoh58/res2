@@ -26,7 +26,7 @@ public class Reservation {
 	private String createdBy;
 	private String createdById;
 	private String restId;
-	private String id;
+    private String id;
 	
 	public static final String RESO_NAME = "resoName";
     public static final String RESO_CONTACT = "resoContact";
@@ -36,7 +36,8 @@ public class Reservation {
 	public static final String CREATED_BY = "createdBy";
 	public static final String CREATED_BY_ID = "createdById";
 	public static final String REST_ID = "restId";
-	public static final String ID = "id";
+    public static final String ID = "id";
+    public static final String RESO_TS = "resoTimeStamp";
 
 
 	// We use a Builder pattern here to simplify and standardize construction of

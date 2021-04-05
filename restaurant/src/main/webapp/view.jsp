@@ -38,12 +38,39 @@ Copyright 2019 Google LLC
         ${fn:escapeXml(restaurant.restName)}
       </h4>
       <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
-      <p class="res-address">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
-      <p class="res-address">Current Capacity: ${currCapacity}</p>
+      <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
+      <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
+      <p class="res-capacity">Current Capacity: ${currCapacity}</p>
     </div>
+    <div>
+        <c:choose>
+        <c:when test="${empty reservations}">
+            <p>No reservation found</p>
+        </c:when>
+        <c:otherwise>
+        <c:forEach items="${reservations}" var="reservation">
+            <div>
+                <h4>${fn:escapeXml(reservation.resoName)}
+                    &nbsp;&nbsp;&nbsp;&nbsp;${fn:escapeXml(reservation.resoContact)}
+                    &nbsp;&nbsp;&nbsp;&nbsp;${fn:escapeXml(reservation.resoDate)}
+                    &nbsp;&nbsp;&nbsp;&nbsp;${fn:escapeXml(reservation.resoTime)}
+                    &nbsp;&nbsp;&nbsp;&nbsp;${fn:escapeXml(reservation.numPax)}
+                </h4>
+            </div>
+        </c:forEach>
+        <c:if test="${not empty cursor}">
+        <nav>
+            <ul class="pager">
+            <li><a href="?cursor=${fn:escapeXml(cursor)}">More</a></li>
+            </ul>
+        </nav>
+        </c:if>
+        </c:otherwise>
+        </c:choose>
         <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>
         Make Reservation
         </a>
+    </div>
   </div>
 </div>

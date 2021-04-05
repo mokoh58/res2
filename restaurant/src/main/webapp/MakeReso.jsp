@@ -24,6 +24,11 @@
     </div>
 
     <div class="form-group">
+      <label for="numPax">Number of Pax</label>
+      <input type="text" name="numPax" id="numPax" value="${reservation.numPax}" class="form-control" />
+    </div>
+
+    <div class="form-group">
       <label for="resoDate">Reservation Date</label>
       <input type="text" name="resoDate" id="resoDate" value="${reservation.resoContact}" class="form-control"/>
     </div>
@@ -31,11 +36,11 @@
     <div class="form-group">
         <label for="resoTime">Reservation Time</label>
         <select name="resoTime" id="resoTime" value="${reservation.resoTime}">
-            <option value="12-2">12:00 - 14:00</option>
-            <option value="2-4">14:00 - 16:00</option>
-            <option value="4-6">16:00 - 18:00</option>
-            <option value="6-8">18:00 - 20:00</option>
-            <option value="8-10">20:00 - 22:00</option>
+            <option value="12:00">12:00 - 14:00</option>
+            <option value="14:00">14:00 - 16:00</option>
+            <option value="16:00">16:00 - 18:00</option>
+            <option value="18:00">18:00 - 20:00</option>
+            <option value="20:00">20:00 - 22:00</option>
         </select>
     </div>
 
