@@ -153,11 +153,11 @@ public class Restaurant {
 		this.maxCapacity = maxCapacity;
     }
     
-    public String getOccSeats() {
+    public String getOccupiedSeats() {
 		return occupiedSeats;
 	}
 
-	public void setOccSeats(String occupiedSeats) {
+	public void setOccupiedSeats(String occupiedSeats) {
 		this.occupiedSeats = occupiedSeats;
 	}
 

@@ -6,7 +6,7 @@
     Make Reservation
   </h3>
 
-  <form method="POST" action="${destination}" enctype="multipart/form-data">
+  <form method="POST" action="${destination}" enctype="multipart/form-data">mokoh58
 
     <div class="form-group hidden">
       <label for="resoName">Id</label>
@@ -41,6 +41,7 @@
             <option value="16:00">16:00 - 18:00</option>
             <option value="18:00">18:00 - 20:00</option>
             <option value="20:00">20:00 - 22:00</option>
+            <option value="22:00">22:00 - 00:00</option>
         </select>
     </div>
 

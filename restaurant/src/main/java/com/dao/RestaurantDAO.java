@@ -29,5 +29,5 @@ public interface RestaurantDAO {
 
 	Result<Restaurant> listRestaurants(String startCursor);
 
-	// Result<Restaurant> listBooksByUser(String userId, String startCursor);
+	void UpdateOccupiedSeats(String restID,Integer numSeats);
 }

@@ -37,10 +37,21 @@ Copyright 2019 Google LLC
       <h4 class="res-name">
         ${fn:escapeXml(restaurant.restName)}
       </h4>
-      <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
-      <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
-      <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
-      <p class="res-capacity">Current Capacity: ${currCapacity}</p>
+        <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
+        <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
+        <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
+        <p class="res-capacity">Current Capacity: ${currCapacity}</p>
+        <div>
+            <form method="POST">
+            <input type="hidden" name="id" id="id" value=${restaurant.id} />
+            <input type="hidden" name="maxCapacity" id="maxCapacity" value=${restaurant.maxCapacity} />
+            <input type="hidden" name="occupiedSeats" id="occupiedSeats" value=${restaurant.occupiedSeats} />
+            <input type="text" name="addPax" id="addPax" placeholder="0" value="${addPax}" size="3" maxlength="3" />
+
+            <button type="submit" name="add" value="add" class="btn btn-success">Add Pax</button>
+            <button type="submit" name="subtract" value="subract" class="btn btn-success">Minus Pax</button>
+            </form>
+        </div>
     </div>
     <div>
         <c:choose>

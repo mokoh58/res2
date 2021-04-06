@@ -16,8 +16,11 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.api.core.ApiFuture;
+import com.google.api.core.ApiFutures;
 import com.objects.Restaurant;
 import com.objects.Result;
 
@@ -66,7 +69,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		data.put(Restaurant.REST_NAME, rest.getRestName());
 		data.put(Restaurant.ADDRESS, rest.getAddress());
         data.put(Restaurant.MAX_CAPACITY, rest.getMaxCapacity());
-        data.put(Restaurant.OCC_SEATS, rest.getOccSeats());
+        data.put(Restaurant.OCC_SEATS, rest.getOccupiedSeats());
 		data.put(Restaurant.CONTACT_NUMBER, rest.getContactNumber());
 		data.put(Restaurant.IMAGE_URL, rest.getImageUrl());
 		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
@@ -161,24 +164,22 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		return new Result<>(Lists.newArrayList(), null);
 	}
 
-//  @Override
-//  public Result<Book> listBooksByUser(String userId, String startTitle) {
-//    Query booksQuery =
-//        booksCollection.orderBy("title").whereEqualTo(Book.CREATED_BY_ID, userId).limit(10);
-//    if (startTitle != null) {
-//      booksQuery = booksQuery.startAfter(startTitle);
-//    }
-//    try {
-//      QuerySnapshot snapshot = booksQuery.get().get();
-//      List<Book> results = documentsToBooks(snapshot.getDocuments());
-//      String newCursor = null;
-//      if (results.size() > 0) {
-//        newCursor = results.get(results.size() - 1).getTitle();
-//      }
-//      return new Result<>(results, newCursor);
-//    } catch (InterruptedException | ExecutionException e) {
-//      e.printStackTrace();
-//    }
-//    return new Result<>(Lists.newArrayList(), null);
-//  }
+    @Override
+    public void UpdateOccupiedSeats(String restId, Integer numSeats) {
+        logger.log(Level.INFO, "UpdateOccupiedSeats restId " + restId);
+
+        try {
+            DocumentReference docRef = restaurantCol.document(restId);
+
+            ApiFuture<WriteResult> future = docRef.update("occupiedSeats", numSeats.toString());
+
+            WriteResult result = future.get();
+
+            System.out.println("Write result: " + result);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

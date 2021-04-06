@@ -2,8 +2,6 @@ package com.servlets;
 
 import com.dao.RestaurantDAO;
 import com.dao.ReservationDAO;
-import com.example.getstarted.daos.BookDao;
-import com.example.getstarted.objects.Book;
 import com.google.common.base.Strings;
 import com.objects.Reservation;
 import com.objects.Restaurant;
@@ -13,8 +11,6 @@ import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import com.google.cloud.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -134,11 +130,32 @@ public class CreateReservationServlet extends HttpServlet {
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                 Date currResoDate = sdf.parse(currReso.getResoDate() + " " + currReso.getResoTime());
-                LocalDateTime currResoLDT = convertToLocalDateTime(currResoDate);
+                //LocalDateTime currResoLDT = convertToLocalDateTime(currResoDate);
 
+                Map<Date, Integer> resoMap = new HashMap<Date, Integer>();
+                Integer totalPaxForDate = 0;
+                Integer totalCapacity = Integer.parseInt(restaurant.getMaxCapacity());
                 for(Reservation reso : resoList) {
                     Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
-                    LocalDateTime resoLDT = convertToLocalDateTime(resoDate);
+                    Integer numPax = Integer.parseInt(reso.getNumPax());
+                    if(currReso.equals(resoDate)) {
+                        totalPaxForDate += numPax;
+                    }
+                }
+                logger.log(Level.INFO, "totalCapacity " + totalCapacity);
+                logger.log(Level.INFO, "totalPaxForDate " + totalPaxForDate);
+
+                Integer currCapacity = totalCapacity = totalPaxForDate;
+                Integer currPax = Integer.parseInt(currReso.getNumPax());
+                logger.log(Level.INFO, "currCapacity " + currCapacity);
+                logger.log(Level.INFO, "currPax " + currPax);
+
+                if(currPax < currCapacity) {
+                    logger.log(Level.INFO, "No Space Lah!");
+                    return false;
+                }
+                else {
+                    return true;
                 }
             }
         } catch (Exception e) {
@@ -146,11 +163,5 @@ public class CreateReservationServlet extends HttpServlet {
         }
 
         return true;
-    }
-
-    private LocalDateTime convertToLocalDateTime(Date dateToConvert) {
-        return dateToConvert.toInstant()
-        .atZone(ZoneId.of("Asia/Singapore"))
-        .toLocalDateTime();
     }
 }

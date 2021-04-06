@@ -20,12 +20,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import com.google.cloud.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.*;
 
 import com.dao.*;
 import com.objects.*;
@@ -38,16 +43,14 @@ public class ReadRestaurantServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String id = req.getParameter("id");
+        String id = req.getParameter("id");
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
-        Restaurant res = dao.readRestaurant(id);
+
         String startCursor = req.getParameter("cursor");
         String endCursor = null;
-        logger.log(Level.INFO, "Read restaurant with id {0}", id);
-
-        List<Reservation> reservations = null;
-
+        
+       List<Reservation> reservations = null;
        try {
 			Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
 			logger.log(Level.INFO, "Retrieved list of all reservations");
@@ -56,23 +59,99 @@ public class ReadRestaurantServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException("Error listing reservations", e);
         }
-        
-        StringBuilder resoNames = new StringBuilder();
-		for (Reservation reso : reservations) {
-			resoNames.append(reso.getResoName()).append(" ");
-		}
-		logger.log(Level.INFO, "Loaded reservations: " + resoNames.toString());
 
         req.getSession().getServletContext().setAttribute("reservations", reservations);
 
-        Integer maxCap = Integer.parseInt(res.getMaxCapacity());
-        Integer occSeats = Integer.parseInt(res.getOccSeats());
+        Integer activeResoPax = checkActiveReservations(reservations);
 
-        Integer currCapacity = maxCap - occSeats;
+        Restaurant res = dao.readRestaurant(id);
+
+        Integer maxCap = Integer.parseInt(res.getMaxCapacity());
+        Integer occSeats = Integer.parseInt(res.getOccupiedSeats());
+
+        Integer currCapacity = maxCap - occSeats - activeResoPax;
+
+        if(currCapacity <= 0)
+            currCapacity = 0;
 
         req.setAttribute("currCapacity", currCapacity.toString());
 		req.setAttribute("restaurant", res);
 		req.setAttribute("page", "view");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        String addPax = req.getParameter("addPax");
+        String id = req.getParameter("id");
+        String maxCap = req.getParameter("maxCapacity");
+
+        String oldOccSeats = req.getParameter("occupiedSeats");
+        Integer maxCapInt = Integer.parseInt(maxCap);
+        Integer oldOccSeatsInt = Integer.parseInt(oldOccSeats);
+
+        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+
+        RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+
+        if(addPax != null) {
+            logger.log(Level.INFO, "AddPax " + addPax);
+            Integer numPax = Integer.parseInt(addPax);
+
+            if(req.getParameter("add") != null)
+                oldOccSeatsInt += numPax;
+            else if(req.getParameter("subtract") != null)
+                oldOccSeatsInt -= numPax;
+        }
+
+        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+
+        if(oldOccSeatsInt > 0 && (oldOccSeatsInt <= maxCapInt || oldOccSeatsInt >= maxCapInt))
+            dao.UpdateOccupiedSeats(id,oldOccSeatsInt);
+        else 
+            logger.log(Level.INFO, "FULL ALR LAH!");
+
+        resp.sendRedirect("/read?id=" + id);
+    }
+
+    public Integer checkActiveReservations(List<Reservation> resoList) {
+        ZoneId zid = ZoneId.of("GMT+8");
+        ZonedDateTime currTime = ZonedDateTime.now(zid);
+
+        Integer totalPax = 0;
+
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+
+            for(Reservation reso : resoList) {
+                String numPax = reso.getNumPax();
+                Integer numPaxInt = Integer.parseInt(numPax);
+                Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
+
+                ZonedDateTime resoLDTMin = convertToZonedDateTime(resoDate);
+                ZonedDateTime resoLDTMax = resoLDTMin.plusHours(2); 
+
+                if(currTime.isAfter(resoLDTMin) && currTime.isBefore(resoLDTMax)) {
+                    totalPax += numPaxInt;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return totalPax;
+    }
+
+    private ZonedDateTime convertToZonedDateTime(Date dateToConvert) {
+        ZoneId id = ZoneId.of("GMT+8");
+        return ZonedDateTime.ofInstant(dateToConvert.toInstant(), id);
+    }
+
+    private Date convertToDate(ZonedDateTime dateToConvert) {
+        Instant instant = dateToConvert.toInstant();
+        Date date = Date.from(instant);
+        return date;
     }
 }

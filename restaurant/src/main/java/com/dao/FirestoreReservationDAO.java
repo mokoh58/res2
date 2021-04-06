@@ -19,6 +19,7 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.Timestamp;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -187,7 +188,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
 		try {
             final QuerySnapshot snapshot = resoQuery.get().get();
 
-            logger.log(Level.INFO, "Size: " + snapshot.getDocuments().size());
+            //logger.log(Level.INFO, "Size: " + snapshot.getDocuments().size());
 
 			final List<Reservation> results = documentsToReservations(snapshot.getDocuments());
             String newCursor = null;
