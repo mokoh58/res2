@@ -16,6 +16,7 @@
 package com.objects;
 
 import java.util.Date;
+import com.google.cloud.Timestamp;
 
 public class Reservation {
 	private String resoName;
@@ -26,7 +27,10 @@ public class Reservation {
 	private String createdBy;
 	private String createdById;
 	private String restId;
-	private String id;
+    private String id;
+    private Timestamp resoTimeStamp;
+    private Timestamp resoTimeStampEnd;
+    private Boolean isActive;
 	
 	public static final String RESO_NAME = "resoName";
     public static final String RESO_CONTACT = "resoContact";
@@ -36,11 +40,10 @@ public class Reservation {
 	public static final String CREATED_BY = "createdBy";
 	public static final String CREATED_BY_ID = "createdById";
 	public static final String REST_ID = "restId";
-	public static final String ID = "id";
+    public static final String ID = "id";
+    public static final String RESO_TS = "resoTimeStamp";
+    public static final String RESO_TS_END = "resoTimeStampEnd";
 
-
-	// We use a Builder pattern here to simplify and standardize construction of
-	// Book objects.
 	private Reservation(Builder builder) {
 		this.resoName = builder.resoName;
         this.resoContact = builder.resoContact;
@@ -62,7 +65,7 @@ public class Reservation {
 		private String createdBy;
 		private String createdById;
 		private String restId;
-		private String id;
+        private String id;
 
 		public Builder resoName(String resoName) {
 			this.resoName = resoName;
@@ -184,7 +187,31 @@ public class Reservation {
 
 	public void setId(String id) {
 		this.id = id;
-	}
+    }
+    
+    public Timestamp getResoTimeStamp() {
+        return resoTimeStamp;
+    }
+
+    public void setResoTimeStamp(Timestamp resoTimeStamp) {
+        this.resoTimeStamp = resoTimeStamp;
+    }
+
+    public Timestamp getResoTimeStampEnd() {
+        return resoTimeStampEnd;
+    }
+
+    public void setResoTimeStampEnd(Timestamp resoTimeStampEnd) {
+        this.resoTimeStampEnd = resoTimeStampEnd;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
 	@Override
 	public String toString() {
