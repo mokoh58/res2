@@ -15,6 +15,7 @@
 
 package com.servlets;
 
+import com.util.DateUtil;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,7 +131,7 @@ public class ReadRestaurantServlet extends HttpServlet {
                 Integer numPaxInt = Integer.parseInt(numPax);
                 Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
 
-                ZonedDateTime resoLDTMin = convertToZonedDateTime(resoDate);
+                ZonedDateTime resoLDTMin = DateUtil.convertToZonedDateTime(resoDate);
                 ZonedDateTime resoLDTMax = resoLDTMin.plusHours(2); 
 
                 if(currTime.isAfter(resoLDTMin) && currTime.isBefore(resoLDTMax)) {
@@ -142,16 +143,5 @@ public class ReadRestaurantServlet extends HttpServlet {
         }
 
         return totalPax;
-    }
-
-    private ZonedDateTime convertToZonedDateTime(Date dateToConvert) {
-        ZoneId id = ZoneId.of("GMT+8");
-        return ZonedDateTime.ofInstant(dateToConvert.toInstant(), id);
-    }
-
-    private Date convertToDate(ZonedDateTime dateToConvert) {
-        Instant instant = dateToConvert.toInstant();
-        Date date = Date.from(instant);
-        return date;
     }
 }

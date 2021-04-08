@@ -3,7 +3,7 @@
 
 <div class="container">
   <h3>
-    Make Reservation
+    <c:out value="${action}" /> Reservation
   </h3>
 
   <form method="POST" action="${destination}" enctype="multipart/form-data">mokoh58
@@ -30,12 +30,12 @@
 
     <div class="form-group">
       <label for="resoDate">Reservation Date</label>
-      <input type="text" name="resoDate" id="resoDate" value="${reservation.resoContact}" class="form-control"/>
+      <input type="text" autocomplete="off" name="resoDate" id="resoDate" value="${reservation.resoDate}" class="form-control"/>
     </div>
 
     <div class="form-group">
         <label for="resoTime">Reservation Time</label>
-        <select name="resoTime" id="resoTime" value="${reservation.resoTime}">
+        <select name="resoTime" id="resoTime" value="${reservation.resoTime}" selected="${reservation.resoTime}">
             <option value="12:00">12:00 - 14:00</option>
             <option value="14:00">14:00 - 16:00</option>
             <option value="16:00">16:00 - 18:00</option>
