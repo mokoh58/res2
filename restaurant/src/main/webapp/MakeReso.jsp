@@ -6,7 +6,7 @@
     <c:out value="${action}" /> Reservation
   </h3>
 
-  <form method="POST" action="${destination}" enctype="multipart/form-data">mokoh58
+  <form method="POST" action="${destination}" enctype="multipart/form-data">
 
     <div class="form-group hidden">
       <label for="resoName">Id</label>

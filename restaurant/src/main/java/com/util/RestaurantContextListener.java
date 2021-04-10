@@ -15,15 +15,15 @@
 
 package com.util;
 
-import com.example.getstarted.daos.BookDao;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
 import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 @WebListener("Creates restDAO and other servlet context objects for reuse.")
 public class RestaurantContextListener implements ServletContextListener {
@@ -48,8 +48,7 @@ public class RestaurantContextListener implements ServletContextListener {
 
 		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");
 		if (isCloudStorageConfigured == null) {
-			event.getServletContext().setAttribute("isCloudStorageConfigured",
-					!Strings.isNullOrEmpty(System.getenv("RES_BUCKET")));
+			event.getServletContext().setAttribute("isCloudStorageConfigured", "test3-308406_bucket");
 		}
 
 		CloudStorageHelper storageHelper = (CloudStorageHelper) event.getServletContext().getAttribute("storageHelper");

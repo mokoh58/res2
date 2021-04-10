@@ -15,7 +15,6 @@
 
 package com.objects;
 
-import java.util.Date;
 import com.google.cloud.Timestamp;
 
 public class Reservation {

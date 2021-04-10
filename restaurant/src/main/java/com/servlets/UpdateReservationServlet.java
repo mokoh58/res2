@@ -1,33 +1,33 @@
 package com.servlets;
 
-import com.dao.RestaurantDAO;
-import com.dao.ReservationDAO;
-import com.google.common.base.Strings;
-import com.objects.Reservation;
-import com.objects.Restaurant;
-import com.util.CloudStorageHelper;
-import java.util.Date;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import com.google.cloud.Timestamp;
-
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+
+import com.dao.ReservationDAO;
+import com.dao.RestaurantDAO;
+import com.google.cloud.Timestamp;
+import com.objects.Reservation;
+import com.objects.Restaurant;
+import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 @WebServlet(name = "update-reso", urlPatterns = { "/update-reso" })
