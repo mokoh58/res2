@@ -22,9 +22,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// [START bookshelf_delete_servlet]
+import com.dao.RestaurantDAO;
 
-import com.example.getstarted.daos.BookDao;
 
 @SuppressWarnings("serial")
 @WebServlet(name = "delete", urlPatterns = { "/delete" })
@@ -33,9 +32,9 @@ public class DeleteRestaurantServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String id = req.getParameter("id");
-		BookDao dao = (BookDao) this.getServletContext().getAttribute("resDAO");
-		dao.deleteBook(id);
-		resp.sendRedirect("/books");
+		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+		dao.deleteRestaurant(id);
+		resp.sendRedirect("/restaurants");
 	}
 }
-// [END bookshelf_delete_servlet]
+

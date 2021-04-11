@@ -24,6 +24,8 @@ import com.google.common.base.Strings;
 import com.objects.Restaurant;
 import com.util.CloudStorageHelper;
 
+import java.util.Date;
+
 @SuppressWarnings("serial")
 @WebServlet(name = "create", urlPatterns = { "/create" })
 public class CreateRestaurantServlet extends HttpServlet {
@@ -74,6 +76,7 @@ public class CreateRestaurantServlet extends HttpServlet {
                 .imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl)
                 .createdBy(createdByString)
                 .createdById(createdByIdString)
+                .createDt(new Date())
                 .contactNumber(params.get("contactNumber"))
                 .cuisine(params.get("cuisine"))
                 .build();
