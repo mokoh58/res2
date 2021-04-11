@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="container">
-  <h3>Restautants</h3>
+  <h3>Restaurants</h3>
   <a href="/create" class="btn btn-success btn-sm">
     <i class="glyphicon glyphicon-plus"></i>
     Add Restaurant

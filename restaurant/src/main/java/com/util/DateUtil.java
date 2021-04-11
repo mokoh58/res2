@@ -16,11 +16,10 @@
 
 package com.util;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
-import com.google.cloud.Timestamp;
 
 public final class DateUtil {
 

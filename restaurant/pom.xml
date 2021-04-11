@@ -19,7 +19,7 @@ Copyright 2019 Google LLC
   <packaging>war</packaging>
 
   <groupId>com.example.getstarted</groupId>
-  <artifactId>bookshelf-cloud-run</artifactId>
+  <artifactId>restaurant-cloud-run</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <!-- Parent POM defines common plugins and properties. -->
@@ -105,7 +105,7 @@ Copyright 2019 Google LLC
   </dependencies>
 
   <build>
-    <finalName>bookshelf-cloud-run</finalName>
+    <finalName>restaurant-cloud-run</finalName>
     <!-- Optional - for hot reload of the web application when using an IDE Eclipse / IDEA -->
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes
     </outputDirectory>
@@ -121,7 +121,7 @@ Copyright 2019 Google LLC
         <version>2.8.0</version>
         <configuration>
           <to>
-            <image>gcr.io/${gcloud.appId}/bookshelf</image>
+            <image>gcr.io/${gcloud.appId}/retaurant</image>
           </to>
         </configuration>
       </plugin>
