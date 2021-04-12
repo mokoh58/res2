@@ -2,10 +2,6 @@ package com.servlets;
 
 import com.dao.RestaurantDAO;
 
-// [START bookshelf_create_servlet]
-
-import com.example.getstarted.daos.BookDao;
-import com.example.getstarted.objects.Book;
 import com.google.common.base.Strings;
 import com.objects.Restaurant;
 import com.util.CloudStorageHelper;

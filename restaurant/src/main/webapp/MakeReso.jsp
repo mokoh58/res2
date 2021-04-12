@@ -35,14 +35,20 @@
 
     <div class="form-group">
         <label for="resoTime">Reservation Time</label>
-        <select name="resoTime" id="resoTime" value="${reservation.resoTime}" selected="${reservation.resoTime}">
+        <select name="resoTime" id="resoTime" value="${reservation.resoTime}">
+            <c:forEach items="${operatingHourList}" var="oh"> 
+                <option value="${oh.code}" <c:if test="${oh.code eq reservation.resoTime}">selected="selected"</c:if>>${oh.value}</option>
+            </c:forEach>
+        </select>
+
+        <!-- <select name="resoTime" id="resoTime" value="${reservation.resoTime}" selected="${reservation.resoTime}">
             <option value="12:00">12:00 - 14:00</option>
             <option value="14:00">14:00 - 16:00</option>
             <option value="16:00">16:00 - 18:00</option>
             <option value="18:00">18:00 - 20:00</option>
             <option value="20:00">20:00 - 22:00</option>
             <option value="22:00">22:00 - 00:00</option>
-        </select>
+        </select> -->
     </div>
 
     <button type="submit" class="btn btn-success">Save</button>

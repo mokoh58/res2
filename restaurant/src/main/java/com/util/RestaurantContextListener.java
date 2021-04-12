@@ -15,9 +15,10 @@
 
 package com.util;
 
-import com.example.getstarted.daos.BookDao;
+import com.dao.FirestoreOperatingHoursDAO;
 import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
+import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
@@ -44,6 +45,12 @@ public class RestaurantContextListener implements ServletContextListener {
 		if (resoDAO == null) {
 			resoDAO = new FirestoreReservationDAO();
 			event.getServletContext().setAttribute("resoDAO", resoDAO);
+        }
+        
+        OperatingHoursDAO ohDAO = (OperatingHoursDAO) event.getServletContext().getAttribute("ohDAO");
+		if (ohDAO == null) {
+			ohDAO = new FirestoreOperatingHoursDAO();
+			event.getServletContext().setAttribute("ohDAO", ohDAO);
 		}
 
 		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");
