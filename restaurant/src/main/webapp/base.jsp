@@ -1,6 +1,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="main.java.com.objects.UserAccount" %>
 <html lang="en">
   <head>
     <title>Res</title>
@@ -44,10 +45,27 @@
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
 
+    <%
+    UserAccount userAccount = (UserAccount) request.getSession().getAttribute("userAccount");
+    if (null == userAccount){
+    %>
+
     <ul class="nav navbar-nav navbar-right">
       <li><a href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
+
+    <%
+    } else {
+        String username = userAccount.getUsername();
+    %>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=username %></a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+
+    <% } %>
+
   </div>
 </nav>
     <c:import url="/${page}.jsp" />
