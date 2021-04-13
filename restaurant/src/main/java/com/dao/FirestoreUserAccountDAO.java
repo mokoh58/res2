@@ -22,6 +22,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import main.java.com.objects.UserAccount;
+import javax.servlet.http.HttpServletRequest;
 
 public class FirestoreUserAccountDAO implements UserAccountDAO {
 
@@ -79,6 +80,25 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
         logger.log(Level.INFO, "Created UserAccount with id: " + id);
 
 		return id;
-	}
+    }
+    
+    @Override
+    public UserAccount getUserAccount(String username, String password){
+        Query query = userAccountCol.whereEqualTo("username", username);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                UserAccount userAccount = documentToUserAccount(document);
+                if (password.equals(userAccount.getPassword())){
+                    return userAccount;
+                }
+            }
+        } catch (Exception e){
+            logger.log(Level.INFO, "Exception caught in FirestoreUserAccountDAO >  getUserAccount()");
+        }
+        
+        return null;
+    }
 
 }
