@@ -22,6 +22,10 @@ import javax.servlet.annotation.WebListener;
 import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
 import main.java.com.dao.FirestoreUserAccountDAO;
+import com.dao.FirestoreOperatingHoursDAO;
+import com.dao.FirestoreReservationDAO;
+import com.dao.FirestoreRestaurantDAO;
+import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import main.java.com.dao.UserAccountDAO;
@@ -52,6 +56,11 @@ public class RestaurantContextListener implements ServletContextListener {
 		if (userAccountDAO == null) {
 			userAccountDAO = new FirestoreUserAccountDAO();
 			event.getServletContext().setAttribute("userAccountDAO", userAccountDAO);
+
+        OperatingHoursDAO ohDAO = (OperatingHoursDAO) event.getServletContext().getAttribute("ohDAO");
+		if (ohDAO == null) {
+			ohDAO = new FirestoreOperatingHoursDAO();
+			event.getServletContext().setAttribute("ohDAO", ohDAO);
 		}
 
 		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");

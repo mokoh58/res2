@@ -1,5 +1,23 @@
 package com.servlets;
 
+import com.dao.RestaurantDAO;
+import com.dao.OperatingHoursDAO;
+import com.dao.ReservationDAO;
+import com.google.common.base.Strings;
+import com.objects.OperatingHoursCode;
+import com.objects.Reservation;
+import com.objects.Restaurant;
+import com.util.CloudStorageHelper;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import com.google.cloud.Timestamp;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,10 +57,20 @@ public class CreateReservationServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {        
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+        
         try {
             Restaurant res = dao.readRestaurant(req.getParameter("id"));
 
-            //logger.log(Level.INFO, "reservation id:", res.getId());
+            String operatingHours = res.getOperatingHours();
+
+            List<OperatingHoursCode> operatingHourList = null;
+
+            if(operatingHours != null) {
+                operatingHourList = getAvailableOperatingHours(operatingHours);
+            }
+
+            if(operatingHourList != null)
+                req.setAttribute("operatingHourList", operatingHourList);
 
             req.setAttribute("restId", req.getParameter("id"));
             req.setAttribute("action", "Make");
@@ -164,5 +192,47 @@ public class CreateReservationServlet extends HttpServlet {
         }
 
         return true;
+    }
+
+    private List<OperatingHoursCode> getAvailableOperatingHours(String operatingHours) {
+        OperatingHoursDAO dao = (OperatingHoursDAO) this.getServletContext().getAttribute("ohDAO");
+        List<OperatingHoursCode> operatingHoursList = dao.listOperatingHours();
+        List<OperatingHoursCode> activeOperatingHoursList = new ArrayList<>();
+        String[] operatingHoursArray = operatingHours.split("-", 2);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalTime startTime = LocalTime.parse(operatingHoursArray[0],dtf);
+        LocalTime endTime = LocalTime.parse(operatingHoursArray[1],dtf);
+
+        logger.log(Level.INFO, "endTime " + endTime.toString());
+
+        // check start time
+        for(OperatingHoursCode obj : operatingHoursList) {
+            String code = obj.getCode();
+            LocalTime currCode = LocalTime.parse(code,dtf);
+
+            if(currCode.isBefore(startTime))
+                continue;
+
+            activeOperatingHoursList.add(obj);
+        }
+
+        // check end time
+        for(int i = activeOperatingHoursList.size()-1; i >= 0; --i ) {
+            OperatingHoursCode obj = activeOperatingHoursList.get(i);
+
+            String code = obj.getCode();
+            LocalTime currCode = LocalTime.parse(code,dtf);
+
+            logger.log(Level.INFO, "currCode " + currCode.toString());
+
+            if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
+                logger.log(Level.INFO, "currCode Removing at " + i);
+                activeOperatingHoursList.remove(i);
+            }
+        }
+
+        return activeOperatingHoursList;
     }
 }
