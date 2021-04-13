@@ -42,11 +42,9 @@ public class CreateAccountServlet extends HttpServlet {
   }
 
   @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     assert ServletFileUpload.isMultipartContent(req);
-    CloudStorageHelper storageHelper =
-        (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
+    CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
 
     String newImageUrl = null;
     Map<String, String> params = new HashMap<String, String>();
