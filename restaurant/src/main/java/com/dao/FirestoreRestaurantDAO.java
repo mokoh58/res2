@@ -43,7 +43,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 			return null;
         }
         
-        logger.log(Level.INFO, "documentToRestaurant Document: " + data.toString());
+        //logger.log(Level.INFO, "documentToRestaurant Document: " + data.toString());
 
         return new Restaurant.Builder()
                 .restName((String) data.get(Restaurant.REST_NAME))
@@ -82,7 +82,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 			e.printStackTrace();
 		}
 
-        logger.log(Level.INFO, "Created Restaurant with id: " + id);
+        //logger.log(Level.INFO, "Created Restaurant with id: " + id);
 
 		return id;
 	}

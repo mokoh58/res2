@@ -27,5 +27,7 @@ com/dao/ReservationDAO.class
 com/servlets/DeleteRestaurantServlet.class
 main/java/com/dao/FirestoreUserAccountDAO.class
 com/dao/FirestoreRestaurantDAO.class
+main/java/com/servlets/AccountLoginServlet.class
+main/java/com/servlets/AccountLogoutServlet.class
 main/java/com/objects/UserAccount$Builder.class
 com/dao/RestaurantDAO.class

@@ -3,7 +3,9 @@ package main.java.com.dao;
 import main.java.com.objects.UserAccount;
 
 public interface UserAccountDAO {
-	String createUserAccount(UserAccount userAccount);
+    String createUserAccount(UserAccount userAccount);
+    
+    UserAccount getUserAccount(String username, String password);
 
 	// UserAccount readUserAccount(String userAccountID);
 
