@@ -82,7 +82,7 @@ public class UpdateRestaurantServlet extends HttpServlet {
                 .contactNumber(params.get("contactNumber"))
                 .cuisine(params.get("cuisine"))
                 .operatingHours(params.get("operatingHours"))
-                .occupiedSeats(oldRest.getOccupiedSeats())
+                .occupiedSeats(null == oldRest.getOccupiedSeats() ? "0" : oldRest.getOccupiedSeats())
                 .build();
 
 		dao.updateRestaurant(res);

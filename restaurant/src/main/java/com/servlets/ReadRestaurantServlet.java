@@ -70,6 +70,11 @@ public class ReadRestaurantServlet extends HttpServlet {
         Restaurant res = dao.readRestaurant(id);
 
         Integer maxCap = Integer.parseInt(res.getMaxCapacity());
+        
+        // Prevent null pointer for res.getOccupiedSeats()
+        if (null == res.getOccupiedSeats()){
+            res.setOccupiedSeats("0");
+        }
         Integer occSeats = Integer.parseInt(res.getOccupiedSeats());
 
         Integer currCapacity = maxCap - occSeats - activeResoPax;
