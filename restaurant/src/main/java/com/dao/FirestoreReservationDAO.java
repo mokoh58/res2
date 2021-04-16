@@ -60,11 +60,12 @@ public class FirestoreReservationDAO implements ReservationDAO {
                 .restId((String) data.get(Reservation.REST_ID))
                 .id(document.getId())
                 .numPax((String) data.get(Reservation.NUM_PAX))
+                .userAccountId((String) data.get(Reservation.USER_ACC_ID))
                 .build();
 	}
 
 	@Override
-	public String createReservation(final Reservation reso) {
+	public String createReservation(final Reservation reso, String userAccountId) {
 		String id = UUID.randomUUID().toString();
 		DocumentReference document = resoCol.document(id);
         Map<String, Object> data = Maps.newHashMap();
@@ -101,6 +102,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
 		data.put(Reservation.CREATED_BY, reso.getCreatedBy());
         data.put(Reservation.CREATED_BY_ID, reso.getCreatedById());
         data.put(Reservation.NUM_PAX, reso.getNumPax());
+        data.put(Reservation.USER_ACC_ID, userAccountId);
 		try {
 			document.set(data).get();
 		} catch (InterruptedException | ExecutionException e) {

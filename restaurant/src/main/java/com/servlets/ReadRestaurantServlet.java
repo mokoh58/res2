@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,8 @@ import com.objects.Restaurant;
 import com.objects.Result;
 import com.util.DateUtil;
 
+import main.java.com.objects.UserAccount;
+
 @SuppressWarnings("serial")
 @WebServlet(name = "read", urlPatterns = { "/read" })
 public class ReadRestaurantServlet extends HttpServlet {
@@ -50,6 +53,8 @@ public class ReadRestaurantServlet extends HttpServlet {
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
 
+        UserAccount user = null;
+
         String startCursor = req.getParameter("cursor");
         String endCursor = null;
         
@@ -61,6 +66,12 @@ public class ReadRestaurantServlet extends HttpServlet {
 			endCursor = result.getCursor();
 		} catch (Exception e) {
 			throw new ServletException("Error listing reservations", e);
+        }
+
+        if (req.getSession().getAttribute("userAccount") != null){
+            user = (UserAccount)req.getSession().getAttribute("userAccount");
+            logger.log(Level.INFO, "User " + user.getUserAccountId());
+            reservations = getUserReservations(reservations, user);
         }
 
         req.getSession().getServletContext().setAttribute("reservations", reservations);
@@ -145,5 +156,21 @@ public class ReadRestaurantServlet extends HttpServlet {
         }
 
         return totalPax;
+    }
+
+    private List<Reservation> getUserReservations(List<Reservation> resoList, UserAccount user) {
+        List<Reservation> reservations = new ArrayList<>();
+
+        if(!user.getAccountType().equals("Consumer"))
+            return resoList;
+
+        for(Reservation reso: resoList) {
+            logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
+
+            if(user.getUserAccountId().equals(reso.getUserAccountId()))
+                reservations.add(reso);
+        }
+
+        return reservations;
     }
 }

@@ -48,7 +48,7 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
         return new UserAccount.Builder()
                 .username((String) data.get(UserAccount.USERNAME))
                 .password((String) data.get(UserAccount.PASSWORD))
-                .accountType((String) data.get(UserAccount.USERNAME))
+                .accountType((String) data.get(UserAccount.ACCOUNT_TYPE))
                 .firstName((String) data.get(UserAccount.FIRST_NAME))
                 .lastName((String) data.get(UserAccount.LAST_NAME))
                 .email((String) data.get(UserAccount.EMAIL))

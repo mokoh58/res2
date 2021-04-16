@@ -9,13 +9,13 @@
   <form method="POST" action="${destination}" enctype="multipart/form-data">
 
     <div class="form-group hidden">
-      <label for="resoName">Id</label>
+      <label for="restId">Id</label>
       <input type="hidden" name="restId" id="restId" value="${restId}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="resoName">Name</label>
-      <input type="text" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control" />
+      <input type="text" name="resoName" id="resoName" value="${userAccount.firstName + userAccount.lastName}" class="form-control" />
     </div>
 
     <div class="form-group">

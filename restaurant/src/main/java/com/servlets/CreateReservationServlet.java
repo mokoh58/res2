@@ -41,6 +41,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
+import main.java.com.objects.UserAccount;
+
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.cloud.Timestamp;
@@ -120,10 +122,6 @@ public class CreateReservationServlet extends HttpServlet {
 		String createdByString = "";
 		String createdByIdString = "";
 		HttpSession session = req.getSession();
-		if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
-			createdByString = (String) session.getAttribute("userEmail");
-			createdByIdString = (String) session.getAttribute("userId");
-        }
         
         String restId = params.get("restId");
         Restaurant res = null;
@@ -135,6 +133,13 @@ public class CreateReservationServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        String userAccountId = "";
+        if(req.getAttribute("userAccount") != null) {
+            UserAccount user = (UserAccount)req.getAttribute("userAccount");
+            userAccountId = user.getUserAccountId();
+            createdByString = user.getUsername();
+        }
+
         Reservation reso = new Reservation.Builder()
                 .resoName(params.get("resoName"))
                 .resoContact(params.get("resoContact"))
@@ -144,10 +149,11 @@ public class CreateReservationServlet extends HttpServlet {
                 .createdBy(createdByString)
                 .createdById(createdByIdString)
                 .numPax(params.get("numPax"))
+                .userAccountId(userAccountId)
                 .build();
 
         if(checkSpace(reso, resoList, res)) {
-            String id = resoDAO.createReservation(reso);
+            String id = resoDAO.createReservation(reso, userAccountId);
             logger.log(Level.INFO, "Created reservation {0}", reso);
             resp.sendRedirect("/read?id=" + restId);
         }
