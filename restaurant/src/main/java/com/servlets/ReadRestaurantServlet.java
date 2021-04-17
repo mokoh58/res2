@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,9 +37,8 @@ import com.dao.RestaurantDAO;
 import com.objects.Reservation;
 import com.objects.Restaurant;
 import com.objects.Result;
+import com.objects.UserAccount;
 import com.util.DateUtil;
-
-import main.java.com.objects.UserAccount;
 
 @SuppressWarnings("serial")
 @WebServlet(name = "read", urlPatterns = { "/read" })

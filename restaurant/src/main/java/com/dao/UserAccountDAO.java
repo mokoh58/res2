@@ -1,6 +1,6 @@
-package main.java.com.dao;
+package com.dao;
 
-import main.java.com.objects.UserAccount;
+import com.objects.UserAccount;
 
 public interface UserAccountDAO {
     String createUserAccount(UserAccount userAccount);

@@ -1,4 +1,4 @@
-package main.java.com.servlets;
+package com.servlets;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,12 +8,11 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -21,10 +20,10 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
-import main.java.com.objects.UserAccount;
-import main.java.com.dao.UserAccountDAO;
-import com.util.CloudStorageHelper;
+import com.dao.UserAccountDAO;
 import com.google.common.base.Strings;
+import com.objects.UserAccount;
+import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 @WebServlet(

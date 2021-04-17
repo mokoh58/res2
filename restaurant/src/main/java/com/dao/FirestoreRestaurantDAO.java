@@ -17,7 +17,6 @@ import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.Query.Direction;
 import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

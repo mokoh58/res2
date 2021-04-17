@@ -1,4 +1,4 @@
-package main.java.com.servlets;
+package com.servlets;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,10 +19,10 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
-import main.java.com.objects.UserAccount;
-import main.java.com.dao.UserAccountDAO;
-import com.util.CloudStorageHelper;
+import com.dao.UserAccountDAO;
 import com.google.common.base.Strings;
+import com.objects.UserAccount;
+import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
 @WebServlet(

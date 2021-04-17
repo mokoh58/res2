@@ -1,24 +1,10 @@
 package com.servlets;
 
-import com.dao.RestaurantDAO;
-import com.dao.OperatingHoursDAO;
-import com.dao.ReservationDAO;
-import com.google.common.base.Strings;
-import com.objects.OperatingHoursCode;
-import com.objects.Reservation;
-import com.objects.Restaurant;
-import com.util.CloudStorageHelper;
-
-import java.util.ArrayList;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import com.google.cloud.Timestamp;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,13 +26,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
-import main.java.com.objects.UserAccount;
-
+import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.cloud.Timestamp;
+import com.objects.OperatingHoursCode;
 import com.objects.Reservation;
 import com.objects.Restaurant;
+import com.objects.UserAccount;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
