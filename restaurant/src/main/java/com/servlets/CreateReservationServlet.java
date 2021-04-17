@@ -10,7 +10,6 @@ import com.objects.Restaurant;
 import com.util.CloudStorageHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -59,8 +58,12 @@ public class CreateReservationServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {        
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+
+        String resoName = "";
+        String resoContact = "";
         
         try {
+            HttpSession session = req.getSession();
             Restaurant res = dao.readRestaurant(req.getParameter("id"));
 
             String operatingHours = res.getOperatingHours();
@@ -74,6 +77,17 @@ public class CreateReservationServlet extends HttpServlet {
             if(operatingHourList != null)
                 req.setAttribute("operatingHourList", operatingHourList);
 
+            if(session.getAttribute("userAccount") != null) {
+                logger.log(Level.INFO, "~~~~~~~~~~HELLOOO");
+                UserAccount user = (UserAccount)session.getAttribute("userAccount");
+                resoName = user.getFirstName() + " " + user.getLastName();
+                resoContact = user.getContactNumber();
+            }
+
+            logger.log(Level.INFO, "~~~~~~~~~~~resoName " + resoName);
+
+            req.setAttribute("resoName", resoName);
+            req.setAttribute("resoContact", resoContact);
             req.setAttribute("restId", req.getParameter("id"));
             req.setAttribute("action", "Make");
             req.setAttribute("destination", "make-reso");
@@ -134,8 +148,8 @@ public class CreateReservationServlet extends HttpServlet {
         }
 
         String userAccountId = "";
-        if(req.getAttribute("userAccount") != null) {
-            UserAccount user = (UserAccount)req.getAttribute("userAccount");
+        if(session.getAttribute("userAccount") != null) {
+            UserAccount user = (UserAccount)session.getAttribute("userAccount");
             userAccountId = user.getUserAccountId();
             createdByString = user.getUsername();
         }
@@ -177,8 +191,8 @@ public class CreateReservationServlet extends HttpServlet {
                         totalPaxForDate += numPax;
                     }
                 }
-                logger.log(Level.INFO, "totalCapacity " + totalCapacity);
-                logger.log(Level.INFO, "totalPaxForDate " + totalPaxForDate);
+                // logger.log(Level.INFO, "totalCapacity " + totalCapacity);
+                // logger.log(Level.INFO, "totalPaxForDate " + totalPaxForDate);
 
                 Integer currCapacity = totalCapacity = totalPaxForDate;
                 Integer currPax = Integer.parseInt(currReso.getNumPax());
@@ -211,7 +225,7 @@ public class CreateReservationServlet extends HttpServlet {
         LocalTime startTime = LocalTime.parse(operatingHoursArray[0],dtf);
         LocalTime endTime = LocalTime.parse(operatingHoursArray[1],dtf);
 
-        logger.log(Level.INFO, "endTime " + endTime.toString());
+        //logger.log(Level.INFO, "endTime " + endTime.toString());
 
         // check start time
         for(OperatingHoursCode obj : operatingHoursList) {
@@ -231,10 +245,10 @@ public class CreateReservationServlet extends HttpServlet {
             String code = obj.getCode();
             LocalTime currCode = LocalTime.parse(code,dtf);
 
-            logger.log(Level.INFO, "currCode " + currCode.toString());
+            //logger.log(Level.INFO, "currCode " + currCode.toString());
 
             if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
-                logger.log(Level.INFO, "currCode Removing at " + i);
+                //logger.log(Level.INFO, "currCode Removing at " + i);
                 activeOperatingHoursList.remove(i);
             }
         }

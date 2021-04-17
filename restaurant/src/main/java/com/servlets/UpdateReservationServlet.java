@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.time.*;
+import com.dao.OperatingHoursDAO;
+import com.objects.OperatingHoursCode;
+import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,9 +42,29 @@ public class UpdateReservationServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-		ReservationDAO dao = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
+        ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
+        RestaurantDAO restDAO = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 		try {
-			Reservation reservation = dao.readReservation(req.getParameter("id"));
+            Reservation reservation = resoDAO.readReservation(req.getParameter("id"));
+            Restaurant restaurant = restDAO.readRestaurant(req.getParameter("restId"));
+
+            String restId = req.getParameter("restId");
+
+            logger.log(Level.INFO, "~~~~~~~~~~~~~restId " + restId);
+
+            String operatingHours = restaurant.getOperatingHours();
+
+            List<OperatingHoursCode> operatingHourList = null;
+
+            if(operatingHours != null) {
+                operatingHourList = getAvailableOperatingHours(operatingHours);
+            }
+
+            if(operatingHourList != null)
+                req.setAttribute("operatingHourList", operatingHourList);
+
+            req.setAttribute("resoName", reservation.getResoName());
+            req.setAttribute("resoContact", reservation.getResoContact());
 			req.setAttribute("reservation", reservation);
 			req.setAttribute("action", "Edit");
 			req.setAttribute("destination", "update");
@@ -193,5 +218,47 @@ public class UpdateReservationServlet extends HttpServlet {
         }
 
         return true;
+    }
+
+    private List<OperatingHoursCode> getAvailableOperatingHours(String operatingHours) {
+        OperatingHoursDAO dao = (OperatingHoursDAO) this.getServletContext().getAttribute("ohDAO");
+        List<OperatingHoursCode> operatingHoursList = dao.listOperatingHours();
+        List<OperatingHoursCode> activeOperatingHoursList = new ArrayList<>();
+        String[] operatingHoursArray = operatingHours.split("-", 2);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalTime startTime = LocalTime.parse(operatingHoursArray[0],dtf);
+        LocalTime endTime = LocalTime.parse(operatingHoursArray[1],dtf);
+
+        //logger.log(Level.INFO, "endTime " + endTime.toString());
+
+        // check start time
+        for(OperatingHoursCode obj : operatingHoursList) {
+            String code = obj.getCode();
+            LocalTime currCode = LocalTime.parse(code,dtf);
+
+            if(currCode.isBefore(startTime))
+                continue;
+
+            activeOperatingHoursList.add(obj);
+        }
+
+        // check end time
+        for(int i = activeOperatingHoursList.size()-1; i >= 0; --i ) {
+            OperatingHoursCode obj = activeOperatingHoursList.get(i);
+
+            String code = obj.getCode();
+            LocalTime currCode = LocalTime.parse(code,dtf);
+
+            //logger.log(Level.INFO, "currCode " + currCode.toString());
+
+            if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
+                logger.log(Level.INFO, "currCode Removing at " + i);
+                activeOperatingHoursList.remove(i);
+            }
+        }
+
+        return activeOperatingHoursList;
     }
 }

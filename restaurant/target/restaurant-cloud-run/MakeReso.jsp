@@ -15,12 +15,12 @@
 
     <div class="form-group">
       <label for="resoName">Name</label>
-      <input type="text" name="resoName" id="resoName" value="${userAccount.firstName + userAccount.lastName}" class="form-control" />
+      <input type="text" name="resoName" id="resoName" value="${resoName}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="resoContact">Contact Number</label>
-      <input type="text" name="resoContact" id="resoContact" value="${reservation.resoContact}" class="form-control" />
+      <input type="text" name="resoContact" id="resoContact" value="${resoContact}" class="form-control" />
     </div>
 
     <div class="form-group">

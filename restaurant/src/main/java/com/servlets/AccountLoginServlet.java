@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -74,8 +75,18 @@ public class AccountLoginServlet extends HttpServlet {
 
     if (null != userAccount){
         req.getSession().setAttribute("userAccount", userAccount);
-            logger.log(Level.INFO, "Account " + userAccount.getUsername() + " logged in.", userAccount);
-            resp.sendRedirect("/restaurants");
+
+        Cookie c_user = new Cookie("username", params.get("username"));
+        Cookie c_pass = new Cookie("password", params.get("password"));
+
+        c_user.setMaxAge(3600 * 24 * 30);
+        c_pass.setMaxAge(3600 * 24 * 30);
+
+        resp.addCookie(c_user);
+        resp.addCookie(c_pass);
+
+        logger.log(Level.INFO, "Account " + userAccount.getUsername() + " logged in.", userAccount);
+        resp.sendRedirect("/restaurants");
     }
     else {
             logger.log(Level.INFO, "Account not found", userAccount);

@@ -98,7 +98,7 @@ public class ReadRestaurantServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         String addPax = req.getParameter("addPax");
-        String id = req.getParameter("id");
+        String id = req.getParameter("restId");
         String maxCap = req.getParameter("maxCapacity");
 
         String oldOccSeats = req.getParameter("occupiedSeats");
