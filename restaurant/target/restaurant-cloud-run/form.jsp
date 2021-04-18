@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <link rel="stylesheet" href="/css/form.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" crossorigin="anonymous">
 
 <div class="container">
   <a href="/restaurants" class="previous">&laquo; Back</a>
@@ -39,12 +37,9 @@
     </div>
 
     <div class="form-group">
-      <label for="cuisine">Tags</label><br>
-      <input type="text" data-role="tagsinput" name="cuisine" id="cuisine" value="${restaurant.cuisine}" class="form-control" />
+      <label for="cuisine">Cuisine</label>
+      <input type="text" name="cuisine" id="cuisine" value="${restaurant.cuisine}" class="form-control" />
     </div>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" crossorigin="anonymous"></script>
 
     <div class="form-group ${isCloudStorageConfigured ? '' : 'hidden'}">
       <label for="image">Cover Image</label>

@@ -18,7 +18,6 @@ package com.dao;
 import java.util.List;
 
 import com.objects.OperatingHoursCode;
-import com.objects.Result;
 
 public interface OperatingHoursDAO {
 	List<OperatingHoursCode> listOperatingHours();

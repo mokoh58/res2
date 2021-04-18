@@ -15,8 +15,6 @@
 
 package com.objects;
 
-import java.util.Date;
-
 public class OperatingHoursCode {
 	private String code;
     private String value;
