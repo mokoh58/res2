@@ -1,7 +1,5 @@
-package main.java.com.dao;
+package com.dao;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -15,14 +13,9 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.Query.Direction;
-import com.google.cloud.firestore.WriteResult;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import main.java.com.objects.UserAccount;
-import javax.servlet.http.HttpServletRequest;
+import com.objects.UserAccount;
 
 public class FirestoreUserAccountDAO implements UserAccountDAO {
 
@@ -48,7 +41,7 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
         return new UserAccount.Builder()
                 .username((String) data.get(UserAccount.USERNAME))
                 .password((String) data.get(UserAccount.PASSWORD))
-                .accountType((String) data.get(UserAccount.USERNAME))
+                .accountType((String) data.get(UserAccount.ACCOUNT_TYPE))
                 .firstName((String) data.get(UserAccount.FIRST_NAME))
                 .lastName((String) data.get(UserAccount.LAST_NAME))
                 .email((String) data.get(UserAccount.EMAIL))
@@ -58,7 +51,7 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
     }
     
     @Override
-	public String createUserAccount(main.java.com.objects.UserAccount userAccount) {
+	public String createUserAccount(UserAccount userAccount) {
 		String id = UUID.randomUUID().toString();
 		DocumentReference document = userAccountCol.document(id);
 		Map<String, Object> data = Maps.newHashMap();

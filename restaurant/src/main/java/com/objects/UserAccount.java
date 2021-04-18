@@ -1,6 +1,4 @@
-package main.java.com.objects;
-
-import java.util.Date;
+package com.objects;
 
 public class UserAccount {
     private String userAccountId;

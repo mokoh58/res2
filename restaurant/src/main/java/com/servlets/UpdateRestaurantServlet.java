@@ -80,7 +80,10 @@ public class UpdateRestaurantServlet extends HttpServlet {
                 .createdBy(oldRest.getCreatedBy())
                 .createdById(oldRest.getCreatedById())
                 .contactNumber(params.get("contactNumber"))
-				.cuisine(params.get("cuisine")).build();
+                .cuisine(params.get("cuisine"))
+                .operatingHours(params.get("operatingHours"))
+                .occupiedSeats(null == oldRest.getOccupiedSeats() ? "0" : oldRest.getOccupiedSeats())
+                .build();
 
 		dao.updateRestaurant(res);
 		resp.sendRedirect("/read?id=" + params.get("id"));

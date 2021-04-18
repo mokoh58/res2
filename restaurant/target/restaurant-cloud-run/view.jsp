@@ -53,77 +53,79 @@ th {
         <p class="res-capacity">Current Capacity: ${currCapacity}</p>
         <div>
             <form method="POST">
-            <input type="hidden" name="id" id="id" value=${restaurant.id} />
+            <input type="hidden" name="restId" id="restId" value=${restaurant.id} />
             <input type="hidden" name="maxCapacity" id="maxCapacity" value=${restaurant.maxCapacity} />
             <input type="hidden" name="occupiedSeats" id="occupiedSeats" value=${restaurant.occupiedSeats} />
             <input type="text" name="addPax" id="addPax" placeholder="0" value="${addPax}" size="3" maxlength="3" />
 
             <button type="submit" name="add" value="add" class="btn btn-success">Add Pax</button>
-            <button type="submit" name="subtract" value="subract" class="btn btn-success">Minus Pax</button>
+            <button type="submit" name="subtract" value="subtract" class="btn btn-success">Minus Pax</button>
             </form>
         </div>
     </div>
     <div>
-        <h4>List of Reservations</h4>
-        <table>
-            <tr>
-                <th>Reservation Name</th>
-                <th>Contact Number</th>
-                <th>Reservation Date</th>
-                <th>Reservation Time</th>
-                <th>Number of Pax</th>
-            </tr>
-            <c:choose>
-            <c:when test="${empty reservations}">
-                <p>No reservation found</p>
-            </c:when>
-            <c:otherwise>
-            <c:forEach items="${reservations}" var="reservation"> 
-            <c:choose>
-                <c:when test="${reservation.isActive == true}">
-                <tr style="background-color: yellow;">
-                <td>${fn:escapeXml(reservation.resoName)}</td>
-                <td>${fn:escapeXml(reservation.resoContact)} </td>
-                <td>${fn:escapeXml(reservation.resoDate)} </td>
-                <td>${fn:escapeXml(reservation.resoTime)} </td>
-                <td>${fn:escapeXml(reservation.numPax)}</td>
+        <div>
+            <h4>List of Reservations</h4>
+            <table>
+                <tr>
+                    <th>Reservation Name</th>
+                    <th>Contact Number</th>
+                    <th>Reservation Date</th>
+                    <th>Reservation Time</th>
+                    <th>Number of Pax</th>
                 </tr>
+                <c:choose>
+                <c:when test="${empty reservations}">
+                    <p>No reservation found</p>
                 </c:when>
                 <c:otherwise>
-                <tr>
-                <td>${fn:escapeXml(reservation.resoName)}</td>
-                <td>${fn:escapeXml(reservation.resoContact)} </td>
-                <td>${fn:escapeXml(reservation.resoDate)} </td>
-                <td>${fn:escapeXml(reservation.resoTime)} </td>
-                <td>${fn:escapeXml(reservation.numPax)}</td>
-                <td> 
-                    <a href="/update-reso?id=${reservation.id}" class="btn btn-primary btn-sm">
-                    <i class="glyphicon glyphicon-edit"></i>
-                    </a>
-                </td>
-                <td> 
-                    <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
-                    <i class="glyphicon glyphicon-trash"></i>
-                    </a>
-                </td>                
-                </tr>
-                </c:otherwise>
-            </c:choose>
-            </c:forEach>
-            <tr>
-                <td>
-                    <c:if test="${not empty cursor}">
-                <nav>
-                    <ul class="pager">
-                    <li><a href="?cursor=${fn:escapeXml(cursor)}">More</a></li>
-                    </ul>
-                </nav>
-                </c:if>
-                </c:otherwise>
+                <c:forEach items="${reservations}" var="reservation"> 
+                <c:choose>
+                    <c:when test="${reservation.isActive == true}">
+                    <tr style="background-color: yellow;">
+                    <td>${fn:escapeXml(reservation.resoName)}</td>
+                    <td>${fn:escapeXml(reservation.resoContact)} </td>
+                    <td>${fn:escapeXml(reservation.resoDate)} </td>
+                    <td>${fn:escapeXml(reservation.resoTime)} </td>
+                    <td>${fn:escapeXml(reservation.numPax)}</td>
+                    </tr>
+                    </c:when>
+                    <c:otherwise>
+                    <tr>
+                    <td>${fn:escapeXml(reservation.resoName)}</td>
+                    <td>${fn:escapeXml(reservation.resoContact)} </td>
+                    <td>${fn:escapeXml(reservation.resoDate)} </td>
+                    <td>${fn:escapeXml(reservation.resoTime)} </td>
+                    <td>${fn:escapeXml(reservation.numPax)}</td>
+                    <td> 
+                        <a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-primary btn-sm">
+                        <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                    </td>
+                    <td> 
+                        <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </td>                
+                    </tr>
+                    </c:otherwise>
                 </c:choose>
-                </td>
-            </tr>      
-        </table>
+                </c:forEach>
+                <tr>
+                    <td>
+                        <c:if test="${not empty cursor}">
+                    <nav>
+                        <ul class="pager">
+                        <li><a href="?cursor=${fn:escapeXml(cursor)}">More</a></li>
+                        </ul>
+                    </nav>
+                    </c:if>
+                    </c:otherwise>
+                    </c:choose>
+                    </td>
+                </tr>      
+            </table>
+        </div>
         <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>
         Make Reservation
