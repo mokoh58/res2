@@ -1,12 +1,7 @@
 package com.servlets;
 
-import com.dao.RestaurantDAO;
-
-import com.google.common.base.Strings;
-import com.objects.Restaurant;
-import com.util.CloudStorageHelper;
-
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,8 +24,6 @@ import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
 import com.objects.Restaurant;
 import com.util.CloudStorageHelper;
-
-import java.util.Date;
 
 @SuppressWarnings("serial")
 @WebServlet(name = "create", urlPatterns = { "/create" })

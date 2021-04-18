@@ -21,7 +21,7 @@ import com.objects.Reservation;
 import com.objects.Result;
 
 public interface ReservationDAO {
-	String createReservation(Reservation res);
+	String createReservation(Reservation res, String userAccountId);
 
 	Reservation readReservation(String resID);
 

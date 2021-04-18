@@ -1,25 +1,10 @@
 package com.servlets;
 
-import com.dao.RestaurantDAO;
-import com.dao.OperatingHoursDAO;
-import com.dao.ReservationDAO;
-import com.google.common.base.Strings;
-import com.objects.OperatingHoursCode;
-import com.objects.Reservation;
-import com.objects.Restaurant;
-import com.util.CloudStorageHelper;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import com.google.cloud.Timestamp;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +26,14 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
+import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.google.cloud.Timestamp;
+import com.objects.OperatingHoursCode;
 import com.objects.Reservation;
 import com.objects.Restaurant;
+import com.objects.UserAccount;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -57,8 +45,12 @@ public class CreateReservationServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {        
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+
+        String resoName = "";
+        String resoContact = "";
         
         try {
+            HttpSession session = req.getSession();
             Restaurant res = dao.readRestaurant(req.getParameter("id"));
 
             String operatingHours = res.getOperatingHours();
@@ -72,6 +64,17 @@ public class CreateReservationServlet extends HttpServlet {
             if(operatingHourList != null)
                 req.setAttribute("operatingHourList", operatingHourList);
 
+            if(session.getAttribute("userAccount") != null) {
+                logger.log(Level.INFO, "~~~~~~~~~~HELLOOO");
+                UserAccount user = (UserAccount)session.getAttribute("userAccount");
+                resoName = user.getFirstName() + " " + user.getLastName();
+                resoContact = user.getContactNumber();
+            }
+
+            logger.log(Level.INFO, "~~~~~~~~~~~resoName " + resoName);
+
+            req.setAttribute("resoName", resoName);
+            req.setAttribute("resoContact", resoContact);
             req.setAttribute("restId", req.getParameter("id"));
             req.setAttribute("action", "Make");
             req.setAttribute("destination", "make-reso");
@@ -120,10 +123,6 @@ public class CreateReservationServlet extends HttpServlet {
 		String createdByString = "";
 		String createdByIdString = "";
 		HttpSession session = req.getSession();
-		if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
-			createdByString = (String) session.getAttribute("userEmail");
-			createdByIdString = (String) session.getAttribute("userId");
-        }
         
         String restId = params.get("restId");
         Restaurant res = null;
@@ -135,6 +134,13 @@ public class CreateReservationServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        String userAccountId = "";
+        if(session.getAttribute("userAccount") != null) {
+            UserAccount user = (UserAccount)session.getAttribute("userAccount");
+            userAccountId = user.getUserAccountId();
+            createdByString = user.getUsername();
+        }
+
         Reservation reso = new Reservation.Builder()
                 .resoName(params.get("resoName"))
                 .resoContact(params.get("resoContact"))
@@ -144,10 +150,11 @@ public class CreateReservationServlet extends HttpServlet {
                 .createdBy(createdByString)
                 .createdById(createdByIdString)
                 .numPax(params.get("numPax"))
+                .userAccountId(userAccountId)
                 .build();
 
         if(checkSpace(reso, resoList, res)) {
-            String id = resoDAO.createReservation(reso);
+            String id = resoDAO.createReservation(reso, userAccountId);
             logger.log(Level.INFO, "Created reservation {0}", reso);
             resp.sendRedirect("/read?id=" + restId);
         }
@@ -171,8 +178,8 @@ public class CreateReservationServlet extends HttpServlet {
                         totalPaxForDate += numPax;
                     }
                 }
-                logger.log(Level.INFO, "totalCapacity " + totalCapacity);
-                logger.log(Level.INFO, "totalPaxForDate " + totalPaxForDate);
+                // logger.log(Level.INFO, "totalCapacity " + totalCapacity);
+                // logger.log(Level.INFO, "totalPaxForDate " + totalPaxForDate);
 
                 Integer currCapacity = totalCapacity = totalPaxForDate;
                 Integer currPax = Integer.parseInt(currReso.getNumPax());
@@ -205,7 +212,7 @@ public class CreateReservationServlet extends HttpServlet {
         LocalTime startTime = LocalTime.parse(operatingHoursArray[0],dtf);
         LocalTime endTime = LocalTime.parse(operatingHoursArray[1],dtf);
 
-        logger.log(Level.INFO, "endTime " + endTime.toString());
+        //logger.log(Level.INFO, "endTime " + endTime.toString());
 
         // check start time
         for(OperatingHoursCode obj : operatingHoursList) {
@@ -225,10 +232,10 @@ public class CreateReservationServlet extends HttpServlet {
             String code = obj.getCode();
             LocalTime currCode = LocalTime.parse(code,dtf);
 
-            logger.log(Level.INFO, "currCode " + currCode.toString());
+            //logger.log(Level.INFO, "currCode " + currCode.toString());
 
             if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
-                logger.log(Level.INFO, "currCode Removing at " + i);
+                //logger.log(Level.INFO, "currCode Removing at " + i);
                 activeOperatingHoursList.remove(i);
             }
         }

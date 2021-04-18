@@ -29,6 +29,7 @@ public class Reservation {
     private String id;
     private Timestamp resoTimeStamp;
     private Timestamp resoTimeStampEnd;
+    private String userAccountId;
     private Boolean isActive;
 	
 	public static final String RESO_NAME = "resoName";
@@ -42,6 +43,7 @@ public class Reservation {
     public static final String ID = "id";
     public static final String RESO_TS = "resoTimeStamp";
     public static final String RESO_TS_END = "resoTimeStampEnd";
+    public static final String USER_ACC_ID = "userAccountId";
 
 	private Reservation(Builder builder) {
 		this.resoName = builder.resoName;
@@ -51,7 +53,8 @@ public class Reservation {
 		this.createdById = builder.createdById;
 		this.resoDate = builder.resoDate;
 		this.resoTime = builder.resoTime;
-		this.restId = builder.restId;
+        this.restId = builder.restId;
+        this.userAccountId = builder.userAccountId;
 		this.id = builder.id;
 	}
 
@@ -65,6 +68,7 @@ public class Reservation {
 		private String createdById;
 		private String restId;
         private String id;
+        private String userAccountId;
 
 		public Builder resoName(String resoName) {
 			this.resoName = resoName;
@@ -108,6 +112,11 @@ public class Reservation {
 		
 		public Builder id(String id) {
 			this.id = id;
+			return this;
+        }
+        
+        public Builder userAccountId(String userAccountId) {
+			this.userAccountId = userAccountId;
 			return this;
 		}
 
@@ -212,10 +221,18 @@ public class Reservation {
         this.isActive = isActive;
     }
 
+    public String getUserAccountId() {
+        return userAccountId;
+    }
+
+    public void setUserAccountId(String userAccountId) {
+        this.userAccountId = userAccountId;
+    }
+
 	@Override
 	public String toString() {
 		return "Reservation [resoName=" + resoName + ", resoContact=" + resoContact + ", numPax= " + numPax + ", resoDate=" + resoDate
 				+ ", resoTime=" + resoTime + ", createdBy=" + createdBy + ", createdById=" + createdById + ", restId="
-				+ restId + ", id=" + id + "]";
+				+ restId + ", id=" + id + ", userAccountId=" + userAccountId + "]";
 	}
 }
