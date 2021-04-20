@@ -9,6 +9,7 @@
 .idea/
 
 # Target folders
+restaurant/target/
 target/
 build/
 out/

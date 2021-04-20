@@ -32,8 +32,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.FavouriteDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
+import com.objects.Favourite;
 import com.objects.Reservation;
 import com.objects.Restaurant;
 import com.objects.Result;
@@ -49,8 +51,16 @@ public class ReadRestaurantServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
+
+        if (null != id){
+            req.getSession().setAttribute("currentViewingRestaurantId", id);
+        }else {
+            id = (String) req.getSession().getAttribute("currentViewingRestaurantId");
+        }
+
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
+        FavouriteDAO favDAO = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
 
         UserAccount user = null;
 
@@ -91,6 +101,17 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         if(currCapacity <= 0)
             currCapacity = 0;
+
+
+        // Handle favourite button
+        req.getSession().removeAttribute("favourite"); // Clear first
+        if (null != user){
+            String hasFavourite = "N";
+            if (null != favDAO.hasFavourite(id, user.getUserAccountId())){
+                hasFavourite = "Y";
+            }
+            req.getSession().setAttribute("favourite", hasFavourite);
+        }
 
         req.setAttribute("currCapacity", currCapacity.toString());
 		req.setAttribute("restaurant", res);
