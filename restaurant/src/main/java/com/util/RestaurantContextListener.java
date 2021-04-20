@@ -23,10 +23,12 @@ import com.dao.FirestoreOperatingHoursDAO;
 import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
 import com.dao.FirestoreUserAccountDAO;
+import com.dao.FirestoreFavouriteDAO;
 import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.dao.UserAccountDAO;
+import com.dao.FavouriteDAO;
 
 @WebListener("Creates restDAO and other servlet context objects for reuse.")
 public class RestaurantContextListener implements ServletContextListener {
@@ -52,7 +54,13 @@ public class RestaurantContextListener implements ServletContextListener {
         UserAccountDAO userAccountDAO = (UserAccountDAO) event.getServletContext().getAttribute("userAccountDAO");
 		if (userAccountDAO == null) {
 			userAccountDAO = new FirestoreUserAccountDAO();
-			event.getServletContext().setAttribute("userAccountDAO", userAccountDAO);
+            event.getServletContext().setAttribute("userAccountDAO", userAccountDAO);
+            
+        FavouriteDAO favouriteDAO = (FavouriteDAO) event.getServletContext().getAttribute("favouriteDAO");
+		if (favouriteDAO == null) {
+			favouriteDAO = new FirestoreFavouriteDAO();
+            event.getServletContext().setAttribute("favouriteDAO", favouriteDAO);
+        }
 
         OperatingHoursDAO ohDAO = (OperatingHoursDAO) event.getServletContext().getAttribute("ohDAO");
 		if (ohDAO == null) {
