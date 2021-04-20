@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.ArrayList;
 import com.objects.Favourite;
 import com.objects.Result;
 
@@ -12,7 +13,7 @@ public interface FavouriteDAO {
     
     Favourite hasFavourite(String restaurantId, String userId);
 
-    //Result<Favourite> listFavouriteByUser(String userId);
+    ArrayList<String> listFavouriteByUser(String userId);
     
     //Result<Favourite> listFavouriteByRestaurant(String restaurantId);
 }

@@ -106,4 +106,23 @@ public class FirestoreFavouriteDAO implements FavouriteDAO {
         return null;
     }
 
+
+    @Override
+    public ArrayList<String> listFavouriteByUser(String userId){
+        ArrayList<String> results = new ArrayList<String>();
+        Query query = favouriteCol.whereEqualTo("userId", userId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                Favourite favourite = documentToFavourite(document);
+                results.add(favourite.getRestaurantId());
+            }
+        } catch (Exception e){
+            logger.log(Level.INFO, "Exception caught in FirestoreFavouriteDAO >  listFavouriteByUser()");
+        }
+        
+        return results;
+    }
+
 }

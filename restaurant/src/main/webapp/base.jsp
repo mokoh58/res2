@@ -58,9 +58,15 @@
     <%
     } else {
         String username = userAccount.getUsername();
+        String userId = userAccount.getUserAccountId();
     %>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=username %></a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
+        <ul class="dropdown-menu">
+          <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
+          <li><a href="#">Edit Account</a></li>
+        </ul>
+      </li>
       <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
     </ul>
 
