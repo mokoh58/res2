@@ -9,7 +9,7 @@ public interface UserAccountDAO {
 
 	// UserAccount readUserAccount(String userAccountID);
 
-	// void updateUserAccount(UserAccount userAccount);
+	void updateUserAccount(UserAccount userAccount);
 
 	// void deleteUserAccount(String userAccountID);
 }

@@ -74,6 +74,29 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
 
 		return id;
     }
+
+    @Override
+	public void updateUserAccount(UserAccount userAccount) {
+
+         logger.log(Level.INFO, "In updateUserAccount");
+
+		DocumentReference document = userAccountCol.document(userAccount.getUserAccountId());
+		Map<String, Object> data = Maps.newHashMap();
+
+		data.put(UserAccount.USERNAME, userAccount.getUsername());
+		data.put(UserAccount.PASSWORD, userAccount.getPassword());
+        data.put(UserAccount.ACCOUNT_TYPE, userAccount.getAccountType());
+        data.put(UserAccount.EMAIL, userAccount.getEmail());
+		data.put(UserAccount.FIRST_NAME, userAccount.getFirstName());
+		data.put(UserAccount.LAST_NAME, userAccount.getLastName());
+        data.put(UserAccount.CONTACT_NUMBER, userAccount.getContactNumber());
+        data.put(UserAccount.USER_ACCOUNT_ID, userAccount.getUserAccountId());
+		try {
+			document.set(data).get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
     
     @Override
     public UserAccount getUserAccount(String username, String password){

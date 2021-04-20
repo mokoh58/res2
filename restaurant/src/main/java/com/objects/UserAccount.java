@@ -9,6 +9,7 @@ public class UserAccount {
     private String firstName;
     private String lastName;
     private String contactNumber;
+    private String favourites;
     public static final String USER_ACCOUNT_ID = "userAccountId";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -17,6 +18,7 @@ public class UserAccount {
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String CONTACT_NUMBER = "contactNumber";
+    public static final String FAVOURITES = "favourites";
 
     private UserAccount(Builder builder) {
         this.userAccountId = builder.userAccountId;
@@ -27,6 +29,7 @@ public class UserAccount {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.contactNumber = builder.contactNumber;
+        this.favourites = builder.favourites;
     }
 
     public static class Builder {
@@ -38,6 +41,7 @@ public class UserAccount {
         private String firstName;
         private String lastName;
         private String contactNumber;
+        private String favourites;
 
         public Builder userAccountId(String userAccountId) {
 			this.userAccountId = userAccountId;
@@ -77,6 +81,11 @@ public class UserAccount {
         public Builder contactNumber(String contactNumber) {
 			this.contactNumber = contactNumber;
 			return this;
+        }
+
+        public Builder favourites(String favourites) {
+            this.favourites = favourites;
+            return this;
         }
         
         public UserAccount build() {
@@ -146,6 +155,39 @@ public class UserAccount {
 
 	public void setContactNumber(String contactNumber) {
 		this.contactNumber = contactNumber;
-	}
+    }
+    
+    public String getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites (String favourites){
+        this.favourites = favourites;
+    }
+
+    public boolean isContain(String[] favouritesArray, String restaurantId){
+        for (int i = 0; i < favouritesArray.length; i++){
+            if (favouritesArray[i].equals(restaurantId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFavourite(String restaurantId){
+        String[] favouritesArray = favourites.split(",");
+        if(isContain(favouritesArray,restaurantId)){
+            return true;
+        }
+        return false;
+    }
+
+    public void removeFavourite(String restaurantId){
+
+    }
+
+    public void addFavourite(String restaurantId){
+        favourites = favourites + "," + restaurantId;
+    }
 
 }
