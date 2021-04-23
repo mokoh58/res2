@@ -2,9 +2,6 @@
  # Build the container image
  - name: 'gcr.io/cloud-builders/mvn'
    args: ['clean', 'package', 'jib:build', '-Dimage=gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
- # Push the container image to Container Registry
- - name: 'gcr.io/cloud-builders/docker'
-   args: ['push', 'gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
  # Deploy container image to Cloud Run
  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
    entrypoint: gcloud
