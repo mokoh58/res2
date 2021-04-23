@@ -1,7 +1,5 @@
  steps:
-###########################################################
-# Step 1: Retrieve the cached .m2 directory from GCS
-###########################################################
+# Retrieve the cached .m2 directory from GCS
  - name: 'gcr.io/cloud-builders/gsutil'
    args:
    - '-m'
@@ -20,6 +18,9 @@
       name: 'm2_cache'
    env:
    - MAVEN_OPTS=-Dmaven.repo.local=/cache/.m2
+# Update cached .m2 directory on GCS with any
+# additional dependencies downloaded during the
+# build.
  - name: 'gcr.io/cloud-builders/gsutil'
    args:
    - '-m'

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <div class="container">
-  <h3>Restaurantssssssssssss</h3>
+  <h3>Restaurants</h3>
   <div class="search">
     <form method="GET" action="/restaurants" style="width:100%; display:flex;">
     <input type="text" class="searchTerm" placeholder="Search for restaurant here" name="searchRes" id="searchRes"> 
