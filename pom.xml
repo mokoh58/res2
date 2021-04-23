@@ -126,5 +126,14 @@ Copyright 2019 Google LLC
         </configuration>
       </plugin>
     </plugins>
+	
+	<extensions>
+		<extension>
+			<groupId>com.gkatzioura.maven.cloud</groupId>
+			<artifactId>google-storage-wagon</artifactId>
+			<!-- version 1.8 seems to produce exception, ticket logged -->
+			<version>1.7</version>
+		</extension>
+	</extensions>
   </build>
 </project>
