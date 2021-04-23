@@ -1,7 +1,7 @@
  steps:
  # Build the container image
  - name: 'gcr.io/cloud-builders/mvn'
-   args: ['clean', 'package', 'jib:build', '-Dimage=gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA', '.']
+   args: ['clean', 'package', 'jib:build', '-Dimage=gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
  # Push the container image to Container Registry
  - name: 'gcr.io/cloud-builders/docker'
    args: ['push', 'gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
