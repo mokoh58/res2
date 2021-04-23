@@ -121,7 +121,7 @@ Copyright 2019 Google LLC
         <version>2.8.0</version>
         <configuration>
           <to>
-            <image>gcr.io/${gcloud.appId}/restaurant</image>
+            <image>gcr.io/${gcloud.appId}/res-test</image>
           </to>
         </configuration>
       </plugin>
