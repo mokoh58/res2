@@ -1,9 +1,3 @@
- steps: 
- - name: gcr.io/cloud-builders/gsutil
-   args: ['cp', 'gs://test3-308406_bucket/results.zip', 'previous_results.zip']
-  # operations that use previous_results.zip and produce new_results.zip
- - name: gcr.io/cloud-builders/gsutil
-   args: ['cp', 'new_results.zip', 'gs://test3-308406_bucket/results.zip']
  # Build the container image
  - name: 'gcr.io/cloud-builders/mvn'
    args: ['clean', 'package', 'jib:build', '-Dimage=gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
