@@ -1,4 +1,15 @@
  steps:
+ # Step 1: Retrieve the cached .m2 directory from GCS
+ - name: 'gcr.io/cloud-builders/gsutil'
+  args:
+  - '-m'
+  - 'rsync'
+  - '-r'
+  - 'gs://test3-308406_bucket/cache/.m2'
+  - '/cache/.m2'
+  volumes:
+  - path: '/cache/.m2'
+    name: 'm2_cache'
  # Build the container image
  - name: 'gcr.io/cloud-builders/mvn'
    args: ['clean', 'package', 'jib:build', '-Dimage=gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA']
