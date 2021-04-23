@@ -17,5 +17,3 @@
    - '512M'
    - '--platform'
    - 'managed'
- images:
- - 'gcr.io/$PROJECT_ID/res-test:$COMMIT_SHA'
