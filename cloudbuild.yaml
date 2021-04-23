@@ -7,7 +7,7 @@
    - '-m'
    - 'rsync'
    - '-r'
-   - 'gs://${_BUCKET}/cache/.m2'
+   - 'gs://test3-308406_bucket/cache/.m2'
    - '/cache/.m2'
    volumes:
    - path: '/cache/.m2'
@@ -26,7 +26,7 @@
    - 'rsync'
    - '-r'
    - '/cache/.m2'
-   - 'gs://${_BUCKET}/cache/.m2/'
+   - 'gs://test3-308406_bucket/cache/.m2/'
    volumes:
    - path: '/cache/.m2'
      name: 'm2_cache'
@@ -45,7 +45,3 @@
    - '512M'
    - '--platform'
    - 'managed'
-
-substitutions:
-  # Default values
-  _BUCKET: 'test3-308406_bucket'
