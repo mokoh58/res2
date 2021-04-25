@@ -18,6 +18,7 @@ package com.util;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import com.google.common.base.Strings;
 
 import com.dao.FirestoreOperatingHoursDAO;
 import com.dao.FirestoreReservationDAO;
@@ -78,7 +79,8 @@ public class RestaurantContextListener implements ServletContextListener {
 
 		Boolean isCloudStorageConfigured = (Boolean) event.getServletContext().getAttribute("isCloudStorageConfigured");
 		if (isCloudStorageConfigured == null) {
-			event.getServletContext().setAttribute("isCloudStorageConfigured", "test3-308406_bucket");
+            event.getServletContext().setAttribute("isCloudStorageConfigured",
+                                                !Strings.isNullOrEmpty(System.getenv("RES_BUCKET")));
 		}
 
 		CloudStorageHelper storageHelper = (CloudStorageHelper) event.getServletContext().getAttribute("storageHelper");

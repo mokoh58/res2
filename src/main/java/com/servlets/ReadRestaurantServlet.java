@@ -81,6 +81,8 @@ public class ReadRestaurantServlet extends HttpServlet {
             user = (UserAccount)req.getSession().getAttribute("userAccount");
             logger.log(Level.INFO, "User " + user.getUserAccountId());
             reservations = getUserReservations(reservations, user);
+        } else {
+            reservations.clear();
         }
 
         req.getSession().getServletContext().setAttribute("reservations", reservations);
