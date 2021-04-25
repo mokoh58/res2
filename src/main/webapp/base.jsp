@@ -13,6 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/css/base.css" />
 
     <script>
     $( function() {
@@ -73,7 +74,15 @@
     <% } %>
 
   </div>
-</nav>
-    <c:import url="/${page}.jsp" />
+    </nav>
+
+    <div class="bg"></div>
+    <div class="content" style="text-align:center;">
+        <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px;"/>
+    </div>
+
+    <div class="layout" style="padding:20px;">
+        <c:import url="/${page}.jsp" />
+    </div>
   </body>
 </html>

@@ -2,6 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="/css/list.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    AOS.init();    
+</script>
 
 <div class="container">
   <h3>Restaurants</h3>
@@ -29,7 +35,7 @@
     <c:forEach items="${restaurants}" var="restaurant">
         <a href="/read?id=${restaurant.id}">
         <div class="column">
-            <div class="card">
+            <div class="card" data-aos="fade-up" data-aos-duration="2000">
                 <div class="column-image">
                     <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
                 </div>
