@@ -46,6 +46,7 @@ public class FirestoreReviewDAO implements ReviewDAO {
         return new Review.Builder()
                 .restaurantId((String) data.get(Review.RESTAURANT_ID))
                 .userId((String) data.get(Review.USER_ID))
+                .username((String) data.get(Review.USERNAME))
                 .createDt((String) data.get(Review.CREATE_DT))
                 .dateOfVisit((String) data.get(Review.DATE_OF_VISIT))
                 .remarks((String) data.get(Review.REMARKS))
@@ -62,6 +63,7 @@ public class FirestoreReviewDAO implements ReviewDAO {
 
 		data.put(Review.RESTAURANT_ID, review.getRestaurantId());
         data.put(Review.USER_ID, review.getUserId());
+        data.put(Review.USERNAME, review.getUsername());
         data.put(Review.CREATE_DT, review.getCreateDt());
         data.put(Review.DATE_OF_VISIT, review.getDateOfVisit());
         data.put(Review.REMARKS, review.getRemarks());

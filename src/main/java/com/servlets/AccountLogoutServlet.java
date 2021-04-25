@@ -29,8 +29,8 @@ public class AccountLogoutServlet extends HttpServlet {
     if (null == req.getSession().getAttribute("userAccount")){
         logger.log(Level.INFO, "userAccount is null in session");
     }
-    
-    req.getRequestDispatcher("/base.jsp").forward(req, resp);
+    resp.sendRedirect("/restaurants");
+    //req.getRequestDispatcher("/base.jsp").forward(req, resp);
   }
 
   @Override
