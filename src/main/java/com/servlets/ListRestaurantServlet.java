@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.Math;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,6 +41,8 @@ public class ListRestaurantServlet extends HttpServlet {
 			Result<Restaurant> result = dao.listRestaurants(startCursor);
 			logger.log(Level.INFO, "Retrieved list of all restaurants");
             restaurants = result.getResult();
+            setRestoCrowdLevel(restaurants);
+
             if (searchRes != null) {
                 for(Restaurant rest: restaurants) {
                     if (rest.getRestName().contains(searchRes)) {
@@ -62,6 +65,8 @@ public class ListRestaurantServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException("Error listing restaurants", e);
         }
+
+        
 
         if (userId != null){
             req.getSession().getServletContext().setAttribute("restaurants", favouriteRes);
@@ -97,5 +102,25 @@ public class ListRestaurantServlet extends HttpServlet {
 		
 		req.setAttribute("page", "list");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
+    }
+
+    private void setRestoCrowdLevel(List<Restaurant> restoList) {
+        for(Restaurant item : restoList) {
+            String maxCap = item.getMaxCapacity();
+            Integer maxCapInt = Integer.parseInt(maxCap);
+
+            String occSeats = item.getOccupiedSeats();
+            Integer occSeatsInt = Integer.parseInt(occSeats);
+
+            Integer percentage = (int)Math.round(occSeatsInt * 100.0/maxCapInt);
+
+            if(percentage <= 50) {
+                item.setCrowdLevel("Available");
+            } else if(percentage >= 51 && percentage <= 80) {
+                item.setCrowdLevel("Filling Up");
+            } else {
+                item.setCrowdLevel("Crowded");
+            }
+        }
     }
 }
