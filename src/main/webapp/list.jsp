@@ -62,17 +62,6 @@
                         </c:otherwise>
                     </c:choose>
                     <p>${fn:escapeXml(restaurant.address)}</p>
-                    <c:choose>
-                        <c:when test="${restaurant.crowdLevel == 'Available'}">
-                            <p>Available</p>
-                        </c:when>
-                        <c:when test="${restaurant.crowdLevel == 'Filling Up'}">
-                            <p>Filling Up</p>
-                        </c:when>
-                        <c:otherwise>
-                            <p>Crowded</p>
-                        </c:otherwise>
-                    </c:choose>
                 </div>
             </div>
         </div>
