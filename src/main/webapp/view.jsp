@@ -24,6 +24,31 @@ function toggleReview() {
     x.style.display = "none";
   }
 }
+
+function setBar1(x){
+    var bar1 = document.getElementById("bar1");
+    bar1.style.width = x + "%";
+}
+
+function setBar2(x){
+    var bar2 = document.getElementById("bar2");
+    bar2.style.width = x + "%";
+}
+
+function setBar3(x){
+    var bar3 = document.getElementById("bar3");
+    bar3.style.width = x + "%";
+}
+
+function setBar4(x){
+    var bar4 = document.getElementById("bar4");
+    bar4.style.width = x + "%";
+}
+
+function setBar5(x){
+    var bar5 = document.getElementById("bar5");
+    bar5.style.width = x + "%";
+}
 </script>
 
 <style type="text/css">	 
@@ -257,7 +282,7 @@ th {
                                     <td class="rating-label">Excellent</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
-                                            <div class="bar-5"></div>
+                                            <div id="bar5" class="bar-5"></div>
                                         </div>
                                     </td>
                                     <td class="text-right"><%=rating5 %></td>
@@ -266,7 +291,7 @@ th {
                                     <td class="rating-label">Good</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
-                                            <div class="bar-4"></div>
+                                            <div id="bar4" class="bar-4"></div>
                                         </div>
                                     </td>
                                     <td class="text-right"><%=rating4 %></td>
@@ -275,7 +300,7 @@ th {
                                     <td class="rating-label">Average</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
-                                            <div class="bar-3"></div>
+                                            <div id="bar3" class="bar-3"></div>
                                         </div>
                                     </td>
                                     <td class="text-right"><%=rating3 %></td>
@@ -284,7 +309,7 @@ th {
                                     <td class="rating-label">Poor</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
-                                            <div class="bar-2"></div>
+                                            <div id="bar2" class="bar-2"></div>
                                         </div>
                                     </td>
                                     <td class="text-right"><%=rating2 %></td>
@@ -293,7 +318,7 @@ th {
                                     <td class="rating-label">Terrible</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
-                                            <div class="bar-1"></div>
+                                            <div id="bar1" class="bar-1"></div>
                                         </div>
                                     </td>
                                     <td class="text-right"><%=rating1 %></td>
@@ -303,6 +328,34 @@ th {
                     </div>
                 </div>
             </div>
+
+            <%
+            int totalReviewCount = Integer.parseInt(totalReviews);
+            if (totalReviewCount != 0){
+                int rating1Int = (Integer.parseInt(rating1) * 100) / totalReviewCount;
+                int rating2Int = (Integer.parseInt(rating2) * 100) / totalReviewCount;
+                int rating3Int = (Integer.parseInt(rating3) * 100) / totalReviewCount;
+                int rating4Int = (Integer.parseInt(rating4) * 100) / totalReviewCount;
+                int rating5Int = (Integer.parseInt(rating5) * 100) / totalReviewCount;
+                %>
+                <script>
+                setBar1(<%=rating1Int %>);
+                setBar2(<%=rating2Int %>);
+                setBar3(<%=rating3Int %>);
+                setBar4(<%=rating4Int %>);
+                setBar5(<%=rating5Int %>);
+                </script>
+                <%
+            } else {
+            %>
+                <script>
+                setBar1(0);
+                setBar2(0);
+                setBar3(0);
+                setBar4(0);
+                setBar5(0);
+                </script>
+            <% } %>
 
             <c:choose>
             <c:when test="${empty reviews}">
