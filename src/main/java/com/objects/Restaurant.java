@@ -15,6 +15,8 @@ public class Restaurant {
 	private String imageUrl;
     private String cuisine;
     private String operatingHours;
+    private String crowdLevel;
+
 	public static final String REST_NAME = "restName";
 	public static final String ADDRESS = "address";
 	public static final String CUISINE = "cuisine";
@@ -218,6 +220,14 @@ public class Restaurant {
 
 	public void setOperatingHours(String operatingHours) {
 		this.operatingHours = operatingHours;
+    }
+    
+    public String getCrowdLevel() {
+		return crowdLevel;
+	}
+
+	public void setCrowdLevel(String crowdLevel) {
+		this.crowdLevel = crowdLevel;
 	}
 
 	@Override
