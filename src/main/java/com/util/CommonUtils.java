@@ -5,10 +5,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import com.dao.FavouriteDAO;
-
-import com.objects.Favourite;
-
 public final class CommonUtils {
 
     public static ZonedDateTime convertToZonedDateTime(Date dateToConvert) {

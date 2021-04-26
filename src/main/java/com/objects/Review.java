@@ -6,12 +6,14 @@ public class Review {
     private String id;
     private String restaurantId;
     private String userId;
+    private String username;
     private String createDt;
     private String dateOfVisit;
     private String remarks;
     private String rating;
 	public static final String RESTAURANT_ID = "restaurantId";
-	public static final String USER_ID = "userId";
+    public static final String USER_ID = "userId";
+    public static final String USERNAME = "username";
     public static final String ID = "id";
     public static final String CREATE_DT = "createDt";
     public static final String DATE_OF_VISIT = "dateOfVisit";
@@ -23,6 +25,7 @@ public class Review {
 	private Review(Builder builder) {
 		this.restaurantId = builder.restaurantId;
         this.userId = builder.userId;
+        this.username = builder.username;
         this.createDt = builder.createDt;
         this.dateOfVisit = builder.dateOfVisit;
         this.remarks = builder.remarks;
@@ -32,7 +35,8 @@ public class Review {
 
 	public static class Builder {
 		private String restaurantId;
-		private String userId;
+        private String userId;
+        private String username;
         private String id;
         private String createDt;
         private String dateOfVisit;
@@ -46,6 +50,11 @@ public class Review {
 
 		public Builder userId(String userId) {
 			this.userId = userId;
+			return this;
+        }
+        
+		public Builder username(String username) {
+			this.username = username;
 			return this;
 		}
 
@@ -93,6 +102,14 @@ public class Review {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+    }
+    
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getId() {

@@ -3,6 +3,7 @@
 <%@ page import="com.objects.UserAccount" %>
 <%@ page import="com.objects.Favourite" %>
 
+<link rel="stylesheet" href="/css/view.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -22,6 +23,31 @@ function toggleReview() {
   } else {
     x.style.display = "none";
   }
+}
+
+function setBar1(x){
+    var bar1 = document.getElementById("bar1");
+    bar1.style.width = x + "%";
+}
+
+function setBar2(x){
+    var bar2 = document.getElementById("bar2");
+    bar2.style.width = x + "%";
+}
+
+function setBar3(x){
+    var bar3 = document.getElementById("bar3");
+    bar3.style.width = x + "%";
+}
+
+function setBar4(x){
+    var bar4 = document.getElementById("bar4");
+    bar4.style.width = x + "%";
+}
+
+function setBar5(x){
+    var bar5 = document.getElementById("bar5");
+    bar5.style.width = x + "%";
 }
 </script>
 
@@ -108,7 +134,7 @@ th {
         <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
-        <p class="res-capacity">Current Capacity: ${currCapacity}</p>
+        <p class="res-capacity">Available Seats: ${currCapacity}</p>
         <div>
             <form method="POST">
             <input type="hidden" name="restId" id="restId" value=${restaurant.id} />
@@ -189,14 +215,14 @@ th {
         Make Reservation
         </a>
     </div>
-        <br>
-        <h3>Reviews</h3>
-        <%
-        if (null != request.getSession().getAttribute("userAccount")){
-        %>        
-        <button type="button" onclick="toggleReview()" class="btn btn-outline-info">Write A Review <i class="fa fa-toggle-down"></i></button>
-        <br><br>
-        <div class="stars" id="reviewSubmission">
+    <br>
+    <h3>Reviews</h3>
+    <%
+    if (null != request.getSession().getAttribute("userAccount")){
+    %>        
+    <button type="button" onclick="toggleReview()" class="btn btn-outline-info">Write A Review <i class="fa fa-toggle-down"></i></button>
+    <br><br>
+    <div class="stars" id="reviewSubmission">
         <form method="POST" action="/review" enctype="multipart/form-data">
             <label>YOUR RATING (Required)</label><br>
             <input class="star star-5" value="5"  id="star-5" type="radio" name="star" required="required"/>
@@ -223,9 +249,145 @@ th {
             <br><br>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
+    </div>
+    <% } %>
+
+    <%
+    String rating1 = String.valueOf(request.getAttribute("rating1"));
+    String rating2 = String.valueOf(request.getAttribute("rating2"));
+    String rating3 = String.valueOf(request.getAttribute("rating3"));
+    String rating4 = String.valueOf(request.getAttribute("rating4"));
+    String rating5 = String.valueOf(request.getAttribute("rating5"));
+    String averateRating = String.valueOf(request.getAttribute("averateRating"));
+    String totalReviews = String.valueOf(request.getAttribute("totalReviews"));
+    %>
+    <%-- Testing New Review Section --%>
+    <br><br>
+    <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row justify-content-left">
+        <div class="col-xl-7 col-lg-8 col-md-10 col-12 text-center mb-5">
+            <div class="card">
+                <div class="row justify-content-left d-flex">
+                    <div class="col-md-4 d-flex flex-column">
+                        <div class="rating-box">
+                            <h1 class="pt-4"><%=averateRating %></h1>
+                            <p class="">out of 5</p>
+                        </div>
+                        <%-- <div> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-active mx-1"></span> <span class="fa fa-star star-inactive mx-1"></span> </div> --%>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="rating-bar0 justify-content-left">
+                            <table class="text-left mx-auto">
+                                <tr>
+                                    <td class="rating-label">Excellent</td>
+                                    <td class="rating-bar">
+                                        <div class="bar-container">
+                                            <div id="bar5" class="bar-5"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right"><%=rating5 %></td>
+                                </tr>
+                                <tr>
+                                    <td class="rating-label">Good</td>
+                                    <td class="rating-bar">
+                                        <div class="bar-container">
+                                            <div id="bar4" class="bar-4"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right"><%=rating4 %></td>
+                                </tr>
+                                <tr>
+                                    <td class="rating-label">Average</td>
+                                    <td class="rating-bar">
+                                        <div class="bar-container">
+                                            <div id="bar3" class="bar-3"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right"><%=rating3 %></td>
+                                </tr>
+                                <tr>
+                                    <td class="rating-label">Poor</td>
+                                    <td class="rating-bar">
+                                        <div class="bar-container">
+                                            <div id="bar2" class="bar-2"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right"><%=rating2 %></td>
+                                </tr>
+                                <tr>
+                                    <td class="rating-label">Terrible</td>
+                                    <td class="rating-bar">
+                                        <div class="bar-container">
+                                            <div id="bar1" class="bar-1"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right"><%=rating1 %></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%
+            int totalReviewCount = Integer.parseInt(totalReviews);
+            if (totalReviewCount != 0){
+                int rating1Int = (Integer.parseInt(rating1) * 100) / totalReviewCount;
+                int rating2Int = (Integer.parseInt(rating2) * 100) / totalReviewCount;
+                int rating3Int = (Integer.parseInt(rating3) * 100) / totalReviewCount;
+                int rating4Int = (Integer.parseInt(rating4) * 100) / totalReviewCount;
+                int rating5Int = (Integer.parseInt(rating5) * 100) / totalReviewCount;
+                %>
+                <script>
+                setBar1(<%=rating1Int %>);
+                setBar2(<%=rating2Int %>);
+                setBar3(<%=rating3Int %>);
+                setBar4(<%=rating4Int %>);
+                setBar5(<%=rating5Int %>);
+                </script>
+                <%
+            } else {
+            %>
+                <script>
+                setBar1(0);
+                setBar2(0);
+                setBar3(0);
+                setBar4(0);
+                setBar5(0);
+                </script>
+            <% } %>
+
+            <c:choose>
+            <c:when test="${empty reviews}">
+            <p>No reviews found</p>
+            </c:when>
+            <c:otherwise>
+            <div class="row">
+                <c:forEach items="${reviews}" var="review">
+                    <div class="card">
+                        <div class="row d-flex">
+                            <div class="d-flex flex-column">
+                                <h3 class="text-left">${fn:escapeXml(review.username)}</h3>
+                                <div>
+                                    <p class="text-left"><span class="text-muted">${fn:escapeXml(review.rating)}.0</span> <span class="fa fa-star star-active ml-3"></span> </p>
+                                </div>
+                            </div>
+                            <div class="ml-auto">
+                                <p class="text-left" style="color:lightgrey">${fn:escapeXml(review.dateOfVisit)}</p>
+                            </div>
+                        </div>
+                        <div class="row text-left">
+                            <p>${fn:escapeXml(review.remarks)}</p>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            </c:otherwise>
+            </c:choose>
+
         </div>
-        <% } %>
-    <div>
+    </div>
+</div>   
 
     <script>
         window.onload = setReviewOff;
