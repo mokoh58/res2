@@ -126,11 +126,11 @@ public class ReadRestaurantServlet extends HttpServlet {
         String id = req.getParameter("restId");
         String maxCap = req.getParameter("maxCapacity");
 
-        String oldOccSeats = req.getParameter("occupiedSeats");
+        String occSeats = req.getParameter("occupiedSeats");
         Integer maxCapInt = Integer.parseInt(maxCap);
-        Integer oldOccSeatsInt = Integer.parseInt(oldOccSeats);
+        Integer occSeatsInt = Integer.parseInt(occSeats);
 
-        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+        logger.log(Level.INFO, "OccupiedSeats " + occSeatsInt);
 
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 
@@ -139,15 +139,20 @@ public class ReadRestaurantServlet extends HttpServlet {
             Integer numPax = Integer.parseInt(addPax);
 
             if(req.getParameter("add") != null)
-                oldOccSeatsInt += numPax;
+                occSeatsInt += numPax;
             else if(req.getParameter("subtract") != null)
-                oldOccSeatsInt -= numPax;
+                occSeatsInt -= numPax;
+
+            if(occSeatsInt < 0)
+                occSeatsInt = 0;
+            else if(occSeatsInt >= maxCapInt)
+                occSeatsInt = maxCapInt;
         }
 
-        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+        logger.log(Level.INFO, "OccupiedSeats " + occSeatsInt);
 
-        if(oldOccSeatsInt > 0 && (oldOccSeatsInt <= maxCapInt || oldOccSeatsInt >= maxCapInt))
-            dao.UpdateOccupiedSeats(id,oldOccSeatsInt);
+        if(occSeatsInt >= 0 && (occSeatsInt <= maxCapInt || occSeatsInt >= maxCapInt))
+            dao.UpdateOccupiedSeats(id,occSeatsInt);
         else 
             logger.log(Level.INFO, "FULL ALR LAH!");
 
