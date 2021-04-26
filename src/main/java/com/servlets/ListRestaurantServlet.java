@@ -41,6 +41,8 @@ public class ListRestaurantServlet extends HttpServlet {
 			Result<Restaurant> result = dao.listRestaurants(startCursor);
 			logger.log(Level.INFO, "Retrieved list of all restaurants");
             restaurants = result.getResult();
+            setRestoCrowdLevel(restaurants);
+
             if (searchRes != null) {
                 for(Restaurant rest: restaurants) {
                     if (rest.getRestName().contains(searchRes)) {
