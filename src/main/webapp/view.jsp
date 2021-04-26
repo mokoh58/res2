@@ -108,7 +108,7 @@ th {
         <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
-        <p class="res-capacity">Current Capacity: ${currCapacity}</p>
+        <p class="res-capacity">Available Seats: ${currCapacity}</p>
         <div>
             <form method="POST">
             <input type="hidden" name="restId" id="restId" value=${restaurant.id} />
