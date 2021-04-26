@@ -78,6 +78,7 @@ public class CreateRestaurantServlet extends HttpServlet {
                 .createDt(new Date())
                 .contactNumber(params.get("contactNumber"))
                 .cuisine(params.get("cuisine"))
+                .operatingHours(params.get("operatingHours"))
                 .build();
 
 		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
