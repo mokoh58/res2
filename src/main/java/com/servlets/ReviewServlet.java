@@ -104,6 +104,7 @@ public class ReviewServlet extends HttpServlet {
             Review rev = new Review.Builder()
             .restaurantId(restaurantId)
             .userId(userAccount.getUserAccountId())
+            .username(userAccount.getUsername())
             .createDt(createDt)
             .dateOfVisit(dateOfVisit)
             .remarks(params.get("remarks"))

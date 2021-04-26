@@ -35,10 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.dao.FavouriteDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
+import com.dao.ReviewDAO;
 import com.objects.Favourite;
 import com.objects.Reservation;
 import com.objects.Restaurant;
 import com.objects.Result;
+import com.objects.Review;
 import com.objects.UserAccount;
 import com.util.DateUtil;
 
@@ -61,6 +63,7 @@ public class ReadRestaurantServlet extends HttpServlet {
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         FavouriteDAO favDAO = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
+        ReviewDAO reviewDAO = (ReviewDAO) this.getServletContext().getAttribute("reviewDAO");
 
         UserAccount user = null;
 
@@ -81,6 +84,8 @@ public class ReadRestaurantServlet extends HttpServlet {
             user = (UserAccount)req.getSession().getAttribute("userAccount");
             logger.log(Level.INFO, "User " + user.getUserAccountId());
             reservations = getUserReservations(reservations, user);
+        } else {
+            reservations.clear();
         }
 
         req.getSession().getServletContext().setAttribute("reservations", reservations);
@@ -113,6 +118,40 @@ public class ReadRestaurantServlet extends HttpServlet {
             req.getSession().setAttribute("favourite", hasFavourite);
         }
 
+        // Set reviews to request attribute
+        List<Review> reviewList = reviewDAO.getReviewsByRestaurant(id);
+        req.setAttribute("reviews", reviewList);
+
+        int rating1 = 0, rating2 = 0, rating3 = 0, rating4 = 0, rating5 = 0;
+        int totalRating = 0;
+        int totalReviews = reviewList.size();
+
+        for (Review review : reviewList){
+            totalRating = totalRating + Integer.parseInt(review.getRating());
+            if (review.getRating().equals("1"))
+                rating1++;
+            else if (review.getRating().equals("2"))
+                rating2++;
+            else if (review.getRating().equals("3"))
+                rating3++;
+            else if (review.getRating().equals("4"))
+                rating4++;
+            else if (review.getRating().equals("5"))
+                rating5++;
+        }
+        int averageRating = 0;
+        
+        if (totalReviews > 0)
+            averageRating = totalRating / totalReviews;
+
+        req.setAttribute("rating1", rating1);
+        req.setAttribute("rating2", rating2);
+        req.setAttribute("rating3", rating3);
+        req.setAttribute("rating4", rating4);
+        req.setAttribute("rating5", rating5);
+        req.setAttribute("averateRating", averageRating);
+        req.setAttribute("totalReviews", totalReviews);
+
         req.setAttribute("currCapacity", currCapacity.toString());
 		req.setAttribute("restaurant", res);
 		req.setAttribute("page", "view");
@@ -126,11 +165,11 @@ public class ReadRestaurantServlet extends HttpServlet {
         String id = req.getParameter("restId");
         String maxCap = req.getParameter("maxCapacity");
 
-        String oldOccSeats = req.getParameter("occupiedSeats");
+        String occSeats = req.getParameter("occupiedSeats");
         Integer maxCapInt = Integer.parseInt(maxCap);
-        Integer oldOccSeatsInt = Integer.parseInt(oldOccSeats);
+        Integer occSeatsInt = Integer.parseInt(occSeats);
 
-        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+        logger.log(Level.INFO, "OccupiedSeats " + occSeatsInt);
 
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 
@@ -139,15 +178,20 @@ public class ReadRestaurantServlet extends HttpServlet {
             Integer numPax = Integer.parseInt(addPax);
 
             if(req.getParameter("add") != null)
-                oldOccSeatsInt += numPax;
+                occSeatsInt += numPax;
             else if(req.getParameter("subtract") != null)
-                oldOccSeatsInt -= numPax;
+                occSeatsInt -= numPax;
+
+            if(occSeatsInt < 0)
+                occSeatsInt = 0;
+            else if(occSeatsInt >= maxCapInt)
+                occSeatsInt = maxCapInt;
         }
 
-        logger.log(Level.INFO, "OldOccupiedSeats " + oldOccSeatsInt);
+        logger.log(Level.INFO, "OccupiedSeats " + occSeatsInt);
 
-        if(oldOccSeatsInt > 0 && (oldOccSeatsInt <= maxCapInt || oldOccSeatsInt >= maxCapInt))
-            dao.UpdateOccupiedSeats(id,oldOccSeatsInt);
+        if(occSeatsInt >= 0 && (occSeatsInt <= maxCapInt || occSeatsInt >= maxCapInt))
+            dao.UpdateOccupiedSeats(id,occSeatsInt);
         else 
             logger.log(Level.INFO, "FULL ALR LAH!");
 
