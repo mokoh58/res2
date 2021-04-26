@@ -40,7 +40,27 @@
                     <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
                 </div>
                 <div class="column-desc">
-                    <h4>${fn:escapeXml(restaurant.restName)}</h4>
+                    <h4 style="display:inline-block">${fn:escapeXml(restaurant.restName)}</h4>
+                    <c:choose>
+                        <c:when test="${restaurant.crowdLevel == 'Available'}">
+                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                                <p style="float:right; color:#94E185">Available</p>
+                                <li style="float:right;" class="fa fa-circle available"></li>
+                            </div>
+                        </c:when>
+                        <c:when test="${restaurant.crowdLevel == 'Filling Up'}">
+                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                                <p style="float:right; color:#FFC182">Filling Up</p>
+                                <li style="float:right;" class="fa fa-circle fairly-crowded"></li>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                                <p style="float:right; color:#C9404D">Crowded</p>
+                                <li style="float:right;" class="fa fa-circle crowded"></li>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                     <p>${fn:escapeXml(restaurant.address)}</p>
                 </div>
             </div>
