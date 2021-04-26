@@ -168,7 +168,9 @@ public class FirestoreReservationDAO implements ReservationDAO {
         data.put(Reservation.RESO_TS_END, resoTSEnd);
 		data.put(Reservation.CREATED_BY, reso.getCreatedBy());
 		data.put(Reservation.CREATED_BY_ID, reso.getCreatedById());
-		data.put(Reservation.REST_ID, reso.getRestId());
+        data.put(Reservation.REST_ID, reso.getRestId());
+        data.put(Reservation.NUM_PAX, reso.getNumPax());
+        data.put(Reservation.USER_ACC_ID, reso.getUserAccountId());
 		try {
 			document.set(data).get();
 		} catch (InterruptedException | ExecutionException e) {
@@ -267,6 +269,8 @@ public class FirestoreReservationDAO implements ReservationDAO {
             sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 
             for(Reservation reso : resoList) {
+                logger.log(Level.INFO, "~~~~~reso NumPax: " + reso.getNumPax());
+
                 String numPax = reso.getNumPax();
                 Integer numPaxInt = Integer.parseInt(numPax);
                 Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());

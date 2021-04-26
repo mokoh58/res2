@@ -32,6 +32,7 @@ import com.google.cloud.Timestamp;
 import com.objects.OperatingHoursCode;
 import com.objects.Reservation;
 import com.objects.Restaurant;
+import com.objects.UserAccount;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -63,11 +64,12 @@ public class UpdateReservationServlet extends HttpServlet {
             if(operatingHourList != null)
                 req.setAttribute("operatingHourList", operatingHourList);
 
+            req.setAttribute("restId", restId);
             req.setAttribute("resoName", reservation.getResoName());
             req.setAttribute("resoContact", reservation.getResoContact());
 			req.setAttribute("reservation", reservation);
 			req.setAttribute("action", "Edit");
-			req.setAttribute("destination", "update");
+			req.setAttribute("destination", "update-reso");
 			req.setAttribute("page", "MakeReso");
 			req.getRequestDispatcher("/base.jsp").forward(req, resp);
 		} catch (Exception e) {
@@ -77,44 +79,6 @@ public class UpdateReservationServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
-
-		// assert ServletFileUpload.isMultipartContent(req);
-		// CloudStorageHelper storageHelper = (CloudStorageHelper) getServletContext().getAttribute("storageHelper");
-
-		// String newImageUrl = null;
-		// Map<String, String> params = new HashMap<String, String>();
-		// try {
-		// 	FileItemIterator iter = new ServletFileUpload().getItemIterator(req);
-		// 	while (iter.hasNext()) {
-		// 		FileItemStream item = iter.next();
-		// 		if (item.isFormField()) {
-		// 			params.put(item.getFieldName(), Streams.asString(item.openStream()));
-		// 		} else if (!Strings.isNullOrEmpty(item.getName())) {
-		// 			newImageUrl = storageHelper.uploadFile(item, System.getenv("RES_BUCKET"));
-		// 		}
-		// 	}
-		// } catch (FileUploadException e) {
-		// 	throw new IOException(e);
-        // }
-        
-        // logger.log(Level.INFO, "UpdateRestaurantServlet IMG URL: " + newImageUrl);
-
-		// Restaurant oldRest = dao.readRestaurant(params.get("id"));
-
-        // Restaurant res = new Restaurant.Builder()
-        //         .restName(params.get("restName"))
-        //         .address(params.get("address"))
-		// 		.maxCapacity(params.get("maxCapacity"))
-        //         .imageUrl(null == newImageUrl ? params.get("imageUrl") : newImageUrl)
-        //         .id(params.get("id"))
-        //         .createdBy(oldRest.getCreatedBy())
-        //         .createdById(oldRest.getCreatedById())
-        //         .contactNumber(params.get("contactNumber"))
-		// 		.cuisine(params.get("cuisine")).build();
-
-		// dao.updateRestaurant(res);
-        // resp.sendRedirect("/read?id=" + params.get("id"));
         RestaurantDAO restDAO = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         assert ServletFileUpload.isMultipartContent(req);
@@ -158,15 +122,25 @@ public class UpdateReservationServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        String userAccountId = "";
+        if(req.getSession().getAttribute("userAccount") != null) {
+            UserAccount user = (UserAccount)req.getSession().getAttribute("userAccount");
+            userAccountId = user.getUserAccountId();
+        }
+
+        logger.log(Level.INFO, "Rest: " + restId);
+        
         Reservation reso = new Reservation.Builder()
                 .resoName(params.get("resoName"))
                 .resoContact(params.get("resoContact"))
                 .resoDate(params.get("resoDate"))
                 .resoTime(params.get("resoTime"))
                 .restId(restId)
+                .id(params.get("id"))
                 .createdBy(oldReso.getCreatedBy())
                 .createdById(oldReso.getCreatedById())
                 .numPax(params.get("numPax"))
+                .userAccountId(userAccountId)
                 .build();
 
         if(checkSpace(reso, resoList, res)) {
