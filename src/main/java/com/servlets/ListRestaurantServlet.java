@@ -19,11 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dao.RestaurantDAO;
+import com.dao.TagsDAO;
 import com.dao.FavouriteDAO;
 import com.dao.ReservationDAO;
 import com.objects.Restaurant;
 import com.objects.Reservation;
 import com.objects.Result;
+import com.objects.Tags;
 import com.objects.UserAccount;
 import com.util.DateUtil;
 
@@ -39,16 +41,19 @@ public class ListRestaurantServlet extends HttpServlet {
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         FavouriteDAO favDao = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
+        TagsDAO tagsDAO = (TagsDAO) this.getServletContext().getAttribute("tagsDAO");
         String startCursor = req.getParameter("cursor");
         String searchRes = req.getParameter("searchRes");
         String userId = req.getParameter("userId");
         String ownerId = req.getParameter("ownerId");
         String recList = req.getParameter("recList");
+        String category = req.getParameter("category");
         logger.log(Level.INFO, "searchRes = " + searchRes);
         List<Restaurant> filteredRes = new ArrayList<Restaurant>();
         List<Restaurant> favouriteRes = new ArrayList<Restaurant>();
         List<Restaurant> ownerRes = new ArrayList<Restaurant>();
         List<Restaurant> recRes = new ArrayList<Restaurant>();
+        List<Restaurant> catRes = new ArrayList<Restaurant>();
 		List<Restaurant> restaurants = null;
 		String endCursor = null;
 		try {
@@ -75,6 +80,15 @@ public class ListRestaurantServlet extends HttpServlet {
                         //logger.log(Level.INFO, "favourite res = " + rest.getRestName());
                         favouriteRes.add(rest);
                     }
+                }
+            }
+
+            // Category search
+            if (category != null){
+                for (Restaurant rest : restaurants){
+                    List<String> tags = tagsDAO.getStringTags(rest.getId());
+                    if (tags.contains(category))
+                        catRes.add(rest);
                 }
             }
 
@@ -113,6 +127,9 @@ public class ListRestaurantServlet extends HttpServlet {
         else if (recList != null) {
             req.getSession().getServletContext().setAttribute("restaurants", recRes);
         }
+        else if (category != null){
+            req.getSession().getServletContext().setAttribute("restaurants", catRes);
+        }
         else {
             req.getSession().getServletContext().setAttribute("restaurants", restaurants);
         }
@@ -136,6 +153,11 @@ public class ListRestaurantServlet extends HttpServlet {
         }
         else if (recList != null){
             for (Restaurant res : recRes) {
+                restNames.append(res.getRestName()).append(" ");
+            }
+        }
+        else if (category != null){
+            for (Restaurant res : catRes) {
                 restNames.append(res.getRestName()).append(" ");
             }
         }

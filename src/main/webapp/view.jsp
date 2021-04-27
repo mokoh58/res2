@@ -133,6 +133,8 @@ th {
 
         </label>
       </h4>
+      <% String tags = (String) request.getAttribute("tags"); %>
+        <p class="res-address">Tags: <%=tags %></p>
         <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
