@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 import java.lang.Math;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.dao.RestaurantDAO;
 import com.dao.FavouriteDAO;
+import com.dao.ReservationDAO;
 import com.objects.Restaurant;
+import com.objects.Reservation;
 import com.objects.Result;
+import com.objects.UserAccount;
+import com.util.DateUtil;
 
 // a url pattern of "" makes this servlet the root servlet
 @SuppressWarnings("serial")
@@ -28,6 +37,7 @@ public class ListRestaurantServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
+        ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         FavouriteDAO favDao = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
         String startCursor = req.getParameter("cursor");
         String searchRes = req.getParameter("searchRes");
@@ -41,7 +51,7 @@ public class ListRestaurantServlet extends HttpServlet {
 			Result<Restaurant> result = dao.listRestaurants(startCursor);
 			logger.log(Level.INFO, "Retrieved list of all restaurants");
             restaurants = result.getResult();
-            setRestoCrowdLevel(restaurants);
+            setRestoCrowdLevel(restaurants, resoDAO, startCursor);
 
             if (searchRes != null) {
                 for(Restaurant rest: restaurants) {
@@ -104,23 +114,77 @@ public class ListRestaurantServlet extends HttpServlet {
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
     }
 
-    private void setRestoCrowdLevel(List<Restaurant> restoList) {
+    private void setRestoCrowdLevel(List<Restaurant> restoList, ReservationDAO resoDAO, String startCursor) {
         for(Restaurant item : restoList) {
-            String maxCap = item.getMaxCapacity();
-            Integer maxCapInt = Integer.parseInt(maxCap);
+            Result<Reservation> result = resoDAO.listReservationsByRestaurant(item.getId(), startCursor);
+            List<Reservation> reservations = result.getResult();
 
-            String occSeats = item.getOccupiedSeats();
-            Integer occSeatsInt = Integer.parseInt(occSeats);
+            Integer activeResoPax = checkActiveReservations(reservations);
 
-            Integer percentage = (int)Math.round(occSeatsInt * 100.0/maxCapInt);
+            logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
 
-            if(percentage <= 50) {
-                item.setCrowdLevel("Available");
-            } else if(percentage >= 51 && percentage <= 80) {
+            String maxCap = "";
+            Integer maxCapInt = 0;
+            if(item.getMaxCapacity() != null) {
+                maxCap = item.getMaxCapacity();
+                maxCapInt = Integer.parseInt(maxCap);
+            }
+
+            String occSeats = "";
+            Integer occSeatsInt = 0;
+            if(item.getOccupiedSeats() != null) {
+                occSeats = item.getOccupiedSeats();
+                occSeatsInt = Integer.parseInt(occSeats);
+            }
+
+            Integer percentageEmpty = 100;
+
+            Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
+
+            logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
+
+            if(currCapacity <= 0)
+                currCapacity = 0;
+
+            if(maxCapInt != 0)
+                percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
+
+            if(percentageEmpty <= 20) {
+                item.setCrowdLevel("Crowded");
+            } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
                 item.setCrowdLevel("Filling Up");
             } else {
-                item.setCrowdLevel("Crowded");
+                item.setCrowdLevel("Available");
             }
         }
+    }
+
+    public Integer checkActiveReservations(List<Reservation> resoList) {
+        ZoneId zid = ZoneId.of("GMT+8");
+        ZonedDateTime currTime = ZonedDateTime.now(zid);
+
+        Integer totalPax = 0;
+
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+
+            for(Reservation reso : resoList) {
+                String numPax = reso.getNumPax();
+                Integer numPaxInt = Integer.parseInt(numPax);
+                Date resoDate = sdf.parse(reso.getResoDate() + " " + reso.getResoTime());
+
+                ZonedDateTime resoLDTMin = DateUtil.convertToZonedDateTime(resoDate);
+                ZonedDateTime resoLDTMax = resoLDTMin.plusHours(2); 
+
+                if(currTime.isAfter(resoLDTMin) && currTime.isBefore(resoLDTMax)) {
+                    totalPax += numPaxInt;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return totalPax;
     }
 }
