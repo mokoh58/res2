@@ -43,10 +43,12 @@ public class ListRestaurantServlet extends HttpServlet {
         String searchRes = req.getParameter("searchRes");
         String userId = req.getParameter("userId");
         String ownerId = req.getParameter("ownerId");
+        String recList = req.getParameter("recList");
         logger.log(Level.INFO, "searchRes = " + searchRes);
         List<Restaurant> filteredRes = new ArrayList<Restaurant>();
         List<Restaurant> favouriteRes = new ArrayList<Restaurant>();
         List<Restaurant> ownerRes = new ArrayList<Restaurant>();
+        List<Restaurant> recRes = new ArrayList<Restaurant>();
 		List<Restaurant> restaurants = null;
 		String endCursor = null;
 		try {
@@ -84,6 +86,14 @@ public class ListRestaurantServlet extends HttpServlet {
                     }
                 }
             }
+
+            if (recList != null){
+                for(Restaurant rest: restaurants) {
+                    if (recList.contains(rest.getId())) {
+                        recRes.add(rest);
+                    }
+                } 
+            }
 			endCursor = result.getCursor();
 		} catch (Exception e) {
 			throw new ServletException("Error listing restaurants", e);
@@ -99,7 +109,11 @@ public class ListRestaurantServlet extends HttpServlet {
         }
         else if (searchRes != null) {
             req.getSession().getServletContext().setAttribute("restaurants", filteredRes);
-        } else {
+        }
+        else if (recList != null) {
+            req.getSession().getServletContext().setAttribute("restaurants", recRes);
+        }
+        else {
             req.getSession().getServletContext().setAttribute("restaurants", restaurants);
         }
 		
@@ -119,7 +133,13 @@ public class ListRestaurantServlet extends HttpServlet {
             for (Restaurant res : filteredRes) {
                 restNames.append(res.getRestName()).append(" ");
             }
-        } else {
+        }
+        else if (recList != null){
+            for (Restaurant res : recRes) {
+                restNames.append(res.getRestName()).append(" ");
+            }
+        }
+        else {
             for (Restaurant res : restaurants) {
                 restNames.append(res.getRestName()).append(" ");
             }
