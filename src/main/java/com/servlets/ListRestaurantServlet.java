@@ -2,6 +2,7 @@ package com.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +53,7 @@ public class ListRestaurantServlet extends HttpServlet {
 			logger.log(Level.INFO, "Retrieved list of all restaurants");
             restaurants = result.getResult();
             setRestoCrowdLevel(restaurants, resoDAO, startCursor);
-
+            Collections.sort(restaurants, Restaurant.COMPARE_BY_CROWD_LEVEL);
             if (searchRes != null) {
                 for(Restaurant rest: restaurants) {
                     if (rest.getRestName().contains(searchRes)) {
@@ -150,11 +151,11 @@ public class ListRestaurantServlet extends HttpServlet {
                 percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
 
             if(percentageEmpty <= 20) {
-                item.setCrowdLevel("Crowded");
+                item.setCrowdLevel("3");
             } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
-                item.setCrowdLevel("Filling Up");
+                item.setCrowdLevel("2");
             } else {
-                item.setCrowdLevel("Available");
+                item.setCrowdLevel("1");
             }
         }
     }
