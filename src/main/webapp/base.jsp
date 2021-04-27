@@ -39,9 +39,9 @@
       <li><a href="#">Recommendations</a></li>
     </ul>
 
-    <form class="navbar-form navbar-left" action="/action_page.php">
+    <form method="GET" action="/restaurants" class="navbar-form navbar-left">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" class="form-control" placeholder="Search for restaurant here" name="searchRes" id="searchRes">
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -60,14 +60,27 @@
     } else {
         String username = userAccount.getUsername();
         String userId = userAccount.getUserAccountId();
+        String accountType = userAccount.getAccountType();
     %>
     <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
-        <ul class="dropdown-menu">
-          <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
-          <li><a href="#">Edit Account</a></li>
-        </ul>
-      </li>
+        <%
+        if ("Restaurant Owner".equals(accountType) || "Administrator".equals(accountType)){
+            %>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon glyphicon-briefcase"></span> Restaurant </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/create">List New Restaurant</a></li>
+                    <li><a href="/restaurants?ownerId=<%=userId %>">My Restaurants</a></li>
+                </ul>
+            </li>
+            <%
+        }
+        %>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
+            <ul class="dropdown-menu">
+                <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
+                <li><a href="#">Edit Account</a></li>
+            </ul>
+        </li>
       <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
     </ul>
 
