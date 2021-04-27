@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebListener;
 import com.google.common.base.Strings;
 
 import com.dao.FirestoreOperatingHoursDAO;
+import com.dao.FirestoreTagsDAO;
 import com.dao.FirestoreReservationDAO;
 import com.dao.FirestoreRestaurantDAO;
 import com.dao.FirestoreReviewDAO;
@@ -28,6 +29,7 @@ import com.dao.FirestoreUserAccountDAO;
 import com.dao.FirestoreFavouriteDAO;
 import com.dao.OperatingHoursDAO;
 import com.dao.ReservationDAO;
+import com.dao.TagsDAO;
 import com.dao.RestaurantDAO;
 import com.dao.UserAccountDAO;
 import com.dao.FavouriteDAO;
@@ -69,6 +71,12 @@ public class RestaurantContextListener implements ServletContextListener {
 		if (reviewDAO == null) {
 			reviewDAO = new FirestoreReviewDAO();
             event.getServletContext().setAttribute("reviewDAO", reviewDAO);
+        }
+
+        TagsDAO tagsDAO = (TagsDAO) event.getServletContext().getAttribute("tagsDAO");
+		if (tagsDAO == null) {
+			tagsDAO = new FirestoreTagsDAO();
+            event.getServletContext().setAttribute("tagsDAO", tagsDAO);
         }
 
         OperatingHoursDAO ohDAO = (OperatingHoursDAO) event.getServletContext().getAttribute("ohDAO");
