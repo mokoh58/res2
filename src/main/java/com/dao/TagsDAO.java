@@ -13,5 +13,7 @@ public interface TagsDAO {
 
     ArrayList<Tags> getTags(String resId);
 
+    List<String> getStringTags(String resId);
+
     List<String> getRestaurants(String tag);
 }

@@ -36,9 +36,10 @@
       <li class="active"><a href="/restaurants">Home</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="#">Western</a></li>
-          <li><a href="#">Chinese</a></li>
-          <li><a href="#">Indian</a></li>
+          <li><a href="/restaurants?category=Western">Western</a></li>
+          <li><a href="/restaurants?category=Chinese">Chinese</a></li>
+          <li><a href="/restaurants?category=Indian">Indian</a></li>
+          <li><a href="/restaurants?category=Muslim">Muslim</a></li>
         </ul>
       </li>
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Recommendations <span class="caret"></span></a>
@@ -46,7 +47,7 @@
                 <% if (null != userAccount) { %>                
                 <li><a href="/favRec">Based on Favourites</a></li>
                 <% } %>
-                <li><a href="#">Based on Crowd</a></li>
+                <li><a href="#">Based on Ratings</a></li>
             </ul>
         </li>
     </ul>

@@ -127,4 +127,22 @@ public class FirestoreTagsDAO implements TagsDAO {
         return results;
     }
 
+    @Override
+    public List<String> getStringTags(String resId){
+        List<String> results = new ArrayList<String>();
+        Query query = tagsCol.whereEqualTo("restaurantId", resId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                Tags tag = documentToTags(document);
+                results.add(tag.getTag());
+            }
+        } catch (Exception e){
+            logger.log(Level.INFO, "Exception caught in FirestoreTagsDAO >  getTags()");
+        }
+        
+        return results;
+    }
+
 }
