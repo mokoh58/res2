@@ -27,6 +27,11 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Res.</a>
     </div>
+
+    <%
+    UserAccount userAccount = (UserAccount) request.getSession().getAttribute("userAccount");
+    %>
+
     <ul class="nav navbar-nav">
       <li class="active"><a href="/restaurants">Home</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
@@ -36,7 +41,14 @@
           <li><a href="#">Indian</a></li>
         </ul>
       </li>
-      <li><a href="#">Recommendations</a></li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Recommendations <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <% if (null != userAccount) { %>                
+                <li><a href="/favRec">Based on Favourites</a></li>
+                <% } %>
+                <li><a href="#">Based on Crowd</a></li>
+            </ul>
+        </li>
     </ul>
 
     <form method="GET" action="/restaurants" class="navbar-form navbar-left">
@@ -47,7 +59,6 @@
     </form>
 
     <%
-    UserAccount userAccount = (UserAccount) request.getSession().getAttribute("userAccount");
     if (null == userAccount){
     %>
 
