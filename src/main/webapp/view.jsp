@@ -111,7 +111,7 @@ th {
 
   <div class="media">
     <div class="media-left">
-      <img class="book-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+      <img class="rest-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
     </div>
     <div class="media-body">
       <h4 class="res-name">
@@ -133,7 +133,11 @@ th {
 
         </label>
       </h4>
-        <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
+        <p class="res-address">Address:
+        <a href="https://www.google.com/maps/search/${mapParam}" target="_blank">
+           ${fn:escapeXml(restaurant.address)}
+        </a>
+        </p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
         <p class="res-capacity">Available Seats: ${currCapacity}</p>

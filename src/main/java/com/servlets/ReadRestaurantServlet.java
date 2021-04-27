@@ -16,6 +16,8 @@
 package com.servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -54,6 +56,8 @@ public class ReadRestaurantServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
+        String mapParam = "";
+
         if (null != id){
             req.getSession().setAttribute("currentViewingRestaurantId", id);
         }else {
@@ -70,14 +74,15 @@ public class ReadRestaurantServlet extends HttpServlet {
         String startCursor = req.getParameter("cursor");
         String endCursor = null;
         
-       List<Reservation> reservations = null;
-       try {
-			Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
-			logger.log(Level.INFO, "Retrieved list of all reservations");
-			reservations = result.getResult();
-			endCursor = result.getCursor();
-		} catch (Exception e) {
-			throw new ServletException("Error listing reservations", e);
+        List<Reservation> reservations = null;
+        try {
+            Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
+            logger.log(Level.INFO, "Retrieved list of all reservations");
+            reservations = result.getResult();
+            endCursor = result.getCursor();
+        } catch (Exception e) {
+            //throw new ServletException("Error listing reservations", e);
+            e.printStackTrace();
         }
 
         if (req.getSession().getAttribute("userAccount") != null){
@@ -94,6 +99,12 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         Restaurant res = dao.readRestaurant(id);
 
+        String resAdd = res.getAddress();
+
+        mapParam = URLEncoder.encode(resAdd, StandardCharsets.UTF_8);
+
+        //logger.log(Level.INFO, "mapParam " + mapParam);
+
         Integer maxCap = Integer.parseInt(res.getMaxCapacity());
         
         // Prevent null pointer for res.getOccupiedSeats()
@@ -106,7 +117,6 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         if(currCapacity <= 0)
             currCapacity = 0;
-
 
         // Handle favourite button
         req.getSession().removeAttribute("favourite"); // Clear first
@@ -153,6 +163,7 @@ public class ReadRestaurantServlet extends HttpServlet {
         req.setAttribute("totalReviews", totalReviews);
 
         req.setAttribute("currCapacity", currCapacity.toString());
+        req.setAttribute("mapParam", mapParam);
 		req.setAttribute("restaurant", res);
 		req.setAttribute("page", "view");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
