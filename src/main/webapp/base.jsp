@@ -77,8 +77,8 @@
     </nav>
 
     <div class="bg"></div>
-    <div class="content" style="text-align:center;">
-        <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px;"/>
+    <div class="content" style="display:contents;">
+        <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px; margin-right:auto; margin:auto; display:block;"/>
     </div>
 
     <div class="layout" style="padding:20px;">

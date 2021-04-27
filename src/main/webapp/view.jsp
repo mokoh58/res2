@@ -97,14 +97,16 @@ th {
 <div class="container">
   <h3>Restaurant</h3>
   <div class="btn-group">
-    <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
-      <i class="glyphicon glyphicon-edit"></i>
-      Edit Restaurant
-    </a>
-    <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
-      <i class="glyphicon glyphicon-trash"></i>
-      Delete Restaurant
-    </a>
+    <c:if test="${userAccount.accountType != 'Consumer'}">
+        <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
+        <i class="glyphicon glyphicon-edit"></i>
+            Edit Restaurant
+        </a>
+        <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
+        <i class="glyphicon glyphicon-trash"></i>
+            Delete Restaurant
+        </a>
+    </c:if>
   </div>
 
   <div class="media">
@@ -140,10 +142,13 @@ th {
             <input type="hidden" name="restId" id="restId" value=${restaurant.id} />
             <input type="hidden" name="maxCapacity" id="maxCapacity" value=${restaurant.maxCapacity} />
             <input type="hidden" name="occupiedSeats" id="occupiedSeats" value=${restaurant.occupiedSeats} />
-            <input type="text" name="addPax" id="addPax" placeholder="0" value="${addPax}" size="3" maxlength="3" />
+            
+                <c:if test="${userAccount.accountType != 'Consumer'}">
+                    <input type="text" name="addPax" id="addPax" placeholder="0" value="${addPax}" size="3" maxlength="3" />
 
-            <button type="submit" name="add" value="add" class="btn btn-success">Add Pax</button>
-            <button type="submit" name="subtract" value="subtract" class="btn btn-success">Minus Pax</button>
+                    <button type="submit" name="add" value="add" class="btn btn-success">Add Pax</button>
+                    <button type="submit" name="subtract" value="subtract" class="btn btn-success">Minus Pax</button>
+                </c:if>
             </form>
         </div>
     </div>
@@ -187,7 +192,7 @@ th {
                         </a>
                     </td>
                     <td> 
-                        <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
+                        <a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-danger btn-sm">
                         <i class="glyphicon glyphicon-trash"></i>
                         </a>
                     </td>                
