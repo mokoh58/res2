@@ -137,7 +137,7 @@ public class ListRestaurantServlet extends HttpServlet {
                 occSeatsInt = Integer.parseInt(occSeats);
             }
 
-            Integer percentage = 0;
+            Integer percentageEmpty = 100;
 
             Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
 
@@ -147,14 +147,14 @@ public class ListRestaurantServlet extends HttpServlet {
                 currCapacity = 0;
 
             if(maxCapInt != 0)
-                percentage = (int)Math.round(currCapacity * 100.0/maxCapInt);
+                percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
 
-            if(percentage <= 50) {
-                item.setCrowdLevel("Available");
-            } else if(percentage >= 51 && percentage <= 80) {
+            if(percentageEmpty <= 20) {
+                item.setCrowdLevel("Crowded");
+            } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
                 item.setCrowdLevel("Filling Up");
             } else {
-                item.setCrowdLevel("Crowded");
+                item.setCrowdLevel("Available");
             }
         }
     }
