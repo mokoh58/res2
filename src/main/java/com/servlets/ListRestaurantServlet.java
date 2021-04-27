@@ -42,9 +42,11 @@ public class ListRestaurantServlet extends HttpServlet {
         String startCursor = req.getParameter("cursor");
         String searchRes = req.getParameter("searchRes");
         String userId = req.getParameter("userId");
+        String ownerId = req.getParameter("ownerId");
         logger.log(Level.INFO, "searchRes = " + searchRes);
         List<Restaurant> filteredRes = new ArrayList<Restaurant>();
         List<Restaurant> favouriteRes = new ArrayList<Restaurant>();
+        List<Restaurant> ownerRes = new ArrayList<Restaurant>();
 		List<Restaurant> restaurants = null;
 		String endCursor = null;
 		try {
@@ -54,8 +56,10 @@ public class ListRestaurantServlet extends HttpServlet {
             setRestoCrowdLevel(restaurants, resoDAO, startCursor);
 
             if (searchRes != null) {
+                searchRes = searchRes.toLowerCase();
                 for(Restaurant rest: restaurants) {
-                    if (rest.getRestName().contains(searchRes)) {
+                    String resName = rest.getRestName().toLowerCase();
+                    if (resName.contains(searchRes)) {
                         logger.log(Level.INFO, "filtered res = " + rest.getRestName());
                         filteredRes.add(rest);
                     }
@@ -71,6 +75,15 @@ public class ListRestaurantServlet extends HttpServlet {
                     }
                 }
             }
+
+            // Display owner's restaurants
+            if (ownerId != null){
+                for(Restaurant rest: restaurants) {
+                    if (ownerId.equals(rest.getCreatedById())) {
+                        ownerRes.add(rest);
+                    }
+                }
+            }
 			endCursor = result.getCursor();
 		} catch (Exception e) {
 			throw new ServletException("Error listing restaurants", e);
@@ -80,6 +93,9 @@ public class ListRestaurantServlet extends HttpServlet {
 
         if (userId != null){
             req.getSession().getServletContext().setAttribute("restaurants", favouriteRes);
+        }
+        else if (ownerId != null){
+            req.getSession().getServletContext().setAttribute("restaurants", ownerRes);
         }
         else if (searchRes != null) {
             req.getSession().getServletContext().setAttribute("restaurants", filteredRes);
@@ -94,6 +110,11 @@ public class ListRestaurantServlet extends HttpServlet {
                 restNames.append(res.getRestName()).append(" ");
             }
         }
+        else if (ownerId != null){
+            for (Restaurant res : ownerRes) {
+                restNames.append(res.getRestName()).append(" ");
+            }
+        }
         else if (searchRes != null) {
             for (Restaurant res : filteredRes) {
                 restNames.append(res.getRestName()).append(" ");
@@ -105,8 +126,8 @@ public class ListRestaurantServlet extends HttpServlet {
         }
         logger.log(Level.INFO, "Loaded restaurants: " + restNames.toString());
         
-        // Only put cursor if not Favourite List
-        if (null == userId){
+        // Only put cursor if not Favourite / Owner List
+        if (null == userId && null == ownerId){
             req.setAttribute("cursor", endCursor);
         }
 		

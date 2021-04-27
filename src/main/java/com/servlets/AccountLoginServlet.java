@@ -65,7 +65,7 @@ public class AccountLoginServlet extends HttpServlet {
       throw new IOException(e);
     }
 
-    HttpSession session = req.getSession();
+    //HttpSession session = req.getSession();
 
     UserAccountDAO dao = (UserAccountDAO) this.getServletContext().getAttribute("userAccountDAO");
 
