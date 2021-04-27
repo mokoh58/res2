@@ -42,13 +42,13 @@
                 <div class="column-desc">
                     <h4 style="display:inline-block">${fn:escapeXml(restaurant.restName)}</h4>
                     <c:choose>
-                        <c:when test="${restaurant.crowdLevel == 'Available'}">
+                        <c:when test="${restaurant.crowdLevel == '1'}">
                             <div style="float:right; margin-top:10px; margin-bottom:0px;">
                                 <p style="float:right; color:#94E185">Available</p>
                                 <li style="float:right;" class="fa fa-circle available"></li>
                             </div>
                         </c:when>
-                        <c:when test="${restaurant.crowdLevel == 'Filling Up'}">
+                        <c:when test="${restaurant.crowdLevel == '2'}">
                             <div style="float:right; margin-top:10px; margin-bottom:0px;">
                                 <p style="float:right; color:#FFC182">Filling Up</p>
                                 <li style="float:right;" class="fa fa-circle fairly-crowded"></li>
