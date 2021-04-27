@@ -53,7 +53,7 @@ public class ListRestaurantServlet extends HttpServlet {
 			logger.log(Level.INFO, "Retrieved list of all restaurants");
             restaurants = result.getResult();
             setRestoCrowdLevel(restaurants, resoDAO, startCursor);
-            Collections.sort(restaurants, Restaurant.COMPARE_BY_CROWD_LEVEL);
+
             if (searchRes != null) {
                 for(Restaurant rest: restaurants) {
                     if (rest.getRestName().contains(searchRes)) {
@@ -151,11 +151,11 @@ public class ListRestaurantServlet extends HttpServlet {
                 percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
 
             if(percentageEmpty <= 20) {
-                item.setCrowdLevel("3");
+                item.setCrowdLevel("Available");
             } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
-                item.setCrowdLevel("2");
+                item.setCrowdLevel("Filling Up");
             } else {
-                item.setCrowdLevel("1");
+                item.setCrowdLevel("Crowded");
             }
         }
     }
