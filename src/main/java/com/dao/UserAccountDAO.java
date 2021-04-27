@@ -7,7 +7,7 @@ public interface UserAccountDAO {
     
     UserAccount getUserAccount(String username, String password);
 
-	// UserAccount readUserAccount(String userAccountID);
+	UserAccount readUserAccount(String userAccountID);
 
 	void updateUserAccount(UserAccount userAccount);
 

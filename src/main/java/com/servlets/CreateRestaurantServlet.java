@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.util.Streams;
 import com.dao.RestaurantDAO;
 import com.google.common.base.Strings;
 import com.objects.Restaurant;
+import com.objects.UserAccount;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -63,10 +64,18 @@ public class CreateRestaurantServlet extends HttpServlet {
 		String createdByString = "";
 		String createdByIdString = "";
 		HttpSession session = req.getSession();
-		if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
-			createdByString = (String) session.getAttribute("userEmail");
-			createdByIdString = (String) session.getAttribute("userId");
-		}
+		// if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
+		// 	createdByString = (String) session.getAttribute("userEmail");
+		// 	createdByIdString = (String) session.getAttribute("userId");
+        // }
+        
+        // Set the Restaurant Owner's details into restaurant object
+        UserAccount userAccount = (UserAccount) req.getSession().getAttribute("userAccount");
+        if (userAccount != null){
+            createdByString = userAccount.getUsername();
+            createdByIdString = userAccount.getUserAccountId();
+        }
+
 
         Restaurant res = new Restaurant.Builder().restName(params.get("restName"))
                 .address(params.get("address"))

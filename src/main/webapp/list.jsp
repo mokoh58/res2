@@ -10,7 +10,8 @@
 </script>
 
 <div class="container">
-  <h3>Restaurants</h3>
+  <h3>Our Restaurants</h3>
+  <%--
   <div class="search">
     <form method="GET" action="/restaurants" style="width:100%; display:flex;">
     <input type="text" class="searchTerm" placeholder="Search for restaurant here" name="searchRes" id="searchRes"> 
@@ -19,12 +20,9 @@
         <i class="fa fa-search"></i>
     </button>
     
-    <a href="/create" class="btn btn-success btn-sm">
-        <i class="glyphicon glyphicon-plus"></i>
-        Add Restaurant
-    </a>
     </form>
   </div>
+  --%>
   
   <c:choose>
   <c:when test="${empty restaurants}">
