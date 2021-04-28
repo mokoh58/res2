@@ -37,7 +37,9 @@
         <div class="column">
             <div class="card" data-aos="fade-up" data-aos-duration="2000">
                 <div class="column-image">
-                    <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+                    <div style="display:block; max-height:240px; width:252px; text-align:center;">                    
+                    <img class="restaurant-image" alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+                    </div>
                 </div>
                 <div class="column-desc">
                     <h4 style="display:inline-block">${fn:escapeXml(restaurant.restName)}</h4>

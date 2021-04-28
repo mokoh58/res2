@@ -1,16 +1,3 @@
-.bg {
-  display: block;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: url('https://i.imgur.com/kInN7YB.jpg') center no-repeat;
-  background-size: cover;
-  -moz-transition: 0.1s;-o-transition: 0.1s;-webkit-transition: 0.1s;transition: 0.1s;
-  z-index: -1;
-}
-
 .layout{
   display: block;
   position: relative;

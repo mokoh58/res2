@@ -21,7 +21,7 @@
     } );
     </script>
   </head>
-  <body>
+  <body style="background-image: none;">
     <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -76,7 +76,6 @@
   </div>
     </nav>
 
-    <div class="bg"></div>
     <div class="content" style="display:contents;">
         <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px; margin-right:auto; margin:auto; display:block;"/>
     </div>

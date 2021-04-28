@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/view.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -49,71 +49,29 @@ function setBar5(x){
     var bar5 = document.getElementById("bar5");
     bar5.style.width = x + "%";
 }
-</script>
-
-<style type="text/css">	 
-
-div.stars {
-  width: 270px;
-  display: inline-block;
-}
-
-input.star { display: none; }
-
-label.star {
-  float: right;
-  padding: 10px;
-  font-size: 36px;
-  color: #444;
-  transition: all .2s;
-}
-
-input.star:checked ~ label.star:before {
-  content: '\f005';
-  color: #FD4;
-  transition: all .25s;
-}
-
-input.star-5:checked ~ label.star:before {
-  color: #FE7;
-  text-shadow: 0 0 20px #952;
-}
-
-input.star-1:checked ~ label.star:before { color: #F62; }
-
-label.star:hover { transform: rotate(-15deg) scale(1.3); }
-
-label.star:before {
-  content: '\f006';
-  font-family: FontAwesome;
-}
-
-th { 
-    border-right-width:medium;
-    width: 25%;
-} 
-</style> 
+</script> 
 
 <div class="container">
   <h3>Restaurant</h3>
-  <div class="btn-group">
-    <c:if test="${userAccount.accountType != 'Consumer'}">
-        <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
-        <i class="glyphicon glyphicon-edit"></i>
-            Edit Restaurant
-        </a>
-        <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
-        <i class="glyphicon glyphicon-trash"></i>
-            Delete Restaurant
-        </a>
-    </c:if>
-  </div>
-
-  <div class="media">
+  <div class="media" id="info"> 
+    <div class="media-header">
+        <div class="btn-group">
+            <c:if test="${userAccount.accountType != 'Consumer'}">
+                <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
+                <i class="glyphicon glyphicon-edit"></i>
+                    Edit Restaurant
+                </a>
+                <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
+                <i class="glyphicon glyphicon-trash"></i>
+                    Delete Restaurant
+                </a>
+            </c:if>
+        </div>
+    </div>    
     <div class="media-left">
       <img class="book-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
     </div>
-    <div class="media-body">
+    <div class="media-body">        
       <h4 class="res-name">
         ${fn:escapeXml(restaurant.restName)}
         <% 
@@ -154,7 +112,7 @@ th {
     </div>
     <div>
         <div>
-            <h4>List of Reservations</h4>
+            <h4 style="border-top:1px solid #ECECEC; padding-top:20px;">List of Reservations</h4>
             <table>
                 <tr>
                     <th>Reservation Name</th>
@@ -220,7 +178,11 @@ th {
         Make Reservation
         </a>
     </div>
-    <br>
+    
+</div>
+<br>
+<br>
+<div class="review" id="review">
     <h3>Reviews</h3>
     <%
     if (null != request.getSession().getAttribute("userAccount")){
@@ -392,12 +354,14 @@ th {
 
         </div>
     </div>
+</div>
 </div>   
 
-    <script>
-        window.onload = setReviewOff;
-    </script>
+<script>
+    window.onload = setReviewOff;
+</script>
 
-    </div>
-  </div>
+<div class="sidebar">
+    <a href="#info" class="facebook"><i class="fa fa-facebook"></i></a> 
+    <a href="#review" class="twitter"><i class="fa fa-twitter"></i></a> 
 </div>
