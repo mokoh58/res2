@@ -51,9 +51,9 @@ function setBar5(x){
 }
 </script> 
 
-<div class="container">
+<div class="container" id="info">
   <h3>Restaurant</h3>
-  <div class="media" id="info"> 
+  <div class="media"> 
     <div class="media-header">
         <div class="btn-group">
             <c:if test="${userAccount.accountType != 'Consumer'}">
@@ -362,6 +362,14 @@ function setBar5(x){
 </script>
 
 <div class="sidebar">
-    <a href="#info" class="facebook"><i class="fa fa-facebook"></i></a> 
-    <a href="#review" class="twitter"><i class="fa fa-twitter"></i></a> 
+    <a href="#info" title="Info">
+        <div class="sidebar-icon">
+            <img class="sidebar-image" src="https://i.imgur.com/YiE5VvN.png"/>
+        </div>
+    </a> 
+    <a href="#review" title="Reviews">
+        <div class="sidebar-icon">
+            <img class="sidebar-image" src="https://i.imgur.com/0cSd7Sp.png"/>
+        </div>
+    </a> 
 </div>
