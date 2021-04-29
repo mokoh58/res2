@@ -34,53 +34,71 @@
   
   <header class="general-header">
     <div class="logo-link">
-      <a href="#">
-          <img style="height: 80px;" src="https://i.imgur.com/QeXixJ9.png">
-      </a>
+        <img style="height: 80px;" src="https://i.imgur.com/QeXixJ9.png">
+
     </div>
-    <div class="right-nav">    
-      <span class="sub-header"><a class="sub-header-links" href="/restaurants">Home</a></span>
-      <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Western</a></li>
-          <li><a href="#">Chinese</a></li>
-          <li><a href="#">Indian</a></li>
-        </ul>
-      </span>
-      <span class="sub-header"><a class="sub-header-links" href="#">Recommendations</a></span>
-      <span class="sub-header">
-          <div>
-          <form method="GET" action="/restaurants" style="margin-block-end:0px;">
-            <input class="placeholder-header" type="text" placeholder="Search" name="searchRes" id="searchRes">
-            <button class="fa fa-search button-header" type="submit"></button>
-          </form>
-          </div>
-      </span>
-    
+
     <%
     UserAccount userAccount = (UserAccount) request.getSession().getAttribute("userAccount");
-    if (null == userAccount){
     %>
 
-      <span class="sub-header"><a class="sub-header-links" href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></span>
-      <span class="sub-header"><a class="sub-header-links" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
+    <div class="right-nav">    
+        <span class="sub-header"><a class="sub-header-links" href="/restaurants">Home</a></span>
+        <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <li><a href="/restaurants?category=Western">Western</a></li>
+            <li><a href="/restaurants?category=Chinese">Chinese</a></li>
+            <li><a href="/restaurants?category=Indian">Indian</a></li>
+            <li><a href="/restaurants?category=Muslim">Muslim</a></li>
+            </ul>
+        </span>
+        <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#">Recommendations</a><span class="caret"></span>
+            <ul class="dropdown-menu">
+                <% if (null != userAccount) { %>                
+                <li><a href="/favRec">Based on Favourites</a></li>
+                <% } %>
+                <li><a href="#">Based on Ratings</a></li>
+            </ul>
+        </span>
+        <span class="sub-header">
+            <div>
+                <form method="GET" action="/restaurants" style="margin-block-end:0px;">
+                    <input class="placeholder-header" type="text" placeholder="Search" name="searchRes" id="searchRes">
+                    <button class="fa fa-search button-header" type="submit"></button>
+                </form>
+            </div>
+        </span>
 
-    <%
-    } else {
-        String username = userAccount.getUsername();
-        String userId = userAccount.getUserAccountId();
-    %>
-      <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
-        <ul class="dropdown-menu">
-          <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
-          <li><a href="#">Edit Account</a></li>
-        </ul>
-      </span>
-      <span class="sub-header"><a class="sub-header-links" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>
+        <%
+        if (null == userAccount){
+        %>
 
-    <% } %>
+        <span class="sub-header"><a class="sub-header-links" href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></span>
+        <span class="sub-header"><a class="sub-header-links" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
+
+        <%
+        } else {
+            String username = userAccount.getUsername();
+            String userId = userAccount.getUserAccountId();
+            String accountType = userAccount.getAccountType();
+        %>
+
+        <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-briefcase"></span> Restaurant </a>
+            <ul class="dropdown-menu">
+                <li><a href="/create">List New Restaurant</a></li>
+                <li><a href="/restaurants?ownerId=<%=userId %>">My Restaurants</a></li>
+            </ul>
+        </span>
+        <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
+            <ul class="dropdown-menu">
+                <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
+                <li><a href="#">Edit Account</a></li>
+            </ul>
+        </span>
+        <span class="sub-header"><a class="sub-header-links" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>
+
+        <% } %>
     </div>
-  </div>
   </header>
 
   <body style="background-image: none;">
@@ -89,7 +107,7 @@
     </div>
   </body>
 
-  <footer class="footer">
+  <footer class="footer" style="bottom:0; position:fixed; width:100%;">
     <p style="font-family:'Gilroy',sans-serif; text-align:center; padding:40px;"> &#169; Res. Team 11 2021 </p>
   </footer>
 </html>

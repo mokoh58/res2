@@ -1,8 +1,10 @@
 package com.servlets;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +23,11 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
 import com.dao.RestaurantDAO;
+import com.dao.TagsDAO;
 import com.google.common.base.Strings;
 import com.objects.Restaurant;
+import com.objects.Tags;
+import com.objects.UserAccount;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -63,10 +68,18 @@ public class CreateRestaurantServlet extends HttpServlet {
 		String createdByString = "";
 		String createdByIdString = "";
 		HttpSession session = req.getSession();
-		if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
-			createdByString = (String) session.getAttribute("userEmail");
-			createdByIdString = (String) session.getAttribute("userId");
-		}
+		// if (session.getAttribute("userEmail") != null) { // Does the user have a logged in session?
+		// 	createdByString = (String) session.getAttribute("userEmail");
+		// 	createdByIdString = (String) session.getAttribute("userId");
+        // }
+        
+        // Set the Restaurant Owner's details into restaurant object
+        UserAccount userAccount = (UserAccount) req.getSession().getAttribute("userAccount");
+        if (userAccount != null){
+            createdByString = userAccount.getUsername();
+            createdByIdString = userAccount.getUserAccountId();
+        }
+
 
         Restaurant res = new Restaurant.Builder().restName(params.get("restName"))
                 .address(params.get("address"))
@@ -83,7 +96,17 @@ public class CreateRestaurantServlet extends HttpServlet {
 
 		RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
 		String id = dao.createRestaurant(res);
-		logger.log(Level.INFO, "Created restaurant {0}", res);
+        logger.log(Level.INFO, "Created restaurant {0}", res);
+        
+        // Creation of Tags
+        TagsDAO tagsDAO = (TagsDAO) this.getServletContext().getAttribute("tagsDAO");
+        String allTags = params.get("cuisine");
+        List<String> tagsList = Arrays.asList(allTags.split(","));
+        for (String tag : tagsList){
+            Tags newTag = new Tags.Builder().restaurantId(id).tag(tag).build();
+            tagsDAO.createTags(newTag);
+        }
+
 		resp.sendRedirect("/read?id=" + id);
 	}
 }

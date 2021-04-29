@@ -1,7 +1,9 @@
 package com.servlets;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +21,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 
 import com.dao.RestaurantDAO;
+import com.dao.TagsDAO;
 import com.google.common.base.Strings;
 import com.objects.Restaurant;
+import com.objects.Tags;
 import com.util.CloudStorageHelper;
 
 @SuppressWarnings("serial")
@@ -85,7 +89,21 @@ public class UpdateRestaurantServlet extends HttpServlet {
                 .occupiedSeats(null == oldRest.getOccupiedSeats() ? "0" : oldRest.getOccupiedSeats())
                 .build();
 
-		dao.updateRestaurant(res);
+        dao.updateRestaurant(res);
+        
+        // Updating of Tags
+        TagsDAO tagsDAO = (TagsDAO) this.getServletContext().getAttribute("tagsDAO");
+
+        // Delete all tags first
+        tagsDAO.deleteTags(params.get("id"));
+
+        String allTags = params.get("cuisine");
+        List<String> tagsList = Arrays.asList(allTags.split(","));
+        for (String tag : tagsList){
+            Tags newTag = new Tags.Builder().restaurantId(params.get("id")).tag(tag).build();
+            tagsDAO.createTags(newTag);
+        }
+
 		resp.sendRedirect("/read?id=" + params.get("id"));
 	}
 }
