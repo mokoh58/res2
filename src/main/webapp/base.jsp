@@ -88,4 +88,8 @@
         <c:import url="/${page}.jsp" />
     </div>
   </body>
+
+  <footer class="footer">
+    <p style="font-family:'Gilroy',sans-serif; text-align:center; padding:40px;"> &#169; Res. Team 11 2021 </p>
+  </footer>
 </html>
