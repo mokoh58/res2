@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/css/view.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -49,71 +49,29 @@ function setBar5(x){
     var bar5 = document.getElementById("bar5");
     bar5.style.width = x + "%";
 }
-</script>
+</script> 
 
-<style type="text/css">	 
-
-div.stars {
-  width: 270px;
-  display: inline-block;
-}
-
-input.star { display: none; }
-
-label.star {
-  float: right;
-  padding: 10px;
-  font-size: 36px;
-  color: #444;
-  transition: all .2s;
-}
-
-input.star:checked ~ label.star:before {
-  content: '\f005';
-  color: #FD4;
-  transition: all .25s;
-}
-
-input.star-5:checked ~ label.star:before {
-  color: #FE7;
-  text-shadow: 0 0 20px #952;
-}
-
-input.star-1:checked ~ label.star:before { color: #F62; }
-
-label.star:hover { transform: rotate(-15deg) scale(1.3); }
-
-label.star:before {
-  content: '\f006';
-  font-family: FontAwesome;
-}
-
-th { 
-    border-right-width:medium;
-    width: 25%;
-} 
-</style> 
-
-<div class="container">
+<div class="container" id="info">
   <h3>Restaurant</h3>
-  <div class="btn-group">
-    <c:if test="${userAccount.accountType != 'Consumer'}">
-        <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
-        <i class="glyphicon glyphicon-edit"></i>
-            Edit Restaurant
-        </a>
-        <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
-        <i class="glyphicon glyphicon-trash"></i>
-            Delete Restaurant
-        </a>
-    </c:if>
-  </div>
-
-  <div class="media">
+  <div class="media"> 
+    <div class="media-header">
+        <div class="btn-group">
+            <c:if test="${userAccount.accountType != 'Consumer'}">
+                <a href="/update?id=${restaurant.id}" class="btn btn-primary btn-sm">
+                <i class="glyphicon glyphicon-edit"></i>
+                    Edit Restaurant
+                </a>
+                <a href="/delete?id=${restaurant.id}" class="btn btn-danger btn-sm">
+                <i class="glyphicon glyphicon-trash"></i>
+                    Delete Restaurant
+                </a>
+            </c:if>
+        </div>
+    </div>    
     <div class="media-left">
       <img class="book-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
     </div>
-    <div class="media-body">
+    <div class="media-body">        
       <h4 class="res-name">
         ${fn:escapeXml(restaurant.restName)}
         <% 
@@ -156,7 +114,7 @@ th {
     </div>
     <div>
         <div>
-            <h4>List of Reservations</h4>
+            <h4 style="border-top:1px solid #ECECEC; padding-top:20px;">List of Reservations</h4>
             <table>
                 <tr>
                     <th>Reservation Name</th>
@@ -222,7 +180,11 @@ th {
         Make Reservation
         </a>
     </div>
-    <br>
+    
+</div>
+<div id="review" style="padding:45px">
+</div>
+<div class="review">
     <h3>Reviews</h3>
     <%
     if (null != request.getSession().getAttribute("userAccount")){
@@ -230,19 +192,21 @@ th {
     <button type="button" onclick="toggleReview()" class="btn btn-outline-info">Write A Review <i class="fa fa-toggle-down"></i></button>
     <br><br>
     <div class="stars" id="reviewSubmission">
+        <div>
         <form method="POST" action="/review" enctype="multipart/form-data">
             <label>YOUR RATING (Required)</label><br>
-            <input class="star star-5" value="5"  id="star-5" type="radio" name="star" required="required"/>
-            <label class="star star-5" for="star-5"></label>
+            <div style="display:inline-block;">
+            <input class="star star-5" value="5"  id="star-5" type="radio" name="star" required="required" />
+            <label title="Excellent" class="star star-5" for="star-5"></label>
             <input class="star star-4" value="4"  id="star-4" type="radio" name="star"/>
-            <label class="star star-4" for="star-4"></label>
+            <label title="Good" class="star star-4" for="star-4"></label>
             <input class="star star-3" value="3"  id="star-3" type="radio" name="star"/>
-            <label class="star star-3" for="star-3"></label>
+            <label title="Average" class="star star-3" for="star-3"></label>
             <input class="star star-2" value="2" id="star-2" type="radio" name="star"/>
-            <label class="star star-2" for="star-2"></label>
+            <label title="Poor" class="star star-2" for="star-2"></label>
             <input class="star star-1" value="1" id="star-1" type="radio" name="star"/>
-            <label class="star star-1" for="star-1"></label>
-
+            <label title="Terrible" class="star star-1" for="star-1"></label>
+            </div>
             <br>
             <label>Date Of Visit (Required)</label>
             <br>
@@ -256,6 +220,7 @@ th {
             <br><br>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
+        </div>
     </div>
     <% } %>
 
@@ -270,10 +235,10 @@ th {
     %>
     <%-- Testing New Review Section --%>
     <br><br>
-    <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="px-1 py-5 mx-auto">
     <div class="row justify-content-left">
-        <div class="col-xl-7 col-lg-8 col-md-10 col-12 text-center mb-5">
-            <div class="card">
+        <div class="col-xl-7 col-lg-8 col-md-10 col-12 text-center mb-5" style="width:100%;">
+            <div class="card-review-summary">
                 <div class="row justify-content-left d-flex">
                     <div class="col-md-4 d-flex flex-column">
                         <div class="rating-box">
@@ -366,13 +331,18 @@ th {
 
             <c:choose>
             <c:when test="${empty reviews}">
-            <p>No reviews found</p>
+            <p style="margin-top:30px;">No reviews found</p>
             </c:when>
             <c:otherwise>
-            <div class="row">
+            <div>
                 <c:forEach items="${reviews}" var="review">
                     <div class="card">
-                        <div class="row d-flex">
+                        <div style="display:inline-table; width:10%; float:left; padding-top:20px;">
+                            <!-- can put user profile pic next time ? lol -->
+                            <img style="width:80px;" src="https://imgur.com/IaeXwXE.png">
+                        </div>
+                        <div style="display:inline-table; width:80%;">
+                        <div class="d-flex">
                             <div class="d-flex flex-column">
                                 <h3 class="text-left">${fn:escapeXml(review.username)}</h3>
                                 <div>
@@ -383,8 +353,9 @@ th {
                                 <p class="text-left" style="color:lightgrey">${fn:escapeXml(review.dateOfVisit)}</p>
                             </div>
                         </div>
-                        <div class="row text-left">
+                        <div class="text-left">
                             <p>${fn:escapeXml(review.remarks)}</p>
+                        </div>
                         </div>
                     </div>
                 </c:forEach>
@@ -394,12 +365,22 @@ th {
 
         </div>
     </div>
+</div>
 </div>   
 
-    <script>
-        window.onload = setReviewOff;
-    </script>
+<script>
+    window.onload = setReviewOff;
+</script>
 
-    </div>
-  </div>
+<div class="sidebar">
+    <a href="#info" title="Info">
+        <div class="sidebar-icon">
+            <img class="sidebar-image" src="https://i.imgur.com/YiE5VvN.png"/>
+        </div>
+    </a> 
+    <a href="#review" title="Reviews">
+        <div class="sidebar-icon">
+            <img class="sidebar-image" src="https://i.imgur.com/0cSd7Sp.png"/>
+        </div>
+    </a> 
 </div>

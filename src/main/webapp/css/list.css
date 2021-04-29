@@ -2,8 +2,9 @@
 .column {
   float: left;
   width: 25%;
-  height: 350px;
+  height: 380px;
   padding: 10px;
+  color: #3A3A3A;
 }
 
 /* Clear floats after image containers */
@@ -32,43 +33,18 @@
 .column-image {
     height: 240px;
     overflow: hidden;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
-img {
-    width: 100%;
+.column-desc {
+    margin-top: 15px;
 }
 
-.searchTerm {
-  width: 100%;
-  border: 3px solid #00B4CC;
-  border-right: none;
-  padding: 12px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9DBFAF;
-}
-
-.searchTerm:focus{
-  color: #00B4CC;
-}
-
-.searchButton {
-  width: 40px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-  margin-right:10px;
-}
-
-.search {
-  width: 100%;
-  position: relative;
-  display: flex;
+.restaurant-image {
+    max-width: 100%;
+    max-height: 240px;
 }
 
 .available {
