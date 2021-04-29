@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -21,65 +22,64 @@
     } );
     </script>
   </head>
-  <body style="background-image: none;">
-    <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Res.</a>
+  
+  <header class="general-header">
+    <div class="logo-link">
+      <a href="#">
+          <img style="height: 80px;" src="https://i.imgur.com/QeXixJ9.png">
+      </a>
     </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="/restaurants">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
+    <div class="right-nav">    
+      <span class="sub-header"><a href="/restaurants">Home</a></span>
+      <span class="sub-header dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="#">Western</a></li>
           <li><a href="#">Chinese</a></li>
           <li><a href="#">Indian</a></li>
         </ul>
-      </li>
-      <li><a href="#">Recommendations</a></li>
-    </ul>
-
-    <form class="navbar-form navbar-left" action="/action_page.php">
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search">
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-
+      </span>
+      <span class="sub-header"><a href="#">Recommendations</a></span>
+      <span class="sub-header">
+          <div>
+          <form method="GET" action="/restaurants" style="margin-block-end:0px;">
+            <input class="placeholder-header" type="text" placeholder="Search" name="searchRes" id="searchRes">
+            <button class="fa fa-search button-header" type="submit"></button>
+          </form>
+          </div>
+      </span>
+    
     <%
     UserAccount userAccount = (UserAccount) request.getSession().getAttribute("userAccount");
     if (null == userAccount){
     %>
 
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
+      <span class="sub-header"><a href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></span>
+      <span class="sub-header"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
 
     <%
     } else {
         String username = userAccount.getUsername();
         String userId = userAccount.getUserAccountId();
     %>
-    <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
+      <span class="sub-header dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
         <ul class="dropdown-menu">
           <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
           <li><a href="#">Edit Account</a></li>
         </ul>
-      </li>
-      <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    </ul>
+      </span>
+      <span class="sub-header"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>
 
     <% } %>
-
+    </div>
   </div>
-    </nav>
+  </header>
 
+  <body style="background-image: none;">
+    <!--
     <div class="content" style="display:contents;">
         <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px; margin-right:auto; margin:auto; display:block;"/>
     </div>
-
+    -->
     <div class="layout" style="padding:20px;">
         <c:import url="/${page}.jsp" />
     </div>

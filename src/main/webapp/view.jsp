@@ -180,9 +180,9 @@ function setBar5(x){
     </div>
     
 </div>
-<br>
-<br>
-<div class="review" id="review">
+<div id="review" style="padding:45px">
+</div>
+<div class="review">
     <h3>Reviews</h3>
     <%
     if (null != request.getSession().getAttribute("userAccount")){
