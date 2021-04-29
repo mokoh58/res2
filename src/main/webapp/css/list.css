@@ -18,7 +18,6 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   padding: 10px;
-  width: fit-content;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -36,7 +35,6 @@
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-    border-bottom: 1px solid #ECECEC;
 }
 
 .column-desc {

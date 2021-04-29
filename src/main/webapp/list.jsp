@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="column-desc">
-                    <div padding:5px;>
+                    <div style="border-top: 1px solid #ECECEC; padding-top:20px; padding-bottom:5px;">
                     <div style="text-overflow:ellipsis; max-width:170px; overflow:hidden; display:inline-block; font-size:1.17em; white-space:nowrap;">
                         ${fn:escapeXml(restaurant.restName)}
                     </div>
