@@ -1,14 +1,15 @@
-.bg {
-  display: block;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: url('https://i.imgur.com/kInN7YB.jpg') center no-repeat;
-  background-size: cover;
-  -moz-transition: 0.1s;-o-transition: 0.1s;-webkit-transition: 0.1s;transition: 0.1s;
-  z-index: -1;
+@font-face {
+    src: url('https://assets.codepen.io/2479807/gilroy-regular.ttf');
+    font-family: 'Gilroy';
+}
+
+@font-face {
+    src: url('https://assets.codepen.io/2479807/gilroy-semibold.woff2');
+    font-family: 'Gilroy Semi-Bold';
+}
+
+body {
+    min-width: 1500px;
 }
 
 .layout{
@@ -17,13 +18,86 @@
   background: #fff;
 }
 
-.content{
+.general-header {
+    background: rgb(255, 255, 255);
+    max-height: 90px;
+    min-width: 1400px;
+    display: block;
+    -webkit-box-align: center;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    z-index: 3;
+    width: 100%;
+    font-size: 0px;
+    padding: 5px;
+}
+
+.borderClass {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.right-nav {
+    float: right;
+    margin: 20px;
+}
+
+.search-header {
+    display: inline-block;
+    height: 50px;
+    width: 49px;
     position: relative;
-    display: contents;
-    color: #FFFFFF;
-    top: 18%;
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+    top: 4px;
+    background-repeat: no-repeat;
+    background-size: 119%;
+}
+
+.logo-link {
+    margin-left: 50px;
+    display: inline-block;
+}
+
+.sub-header {
+    margin-right: 45px;
+    font-family: "Gilroy", sans-serif;
+    font-weight: 800;
+    color: #3A3A3A;
+    font-size: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.placeholder-header:-internal-autofill-selected {
+    background-color: none;
+}
+
+.placeholder-header {
+    border-radius: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: hidden;
+    border: 1px solid gainsboro;
+    color: gainsboro;
+}
+
+.placeholder-header:focus {
+    outline: none;
+    border: 1px solid #808080;
+    color: #808080;
+}
+
+.sub-header-links {
+    color: #3A3A3A;
+}
+
+.sub-header-links:hover, .sub-header-links:active, .sub-header-links:focus {
+    color: #3A3A3A;
+    box-shadow:0 3px 0 0 #3A3A3A;
+    text-decoration: unset;
+}
+
+.button-header {
+    border: none;
+    background: none;
 }
