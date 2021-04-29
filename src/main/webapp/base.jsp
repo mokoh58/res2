@@ -20,6 +20,15 @@
     $( function() {
         $( "#resoDate" ).datepicker();
     } );
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 50){  
+            $('header').addClass("borderClass");
+        }
+        else{
+            $('header').removeClass("borderClass");
+        }
+    });
     </script>
   </head>
   
@@ -75,11 +84,6 @@
   </header>
 
   <body style="background-image: none;">
-    <!--
-    <div class="content" style="display:contents;">
-        <img src="https://i.imgur.com/QWtA5Wd.png" style="height:350px; width:350px; margin-right:auto; margin:auto; display:block;"/>
-    </div>
-    -->
     <div class="layout" style="padding:20px;">
         <c:import url="/${page}.jsp" />
     </div>

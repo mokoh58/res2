@@ -18,17 +18,6 @@ body {
   background: #fff;
 }
 
-.content{
-    position: relative;
-    display: contents;
-    color: #FFFFFF;
-    top: 18%;
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
-}
-
 .general-header {
     background: rgb(255, 255, 255);
     max-height: 90px;
@@ -40,9 +29,13 @@ body {
     top: 0px;
     z-index: 3;
     width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 0px;
     padding: 5px;
+}
+
+.borderClass {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .right-nav {

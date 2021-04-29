@@ -10,21 +10,7 @@
 </script>
 
 <div class="container">
-  <h3>Restaurants</h3>
-  <div class="search">
-    <form method="GET" action="/restaurants" style="width:100%; display:flex;">
-    <input type="text" class="searchTerm" placeholder="Search for restaurant here" name="searchRes" id="searchRes"> 
-    
-    <button type="submit" class="fa fa-search button-header">
-    </button>
-    
-    <a href="/create" class="btn btn-success btn-sm">
-        <i class="glyphicon glyphicon-plus"></i>
-        Add Restaurant
-    </a>
-    </form>
-  </div>
-  
+  <h3>Restaurants</h3> 
   <c:choose>
   <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
@@ -73,13 +59,6 @@
         </a>
     </c:forEach>
   </div>
-  <c:if test="${not empty cursor}">
-  <nav>
-    <ul class="pager">
-      <li><a href="?cursor=${fn:escapeXml(cursor)}">More</a></li>
-    </ul>
-  </nav>
-  </c:if>
   </c:otherwise>
   </c:choose>
 </div>
