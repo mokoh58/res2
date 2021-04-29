@@ -10,20 +10,7 @@
 </script>
 
 <div class="container">
-  <h3>Our Restaurants</h3>
-  <%--
-  <div class="search">
-    <form method="GET" action="/restaurants" style="width:100%; display:flex;">
-    <input type="text" class="searchTerm" placeholder="Search for restaurant here" name="searchRes" id="searchRes"> 
-    
-    <button type="submit" class="searchButton">
-        <i class="fa fa-search"></i>
-    </button>
-    
-    </form>
-  </div>
-  --%>
-  
+  <h3>Restaurants</h3> 
   <c:choose>
   <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
@@ -35,30 +22,36 @@
         <div class="column">
             <div class="card" data-aos="fade-up" data-aos-duration="2000">
                 <div class="column-image">
-                    <img alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+                    <div style="display:block; max-height:240px; max-width:252px; text-align:center;">                    
+                    <img class="restaurant-image" alt="ahhh" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+                    </div>
                 </div>
                 <div class="column-desc">
-                    <h4 style="display:inline-block">${fn:escapeXml(restaurant.restName)}</h4>
+                    <div style="border-top: 1px solid #ECECEC; padding-top:20px; padding-bottom:5px;">
+                    <div style="text-overflow:ellipsis; max-width:170px; overflow:hidden; display:inline-block; font-size:1.17em; white-space:nowrap;">
+                        ${fn:escapeXml(restaurant.restName)}
+                    </div>
                     <c:choose>
                         <c:when test="${restaurant.crowdLevel == 'Available'}">
-                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                            <div style="float:right; margin-bottom:0px;">
                                 <p style="float:right; color:#94E185">Available</p>
                                 <li style="float:right;" class="fa fa-circle available"></li>
                             </div>
                         </c:when>
                         <c:when test="${restaurant.crowdLevel == 'Filling Up'}">
-                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                            <div style="float:right; margin-bottom:0px;">
                                 <p style="float:right; color:#FFC182">Filling Up</p>
                                 <li style="float:right;" class="fa fa-circle fairly-crowded"></li>
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <div style="float:right; margin-top:10px; margin-bottom:0px;">
+                            <div style="float:right; margin-bottom:0px;">
                                 <p style="float:right; color:#C9404D">Crowded</p>
                                 <li style="float:right;" class="fa fa-circle crowded"></li>
                             </div>
                         </c:otherwise>
                     </c:choose>
+                    </div>
                     <p>${fn:escapeXml(restaurant.address)}</p>
                 </div>
             </div>
@@ -66,13 +59,6 @@
         </a>
     </c:forEach>
   </div>
-  <c:if test="${not empty cursor}">
-  <nav>
-    <ul class="pager">
-      <li><a href="?cursor=${fn:escapeXml(cursor)}">More</a></li>
-    </ul>
-  </nav>
-  </c:if>
   </c:otherwise>
   </c:choose>
 </div>

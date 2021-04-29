@@ -148,7 +148,7 @@ public class ReadRestaurantServlet extends HttpServlet {
             for (Tags tag : tags){
                 tagsList.add(tag.getTag());
             }
-            String displayTags = String.join(", ", tagsList);
+            String displayTags = String.join(",", tagsList);
             req.setAttribute("tags", displayTags);
             System.out.println("======================" + displayTags);
         }
