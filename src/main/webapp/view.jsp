@@ -49,6 +49,15 @@ function setBar5(x){
     var bar5 = document.getElementById("bar5");
     bar5.style.width = x + "%";
 }
+
+$(window).resize(function(){
+    if ($(window).width() < $('.layout').width()){
+        $('.sidebar').css('position', 'absolute');
+    }
+    else {
+        $('.sidebar').css('position', 'fixed');
+    }
+});
 </script> 
 
 <div class="container" id="info">
