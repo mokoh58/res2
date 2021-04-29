@@ -34,9 +34,8 @@
   
   <header class="general-header">
     <div class="logo-link">
-      <a href="#">
-          <img style="height: 80px;" src="https://i.imgur.com/QeXixJ9.png">
-      </a>
+        <img style="height: 80px;" src="https://i.imgur.com/QeXixJ9.png">
+
     </div>
 
     <%
