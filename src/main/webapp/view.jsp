@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.objects.UserAccount" %>
 <%@ page import="com.objects.Favourite" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 
 <link rel="stylesheet" href="/css/view.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -100,8 +102,19 @@ $(window).resize(function(){
 
         </label>
       </h4>
-      <% String tags = (String) request.getAttribute("tags"); %>
-        <p class="res-address">Tags: <%=tags %></p>
+            <% 
+            String tags = (String) request.getAttribute("tags");
+            if (tags != null && !tags.trim().isEmpty()){
+                List<String> tagsList = Arrays.asList(tags.split(","));
+                for (String tag : tagsList){
+            %>
+                <a href="/restaurants?category=<%=tag %>"><button type="button" class="btn btn-info btn-sm"> <b><%=tag %></b></button></a>
+
+            <%
+                }
+            }
+            %>
+      
         <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
