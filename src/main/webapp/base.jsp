@@ -30,15 +30,15 @@
       </a>
     </div>
     <div class="right-nav">    
-      <span class="sub-header"><a href="/restaurants">Home</a></span>
-      <span class="sub-header dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
+      <span class="sub-header"><a class="sub-header-links" href="/restaurants">Home</a></span>
+      <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#">Categories <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="#">Western</a></li>
           <li><a href="#">Chinese</a></li>
           <li><a href="#">Indian</a></li>
         </ul>
       </span>
-      <span class="sub-header"><a href="#">Recommendations</a></span>
+      <span class="sub-header"><a class="sub-header-links" href="#">Recommendations</a></span>
       <span class="sub-header">
           <div>
           <form method="GET" action="/restaurants" style="margin-block-end:0px;">
@@ -53,21 +53,21 @@
     if (null == userAccount){
     %>
 
-      <span class="sub-header"><a href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></span>
-      <span class="sub-header"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
+      <span class="sub-header"><a class="sub-header-links" href="/createAccount"><span class="glyphicon glyphicon-user"></span> Sign Up</a></span>
+      <span class="sub-header"><a class="sub-header-links" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
 
     <%
     } else {
         String username = userAccount.getUsername();
         String userId = userAccount.getUserAccountId();
     %>
-      <span class="sub-header dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
+      <span class="sub-header dropdown"><a class="dropdown-toggle sub-header-links" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> <%=username %> </a>
         <ul class="dropdown-menu">
           <li><a href="/restaurants?userId=<%=userId %>">Favourites</a></li>
           <li><a href="#">Edit Account</a></li>
         </ul>
       </span>
-      <span class="sub-header"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>
+      <span class="sub-header"><a class="sub-header-links" href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>
 
     <% } %>
     </div>
