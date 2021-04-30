@@ -157,7 +157,7 @@ td {
     display: flow-root;
 }
 
-.book-image {
+.rest-image {
     width: 100%;
 }
 
@@ -245,4 +245,5 @@ th {
 
 .container {
     scroll-margin-top: 90px;
+    min-width: 1600px;
 }

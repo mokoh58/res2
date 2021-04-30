@@ -107,7 +107,7 @@
     </div>
   </body>
 
-  <footer class="footer" style="bottom:0; position:fixed; width:100%;">
+  <footer class="footer">
     <p style="font-family:'Gilroy',sans-serif; text-align:center; padding:40px;"> &#169; Res. Team 11 2021 </p>
   </footer>
 </html>
