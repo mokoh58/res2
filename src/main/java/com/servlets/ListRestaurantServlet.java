@@ -255,11 +255,11 @@ public class ListRestaurantServlet extends HttpServlet {
                 percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
 
             if(percentageEmpty <= 20) {
-                item.setCrowdLevel("Available");
+                item.setCrowdLevel("Crowded");
             } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
                 item.setCrowdLevel("Filling Up");
             } else {
-                item.setCrowdLevel("Crowded");
+                item.setCrowdLevel("Available");
             }
         }
     }
