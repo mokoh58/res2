@@ -232,9 +232,13 @@ public class CreateReservationServlet extends HttpServlet {
             String code = obj.getCode();
             LocalTime currCode = LocalTime.parse(code,dtf);
 
+            String value = obj.getValue();
+            String[] valueArr = value.split("-", 2);
+            LocalTime operatingEndTime = LocalTime.parse(valueArr[1],dtf);
+
             //logger.log(Level.INFO, "currCode " + currCode.toString());
 
-            if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
+            if(currCode.equals(endTime) || currCode.isAfter(endTime) || operatingEndTime.isAfter(endTime)) {
                 //logger.log(Level.INFO, "currCode Removing at " + i);
                 activeOperatingHoursList.remove(i);
             }

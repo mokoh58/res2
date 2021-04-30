@@ -34,4 +34,6 @@ public interface ReservationDAO {
     Result<Reservation> listReservationsByRestaurant(String restId, String startCursor);
 
     List<Reservation> getReservationsByRestaurant(String restId);
+
+    void endReservation(String resID);
 }

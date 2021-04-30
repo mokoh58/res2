@@ -77,7 +77,7 @@ public class ReadRestaurantServlet extends HttpServlet {
         List<Reservation> reservations = null;
         try {
             Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
-            logger.log(Level.INFO, "Retrieved list of all reservations");
+            //logger.log(Level.INFO, "Retrieved list of all reservations");
             reservations = result.getResult();
             endCursor = result.getCursor();
         } catch (Exception e) {
@@ -85,9 +85,11 @@ public class ReadRestaurantServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        reservations = listResoNotEnded(reservations);
+
         if (req.getSession().getAttribute("userAccount") != null){
             user = (UserAccount)req.getSession().getAttribute("userAccount");
-            logger.log(Level.INFO, "User " + user.getUserAccountId());
+            //logger.log(Level.INFO, "User " + user.getUserAccountId());
             reservations = getUserReservations(reservations, user);
         } else {
             reservations.clear();
@@ -245,9 +247,19 @@ public class ReadRestaurantServlet extends HttpServlet {
             return resoList;
 
         for(Reservation reso: resoList) {
-            logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
+            //logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
 
             if(user.getUserAccountId().equals(reso.getUserAccountId()))
+                reservations.add(reso);
+        }
+
+        return reservations;
+    }
+
+    private List<Reservation> listResoNotEnded(List<Reservation> resoList) {
+        List<Reservation> reservations = new ArrayList<>();
+        for(Reservation reso : resoList) {
+            if(reso.getResoEnded().equals("N")) 
                 reservations.add(reso);
         }
 

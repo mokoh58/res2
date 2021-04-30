@@ -122,7 +122,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer activeResoPax = checkActiveReservations(reservations);
 
-            logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
+            //logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
 
             String maxCap = "";
             Integer maxCapInt = 0;
@@ -142,7 +142,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
 
-            logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
+            //logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
 
             if(currCapacity <= 0)
                 currCapacity = 0;

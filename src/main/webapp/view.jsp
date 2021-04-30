@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 
 <script>
 function setReviewOff(){
@@ -48,6 +50,24 @@ function setBar4(x){
 function setBar5(x){
     var bar5 = document.getElementById("bar5");
     bar5.style.width = x + "%";
+}
+
+function showDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
 }
 </script>
 
@@ -92,6 +112,57 @@ th {
     border-right-width:medium;
     width: 25%;
 } 
+
+.menu-nav {
+  background-color: #44B;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-item {
+  color: #FCC;
+  padding: 3px;
+}
+
+.three-dots:after {
+  cursor: pointer;
+  color: #FCC;
+  content: '\2807';
+  font-size: 20px;
+  padding: 0 5px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a div {
+  padding: 2px;
+}
+
+.dropdown {
+  position: absolute;
+  right: 10px;
+  outline: none;
+  background-color: #66D;
+  box-shadow: 0px 0px 3px 3px #66D;
+  opacity: 0;
+  max-height: 0;
+  transition: opacity 0.1s, z-index 0.1s, max-height: 5s;
+}
+
+.dropdown-container:focus {
+  outline: none;
+}
+
+.dropdown-container:focus .dropdown {
+  opacity: 1;
+  z-index: 100;
+  max-height: 100vh;
+  transition: opacity 0.2s, z-index 0.2s, max-height: 0.2s;
+}
+
 </style> 
 
 <div class="container">
@@ -158,6 +229,7 @@ th {
     </div>
     <div>
         <div>
+            <!--------------------- RESOS -------------------------->
             <h4>List of Reservations</h4>
             <table>
                 <tr>
@@ -181,6 +253,16 @@ th {
                     <td>${fn:escapeXml(reservation.resoDate)} </td>
                     <td>${fn:escapeXml(reservation.resoTime)} </td>
                     <td>${fn:escapeXml(reservation.numPax)}</td>
+                    <td>
+                        <div class="menu-nav">
+                        <div class="dropdown-container" tabindex="-1">
+                            <div class="three-dots"></div>
+                            <div class="dropdown">
+                            <a href="/end-reso?id=${reservation.id}&restId=${restaurant.id}"><div>End Reservation</div></a>
+                            </div>
+                        </div>
+                        </div>
+                    </td>
                     </tr>
                     </c:when>
                     <c:otherwise>
@@ -190,7 +272,18 @@ th {
                     <td>${fn:escapeXml(reservation.resoDate)} </td>
                     <td>${fn:escapeXml(reservation.resoTime)} </td>
                     <td>${fn:escapeXml(reservation.numPax)}</td>
-                    <td> 
+                    <td>
+                        <div class="menu-nav">
+                        <div class="dropdown-container" tabindex="-1">
+                            <div class="three-dots"></div>
+                            <div class="dropdown">
+                            <a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}"><div>Update Reservation</div></a>
+                            <a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}"><div>Cancel Reservation</div></a>
+                            </div>
+                        </div>
+                        </div>
+                    </td>
+                    <!-- <td> 
                         <a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-primary btn-sm">
                         <i class="glyphicon glyphicon-edit"></i>
                         </a>
@@ -199,7 +292,7 @@ th {
                         <a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-danger btn-sm">
                         <i class="glyphicon glyphicon-trash"></i>
                         </a>
-                    </td>                
+                    </td>                 -->
                     </tr>
                     </c:otherwise>
                 </c:choose>
@@ -225,6 +318,7 @@ th {
         </a>
     </div>
     <br>
+    <!--------------------- REVIEWS -------------------------->
     <h3>Reviews</h3>
     <%
     if (null != request.getSession().getAttribute("userAccount")){
