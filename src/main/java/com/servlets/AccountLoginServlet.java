@@ -36,7 +36,7 @@ public class AccountLoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    req.setAttribute("action", "Add");
+    req.setAttribute("action", "Account");
     req.setAttribute("destination", "login");
     req.setAttribute("page", "login");
     req.getRequestDispatcher("/base.jsp").forward(req, resp);
