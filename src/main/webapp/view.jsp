@@ -84,7 +84,7 @@ $(window).resize(function(){
     </div>
     <div class="media-body">        
       <h4 class="res-name">
-        ${fn:escapeXml(restaurant.restName)}
+        <b>${fn:escapeXml(restaurant.restName)}</b>
         <% 
         String favouriteInd = (String) request.getSession().getAttribute("favourite");
         if (null != favouriteInd) {
