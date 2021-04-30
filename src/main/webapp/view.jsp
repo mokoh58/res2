@@ -368,7 +368,50 @@ $(window).resize(function(){
                             <div class="d-flex flex-column">
                                 <h3 class="text-left">${fn:escapeXml(review.username)}</h3>
                                 <div>
-                                    <p class="text-left"><span class="text-muted">${fn:escapeXml(review.rating)}.0</span> <span class="fa fa-star star-active ml-3"></span> </p>
+                                    <p class="text-left"><span class="text-muted">${fn:escapeXml(review.rating)}.0</span> 
+                                        <c:if test = "${fn:escapeXml(review.rating) == 0}">
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                        </c:if>
+                                        <c:if test = "${fn:escapeXml(review.rating) == 1}">
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                        </c:if>
+                                        <c:if test = "${fn:escapeXml(review.rating) == 2}">
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                        </c:if>
+                                        <c:if test = "${fn:escapeXml(review.rating) == 3}">
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                        </c:if>
+                                        <c:if test = "${fn:escapeXml(review.rating) == 4}">
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-inactive ml-3"></span>
+                                        </c:if>
+                                        <c:if test = "${fn:escapeXml(review.rating) == 5}">
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                        </c:if>
+                                    </p>
                                 </div>
                             </div>
                             <div class="ml-auto">

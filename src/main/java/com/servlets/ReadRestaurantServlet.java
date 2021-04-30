@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -127,17 +129,19 @@ public class ReadRestaurantServlet extends HttpServlet {
             else if (review.getRating().equals("5"))
                 rating5++;
         }
-        int averageRating = 0;
-        
+        float averageRating = 0.0f;
+
         if (totalReviews > 0)
-            averageRating = totalRating / totalReviews;
+            averageRating = (float) totalRating / totalReviews;
+
+        NumberFormat formatter = new DecimalFormat("#0.0");
 
         req.setAttribute("rating1", rating1);
         req.setAttribute("rating2", rating2);
         req.setAttribute("rating3", rating3);
         req.setAttribute("rating4", rating4);
         req.setAttribute("rating5", rating5);
-        req.setAttribute("averateRating", averageRating);
+        req.setAttribute("averateRating", formatter.format(averageRating));
         req.setAttribute("totalReviews", totalReviews);
 
 
