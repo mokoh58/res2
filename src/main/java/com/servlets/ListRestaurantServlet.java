@@ -121,7 +121,7 @@ public class ListRestaurantServlet extends HttpServlet {
             }
 			endCursor = result.getCursor();
 		} catch (Exception e) {
-			throw new ServletException("Error listing restaurants", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
 
         ReviewDAO reviewDAO = (ReviewDAO) this.getServletContext().getAttribute("reviewDAO");

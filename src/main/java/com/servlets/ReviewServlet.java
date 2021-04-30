@@ -68,7 +68,7 @@ public class ReviewServlet extends HttpServlet {
             }
         }
     } catch (FileUploadException e) {
-        throw new IOException(e);
+        logger.log(Level.INFO, "Exception occured in Servlet: ", e);
     }
 
     UserAccountDAO dao = (UserAccountDAO) this.getServletContext().getAttribute("userAccountDAO");

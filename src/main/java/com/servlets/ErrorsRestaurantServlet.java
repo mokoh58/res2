@@ -12,6 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrorsRestaurantServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-		throw new ServletException("Expected exception.");
+		logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 	}
 }

@@ -67,7 +67,7 @@ public class ReadRestaurantServlet extends HttpServlet {
 			reservations = result.getResult();
 			endCursor = result.getCursor();
 		} catch (Exception e) {
-			throw new ServletException("Error listing reservations", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
 
         if (req.getSession().getAttribute("userAccount") != null){
