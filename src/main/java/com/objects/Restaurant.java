@@ -1,5 +1,6 @@
 package com.objects;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Restaurant {
@@ -262,6 +263,12 @@ public class Restaurant {
 		return "Restaurant [restName=" + restName + ", address=" + address + ", maxCapacity=" + maxCapacity + ", occupiedSeats= " + occupiedSeats
 				+ ", contactNumber=" + contactNumber + ", createdBy=" + createdBy + ", createdById=" + createdById
 				+ ", id=" + id + ", imageUrl=" + imageUrl + "]";
-	}
+    }
+    
+    public static Comparator<Restaurant> COMPARE_BY_CROWD_LEVEL = new Comparator<Restaurant>() {
+        public int compare(Restaurant one, Restaurant other) {
+            return one.crowdLevel.compareTo(other.crowdLevel);
+        }
+    };
 
 }

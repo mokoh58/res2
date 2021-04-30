@@ -109,6 +109,9 @@
           <to>
             <image>gcr.io/${gcloud.appId}/res-test</image>
           </to>
+          <container>
+            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+          </container>
         </configuration>
       </plugin>
     </plugins>

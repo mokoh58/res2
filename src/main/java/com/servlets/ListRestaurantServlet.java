@@ -3,6 +3,7 @@ package com.servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -225,7 +226,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer activeResoPax = checkActiveReservations(reservations);
 
-            logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
+            //logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
 
             String maxCap = "";
             Integer maxCapInt = 0;
@@ -245,7 +246,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
 
-            logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
+            //logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
 
             if(currCapacity <= 0)
                 currCapacity = 0;
@@ -254,11 +255,11 @@ public class ListRestaurantServlet extends HttpServlet {
                 percentageEmpty = (int)Math.round(currCapacity * 100.0/maxCapInt);
 
             if(percentageEmpty <= 20) {
-                item.setCrowdLevel("Crowded");
+                item.setCrowdLevel("Available");
             } else if(percentageEmpty >= 21 && percentageEmpty <= 51) {
                 item.setCrowdLevel("Filling Up");
             } else {
-                item.setCrowdLevel("Available");
+                item.setCrowdLevel("Crowded");
             }
         }
     }
