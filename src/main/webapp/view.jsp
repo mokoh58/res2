@@ -71,6 +71,15 @@ window.onclick = function(event) {
         }
     }
 }
+
+$(window).resize(function(){
+    if ($(window).width() < $('.layout').width()){
+        $('.sidebar').css('position', 'absolute');
+    }
+    else {
+        $('.sidebar').css('position', 'fixed');
+    }
+});
 </script>
 
 <style type="text/css">	 
@@ -87,17 +96,6 @@ label.star {
   padding: 10px;
   font-size: 36px;
   color: #444;
-
-$(window).resize(function(){
-    if ($(window).width() < $('.layout').width()){
-        $('.sidebar').css('position', 'absolute');
-    }
-    else {
-        $('.sidebar').css('position', 'fixed');
-    }
-});
-</script> 
-
   color: #FE7;
   text-shadow: 0 0 20px #952;
 }
@@ -152,7 +150,7 @@ a div {
   box-shadow: 0px 0px 3px 3px #66D;
   opacity: 0;
   max-height: 0;
-  transition: opacity 0.1s, z-index 0.1s, max-height: 5s;
+  transition: opacity 0.1s, z-index 0.1s, max-height 5s;
 }
 
 .dropdown-container:focus {
@@ -163,7 +161,7 @@ a div {
   opacity: 1;
   z-index: 100;
   max-height: 100vh;
-  transition: opacity 0.2s, z-index 0.2s, max-height: 0.2s;
+  transition:  opacity 0.2s, z-index 0.2s, max-height 0.2s;
 }
 
 </style> 
@@ -222,7 +220,6 @@ a div {
             }
             %>
       
-        <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
         <p class="res-address">Address:
         <a href="https://www.google.com/maps/search/${mapParam}" target="_blank">
            ${fn:escapeXml(restaurant.address)}
