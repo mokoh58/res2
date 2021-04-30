@@ -174,15 +174,15 @@ $(window).resize(function(){
                     <td>${fn:escapeXml(reservation.resoDate)} </td>
                     <td>${fn:escapeXml(reservation.resoTime)} </td>
                     <td>${fn:escapeXml(reservation.numPax)}</td>
-                    <td> 
-                        <a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-primary btn-sm">
-                        <i class="glyphicon glyphicon-edit"></i>
-                        </a>
-                    </td>
-                    <td> 
-                        <a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-danger btn-sm">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        </a>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-link" type="button" data-toggle="dropdown">
+                            <i class="fa fa-ellipsis-v"></i></button>
+                            <ul class="dropdown-menu">
+                            <li><a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}">Edit Reservation</a></li>
+                            <li><a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}">Delete Reservation</a></li>
+                            </ul>
+                        </div>
                     </td>
                     </tr>
                     </c:otherwise>
