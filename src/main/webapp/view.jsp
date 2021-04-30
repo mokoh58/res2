@@ -110,7 +110,7 @@ $(window).resize(function(){
                 List<String> tagsList = Arrays.asList(tags.split(","));
                 for (String tag : tagsList){
             %>
-                <a href="/restaurants?category=<%=tag %>"><button type="button" class="btn btn-info btn-sm"> <b><%=tag %></b></button></a>
+                <a href="/restaurants?category=<%=tag %>"><button type="button" class="btn btn-info btn-sm button-tags"> <b><%=tag %></b></button></a>
 
             <%
                 }
@@ -142,7 +142,7 @@ $(window).resize(function(){
     </div>
     <div>
         <div>
-            <h4 style="border-top:1px solid #ECECEC; padding-top:20px;">List of Reservations</h4>
+            <h4 style="border-top:1px solid #ECECEC; padding-top:30px; padding-bottom:10px;">List of Reservations</h4>
             <table>
                 <tr>
                     <th>Reservation Name</th>
@@ -203,7 +203,7 @@ $(window).resize(function(){
                 </tr>      
             </table>
         </div>
-        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
+        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm" style="margin-top:10px;">
         <i class="glyphicon glyphicon-plus"></i>
         Make Reservation
         </a>

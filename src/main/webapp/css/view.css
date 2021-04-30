@@ -92,7 +92,7 @@ a:hover {
 }
 
 td {
-    padding-bottom: 10px
+    padding-top: 10px
 }
 
 .star-active {
@@ -140,6 +140,7 @@ td {
 .media, .review {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     padding: 40px;
+    overflow: unset;
 }
 
 .media-body, .media-left {
@@ -202,8 +203,9 @@ label.star:before {
 }
 
 th { 
-    border-right-width:medium;
-    width: 25%;
+    border-right-width: medium;
+    width: 180px;
+    border-bottom: 1px solid #ECECEC;
 } 
 
 .sidebar {
@@ -245,5 +247,8 @@ th {
 
 .container {
     scroll-margin-top: 90px;
-    min-width: 1600px;
+}
+
+.button-tags {
+    margin-bottom: 10px;
 }

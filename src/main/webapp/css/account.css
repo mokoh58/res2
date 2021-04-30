@@ -1,0 +1,109 @@
+.media-login {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
+    padding: 100px 40px 20px 40px;
+    overflow: unset;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.media-signup {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 30px 80px 30px 80px;
+    overflow: unset;
+    display: inline-block;
+    border-radius: 10px;
+    background-image: url(https://i.imgur.com/VxfJBbJ.png);
+}
+
+.header-signup, .header-login {
+    font-weight: 800; 
+    margin-bottom: 50px;
+}
+
+.signup-form {
+    width: 350px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+label {
+    font-size: 18px;
+    display: table;
+}
+
+.login-form {
+    width: 300px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.login-label, .signup-label {
+    display: flex;
+    font-size: 18px;
+    background-color: #8ABAAE;
+    border-color: #8ABAAE;
+    color: white;
+}
+
+.signup-label {
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.login-label:hover, .login-label:active, .login-label:focus, .signup-label:hover, .signup-label:active, .signup-label:focus {
+    background-color: rgb(50,146,138);
+    background-color: rgb(50,146,138);
+    color: #F3F3F3;
+}
+
+.container-login {
+    text-align: center;
+    font-family: "Gilroy", sans-serif;
+    color: #3A3A3A;
+    margin-top: -80px;
+}
+
+.container-signup {
+    text-align: center;
+    font-family: "Gilroy", sans-serif;
+    color: #3A3A3A;
+}
+
+.login-logo {
+    position: relative;
+    display: contents;
+    color: #FFFFFF;
+    top: 18%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1)
+}
+
+.layout {
+    display: block;
+    text-align: center;    
+}
+
+.firstname-box {
+    width: 150px;
+    margin-right: 50px;
+}
+
+.lastname-box {
+    width: 150px;
+}
+
+.image-login {
+    width:180px;
+}
+
+.firstname-outer {
+    display:inline-table; 
+    float:left;
+}
+
+.lastname-outer {
+    display:inline-table; 
+    float:right;
+}

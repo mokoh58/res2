@@ -1,22 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<div class="container">
-  <h3>
+<link rel="stylesheet" href="/css/account.css" />
+
+<div class="login-logo">
+    <img class="image-login" src="https://i.imgur.com/osIpmMb.png">
+</div>
+<div class="container-login">
+  <div class="media-login"> 
+  <h3 class="header-login">
     <c:out value="${action}" /> Login
   </h3>
-
-  <form method="POST" action="${destination}" enctype="multipart/form-data">
-
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" required="required" name="username" id="username" value="${fn:escapeXml(userAccount.username)}" class="form-control" />
+  <form method="POST" action="${destination}" enctype="multipart/form-data" style="display:inline-block;">
+    <div>
+      <input type="text" required="required" name="username" id="username" placeholder="Username" value="${fn:escapeXml(userAccount.username)}" class="form-control login-form" />
     </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" required="required" name="password" id="password" value="${fn:escapeXml(userAccount.password)}" class="form-control" />
+    <div>
+      <input type="password" required="required" name="password" id="password" placeholder="Password" value="${fn:escapeXml(userAccount.password)}" class="form-control login-form" />
     </div>
 
-    <button type="submit" class="btn btn-success">Login</button>
+    <button type="submit" class="btn login-label">Login</button>
+    </div>
   </form>
 </div>
