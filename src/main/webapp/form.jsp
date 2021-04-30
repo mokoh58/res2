@@ -15,27 +15,27 @@
 
     <div class="form-group">
       <label for="restName">Name</label>
-      <input type="text" name="restName" id="restName" value="${restaurant.restName}" class="form-control" />
+      <input type="text" required="required" name="restName" id="restName" value="${restaurant.restName}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="address">Address</label>
-      <input type="text" name="address" id="address" value="${restaurant.address}" class="form-control" />
+      <input type="text" required="required" name="address" id="address" value="${restaurant.address}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="maxCapacity">Max Capacity</label>
-      <input type="text" name="maxCapacity" id="maxCapacity" value="${restaurant.maxCapacity}" class="form-control" />
+      <input type="text" required="required" name="maxCapacity" id="maxCapacity" value="${restaurant.maxCapacity}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="contactNumber">Contact</label>
-      <input type="text" name="contactNumber" id="contactNumber" value="${restaurant.contactNumber}" class="form-control" />
+      <input type="text" required="required" name="contactNumber" id="contactNumber" value="${restaurant.contactNumber}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="operatingHours">Operating Hours</label>
-      <input type="text" name="operatingHours" id="operatingHours" value="${restaurant.operatingHours}" class="form-control" />
+      <input type="text" required="required" name="operatingHours" id="operatingHours" value="${restaurant.operatingHours}" class="form-control" />
     </div>
 
     <div class="form-group">
@@ -48,7 +48,7 @@
 
     <div class="form-group ${isCloudStorageConfigured ? '' : 'hidden'}">
       <label for="image">Cover Image</label>
-      <input type="file" name="file" id="file" class="form-control" />
+      <input type="file" required="required" name="file" id="file" class="form-control" />
     </div>
 
     <div class="form-group hidden">

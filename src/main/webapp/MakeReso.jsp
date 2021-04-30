@@ -16,27 +16,27 @@
 
     <div class="form-group">
       <label for="resoName">Name</label>
-      <input type="text" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control" />
+      <input type="text" required="required" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="resoContact">Contact Number</label>
-      <input type="text" name="resoContact" id="resoContact" value="${reservation.resoContact}" class="form-control" />
+      <input type="text" required="required" name="resoContact" id="resoContact" value="${reservation.resoContact}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="numPax">Number of Pax</label>
-      <input type="text" name="numPax" id="numPax" value="${reservation.numPax}" class="form-control" />
+      <input type="text" required="required" name="numPax" id="numPax" value="${reservation.numPax}" class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="resoDate">Reservation Date</label>
-      <input type="text" autocomplete="off" name="resoDate" id="resoDate" value="${reservation.resoDate}" class="form-control"/>
+      <input type="text" required="required" autocomplete="off" name="resoDate" id="resoDate" value="${reservation.resoDate}" class="form-control"/>
     </div>
 
     <div class="form-group">
         <label for="resoTime">Reservation Time</label>
-        <select name="resoTime" id="resoTime" value="${reservation.resoTime}">
+        <select name="resoTime" required="required" id="resoTime" value="${reservation.resoTime}">
             <c:forEach items="${operatingHourList}" var="oh"> 
                 <option value="${oh.code}" <c:if test="${oh.code eq reservation.resoTime}">selected="selected"</c:if>>${oh.value}</option>
             </c:forEach>
