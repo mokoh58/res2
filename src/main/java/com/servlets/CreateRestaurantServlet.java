@@ -62,7 +62,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new IOException(e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 		}
 
 		String createdByString = "";

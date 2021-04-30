@@ -69,8 +69,8 @@ public class CloudStorageHelper {
 				if (fileName.endsWith(ext)) {
 					return;
 				}
-			}
-			throw new ServletException("file must be an image");
+            }
+            logger.log(Level.INFO, "file must be an image");
 		}
 	}
 }
