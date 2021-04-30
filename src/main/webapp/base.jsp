@@ -57,7 +57,7 @@
                 <% if (null != userAccount) { %>                
                 <li><a href="/favRec">Based on Favourites</a></li>
                 <% } %>
-                <li><a href="#">Based on Ratings</a></li>
+                <li><a href="/restaurants?sortByRating=true">Based on Ratings</a></li>
             </ul>
         </span>
         <span class="sub-header">
