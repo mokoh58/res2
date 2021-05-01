@@ -48,7 +48,7 @@
 
     <div class="form-group ${isCloudStorageConfigured ? '' : 'hidden'}">
       <label for="image">Cover Image</label>
-      <input type="file" required="required" name="file" id="file" class="form-control" />
+      <input type="file" name="file" id="file" class="form-control" />
     </div>
 
     <div class="form-group hidden">
