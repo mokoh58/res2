@@ -16,6 +16,7 @@ public class Reservation {
     private Timestamp resoTimeStampEnd;
     private String userAccountId;
     private Boolean isActive;
+    private String resoEnded;
 	
 	public static final String RESO_NAME = "resoName";
     public static final String RESO_CONTACT = "resoContact";
@@ -29,6 +30,7 @@ public class Reservation {
     public static final String RESO_TS = "resoTimeStamp";
     public static final String RESO_TS_END = "resoTimeStampEnd";
     public static final String USER_ACC_ID = "userAccountId";
+    public static final String RESO_ENDED = "resoEnded";
 
 	private Reservation(Builder builder) {
 		this.resoName = builder.resoName;
@@ -40,6 +42,7 @@ public class Reservation {
 		this.resoTime = builder.resoTime;
         this.restId = builder.restId;
         this.userAccountId = builder.userAccountId;
+        this.resoEnded = builder.resoEnded;
 		this.id = builder.id;
 	}
 
@@ -54,6 +57,7 @@ public class Reservation {
 		private String restId;
         private String id;
         private String userAccountId;
+        private String resoEnded;
 
 		public Builder resoName(String resoName) {
 			this.resoName = resoName;
@@ -102,6 +106,11 @@ public class Reservation {
         
         public Builder userAccountId(String userAccountId) {
 			this.userAccountId = userAccountId;
+			return this;
+        }
+        
+        public Builder resoEnded(String resoEnded) {
+			this.resoEnded = resoEnded;
 			return this;
 		}
 
@@ -212,6 +221,14 @@ public class Reservation {
 
     public void setUserAccountId(String userAccountId) {
         this.userAccountId = userAccountId;
+    }
+
+    public String getResoEnded() {
+        return resoEnded;
+    }
+
+    public void setResoEnded(String resoEnded) {
+        this.resoEnded = resoEnded;
     }
 
 	@Override

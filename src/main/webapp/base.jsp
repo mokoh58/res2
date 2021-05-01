@@ -57,7 +57,7 @@
                 <% if (null != userAccount) { %>                
                 <li><a href="/favRec">Based on Favourites</a></li>
                 <% } %>
-                <li><a href="#">Based on Ratings</a></li>
+                <li><a href="/restaurants?sortByRating=true">Based on Ratings</a></li>
             </ul>
         </span>
         <span class="sub-header">
@@ -107,7 +107,7 @@
     </div>
   </body>
 
-  <footer class="footer" style="bottom:0; position:fixed; width:100%;">
+  <footer class="footer">
     <p style="font-family:'Gilroy',sans-serif; text-align:center; padding:40px;"> &#169; Res. Team 11 2021 </p>
   </footer>
 </html>
