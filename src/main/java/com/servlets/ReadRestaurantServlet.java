@@ -1,18 +1,3 @@
-/* Copyright 2019 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.servlets;
 
 import java.io.IOException;
@@ -27,6 +12,8 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,11 +25,13 @@ import com.dao.FavouriteDAO;
 import com.dao.ReservationDAO;
 import com.dao.RestaurantDAO;
 import com.dao.ReviewDAO;
+import com.dao.TagsDAO;
 import com.objects.Favourite;
 import com.objects.Reservation;
 import com.objects.Restaurant;
 import com.objects.Result;
 import com.objects.Review;
+import com.objects.Tags;
 import com.objects.UserAccount;
 import com.util.DateUtil;
 
@@ -68,6 +57,7 @@ public class ReadRestaurantServlet extends HttpServlet {
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         FavouriteDAO favDAO = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
         ReviewDAO reviewDAO = (ReviewDAO) this.getServletContext().getAttribute("reviewDAO");
+        TagsDAO tagDAO = (TagsDAO) this.getServletContext().getAttribute("tagsDAO");
 
         UserAccount user = null;
 
@@ -103,7 +93,7 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         String resAdd = res.getAddress();
 
-        mapParam = URLEncoder.encode(resAdd, StandardCharsets.UTF_8);
+        mapParam = URLEncoder.encode(resAdd);
 
         //logger.log(Level.INFO, "mapParam " + mapParam);
 
@@ -151,18 +141,33 @@ public class ReadRestaurantServlet extends HttpServlet {
             else if (review.getRating().equals("5"))
                 rating5++;
         }
-        int averageRating = 0;
-        
+        float averageRating = 0.0f;
+
         if (totalReviews > 0)
-            averageRating = totalRating / totalReviews;
+            averageRating = (float) totalRating / totalReviews;
+
+        NumberFormat formatter = new DecimalFormat("#0.0");
 
         req.setAttribute("rating1", rating1);
         req.setAttribute("rating2", rating2);
         req.setAttribute("rating3", rating3);
         req.setAttribute("rating4", rating4);
         req.setAttribute("rating5", rating5);
-        req.setAttribute("averateRating", averageRating);
+        req.setAttribute("averateRating", formatter.format(averageRating));
         req.setAttribute("totalReviews", totalReviews);
+
+
+        // Tags
+        ArrayList<Tags> tags = tagDAO.getTags(id);
+        if (null != tags){
+            List<String> tagsList = new ArrayList<String>();
+            for (Tags tag : tags){
+                tagsList.add(tag.getTag());
+            }
+            String displayTags = String.join(",", tagsList);
+            req.setAttribute("tags", displayTags);
+            System.out.println("======================" + displayTags);
+        }
 
         req.setAttribute("currCapacity", currCapacity.toString());
         req.setAttribute("mapParam", mapParam);

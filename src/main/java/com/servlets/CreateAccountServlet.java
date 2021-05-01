@@ -35,7 +35,7 @@ public class CreateAccountServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    req.setAttribute("action", "Add");
+    req.setAttribute("action", "Create");
     req.setAttribute("destination", "createAccount");
     req.setAttribute("page", "accountSignUp");
     req.getRequestDispatcher("/base.jsp").forward(req, resp);
@@ -61,7 +61,7 @@ public class CreateAccountServlet extends HttpServlet {
         }
       }
     } catch (FileUploadException e) {
-      throw new IOException(e);
+      logger.log(Level.INFO, "Exception occured in Servlet: ", e);
     }
 
     String createdByString = "";
@@ -85,6 +85,9 @@ public class CreateAccountServlet extends HttpServlet {
 
     UserAccountDAO dao = (UserAccountDAO) this.getServletContext().getAttribute("userAccountDAO");
     String id = dao.createUserAccount(userAccount);
+    userAccount = dao.readUserAccount(id);
+    if (userAccount != null)
+        req.getSession().setAttribute("userAccount", userAccount);
     logger.log(Level.INFO, "Created account {0}", userAccount);
     resp.sendRedirect("/restaurants");
   }

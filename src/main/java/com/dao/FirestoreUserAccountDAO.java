@@ -49,6 +49,24 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
                 .userAccountId(document.getId())
                 .build();
     }
+
+    @Override
+    public UserAccount readUserAccount(String id){
+        if (null != id){
+            Query query = userAccountCol.whereEqualTo("userAccountId", id);
+            ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+            try {
+                for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                    UserAccount userAccount = documentToUserAccount(document);
+                    return userAccount;
+                }
+            } catch (Exception e){
+                logger.log(Level.INFO, "Exception caught in FirestoreUserAccountDAO >  getUserAccount()");
+            }
+        }
+        return null;
+    }
     
     @Override
 	public String createUserAccount(UserAccount userAccount) {
@@ -100,13 +118,14 @@ public class FirestoreUserAccountDAO implements UserAccountDAO {
     
     @Override
     public UserAccount getUserAccount(String username, String password){
-        Query query = userAccountCol.whereEqualTo("username", username);
+        Query query = userAccountCol.whereEqualTo("password", password);
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
                 UserAccount userAccount = documentToUserAccount(document);
-                if (password.equals(userAccount.getPassword())){
+                username = username.toLowerCase();
+                if (username.equals(userAccount.getUsername().toLowerCase())){
                     return userAccount;
                 }
             }

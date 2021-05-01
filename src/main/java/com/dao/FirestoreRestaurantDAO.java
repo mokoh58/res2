@@ -116,6 +116,7 @@ public class FirestoreRestaurantDAO implements RestaurantDAO {
 		data.put(Restaurant.CREATED_BY, rest.getCreatedBy());
 		data.put(Restaurant.CREATED_BY_ID, rest.getCreatedById());
         data.put(Restaurant.CUISINE, rest.getCuisine());
+        data.put(Restaurant.OCC_SEATS, rest.getOccupiedSeats());
         data.put(Restaurant.OPERATING_HOURS, rest.getOperatingHours());
 		try {
 			document.set(data).get();
