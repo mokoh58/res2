@@ -11,6 +11,8 @@
 <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 
 <script>
 function setReviewOff(){
@@ -63,7 +65,7 @@ $(window).resize(function(){
 </script> 
 
 <div class="container" id="info">
-  <h3>Restaurant</h3>
+  <h3 class="layout-title"><span>Restaurant</span></h3>
   <div class="media"> 
     <div class="media-header">
         <div class="btn-group">
@@ -80,7 +82,7 @@ $(window).resize(function(){
         </div>
     </div>    
     <div class="media-left">
-      <img class="book-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
+      <img class="rest-image" src="${fn:escapeXml(not empty restaurant.imageUrl?restaurant.imageUrl:'http://placekitten.com/g/128/192')}">
     </div>
     <div class="media-body">        
       <h4 class="res-name">
@@ -108,14 +110,18 @@ $(window).resize(function(){
                 List<String> tagsList = Arrays.asList(tags.split(","));
                 for (String tag : tagsList){
             %>
-                <a href="/restaurants?category=<%=tag %>"><button type="button" class="btn btn-info btn-sm"> <b><%=tag %></b></button></a>
+                <a href="/restaurants?category=<%=tag %>"><button type="button" class="btn btn-info btn-sm button-tags"> <b><%=tag %></b></button></a>
 
             <%
                 }
             }
             %>
       
-        <p class="res-address">Address: ${fn:escapeXml(restaurant.address)}</p>
+        <p class="res-address">Address:
+        <a href="https://www.google.com/maps/search/${mapParam}" target="_blank">
+           ${fn:escapeXml(restaurant.address)}
+        </a>
+        </p>
         <p class="res-contact">Contact: ${fn:escapeXml(restaurant.contactNumber)}</p>
         <p class="res-operatingHours">Operating Hours: ${fn:escapeXml(restaurant.operatingHours)}</p>
         <p class="res-capacity">Available Seats: ${currCapacity}</p>
@@ -136,7 +142,7 @@ $(window).resize(function(){
     </div>
     <div>
         <div>
-            <h4 style="border-top:1px solid #ECECEC; padding-top:20px;">List of Reservations</h4>
+            <h4 style="border-top:1px solid #ECECEC; padding-top:30px; padding-bottom:10px;">List of Reservations</h4>
             <table>
                 <tr>
                     <th>Reservation Name</th>
@@ -168,16 +174,16 @@ $(window).resize(function(){
                     <td>${fn:escapeXml(reservation.resoDate)} </td>
                     <td>${fn:escapeXml(reservation.resoTime)} </td>
                     <td>${fn:escapeXml(reservation.numPax)}</td>
-                    <td> 
-                        <a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-primary btn-sm">
-                        <i class="glyphicon glyphicon-edit"></i>
-                        </a>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-link" type="button" data-toggle="dropdown">
+                            <i class="fa fa-ellipsis-v"></i></button>
+                            <ul class="dropdown-menu">
+                            <li><a href="/update-reso?id=${reservation.id}&restId=${restaurant.id}">Edit Reservation</a></li>
+                            <li><a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}">Delete Reservation</a></li>
+                            </ul>
+                        </div>
                     </td>
-                    <td> 
-                        <a href="/delete-reso?id=${reservation.id}&restId=${restaurant.id}" class="btn btn-danger btn-sm">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        </a>
-                    </td>                
                     </tr>
                     </c:otherwise>
                 </c:choose>
@@ -197,7 +203,7 @@ $(window).resize(function(){
                 </tr>      
             </table>
         </div>
-        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm">
+        <a href="/make-reso?id=${restaurant.id}" class="btn btn-success btn-sm" style="margin-top:10px;">
         <i class="glyphicon glyphicon-plus"></i>
         Make Reservation
         </a>

@@ -3,6 +3,7 @@ package com.servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -121,7 +122,7 @@ public class ListRestaurantServlet extends HttpServlet {
             }
 			endCursor = result.getCursor();
 		} catch (Exception e) {
-			throw new ServletException("Error listing restaurants", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
 
         ReviewDAO reviewDAO = (ReviewDAO) this.getServletContext().getAttribute("reviewDAO");
@@ -225,7 +226,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer activeResoPax = checkActiveReservations(reservations);
 
-            logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
+            //logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
 
             String maxCap = "";
             Integer maxCapInt = 0;
@@ -245,7 +246,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
 
-            logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
+            //logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
 
             if(currCapacity <= 0)
                 currCapacity = 0;

@@ -93,3 +93,18 @@
     margin-top: 10px;
     margin-bottom: 10px
 }
+
+.layout-title {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #D3D3D3; 
+   line-height: 0.1em;
+   margin: 50px 0 80px; 
+   font-family: "Gilroy semi-bold", sans-serif;
+   color: #3A3A3A;
+}
+
+.layout-title span {
+    background:#fff; 
+    padding:0 30px;
+}

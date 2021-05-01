@@ -73,7 +73,7 @@ public class UpdateReservationServlet extends HttpServlet {
 			req.setAttribute("page", "MakeReso");
 			req.getRequestDispatcher("/base.jsp").forward(req, resp);
 		} catch (Exception e) {
-			throw new ServletException("Error loading Reso for editing", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class UpdateReservationServlet extends HttpServlet {
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new IOException(e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
 
         try {

@@ -44,7 +44,7 @@ public class UpdateRestaurantServlet extends HttpServlet {
 			req.setAttribute("page", "form");
 			req.getRequestDispatcher("/base.jsp").forward(req, resp);
 		} catch (Exception e) {
-			throw new ServletException("Error loading book for editing", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class UpdateRestaurantServlet extends HttpServlet {
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new IOException(e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
         
         logger.log(Level.INFO, "UpdateRestaurantServlet IMG URL: " + newImageUrl);

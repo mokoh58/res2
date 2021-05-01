@@ -9,7 +9,7 @@
 }
 
 body {
-    min-width: 1500px;
+    min-width: 1600px;
 }
 
 .layout{
@@ -21,7 +21,7 @@ body {
 .general-header {
     background: rgb(255, 255, 255);
     max-height: 90px;
-    min-width: 1400px;
+    min-width: 1600px;
     display: block;
     -webkit-box-align: center;
     align-items: center;
