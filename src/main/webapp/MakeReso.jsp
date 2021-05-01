@@ -1,12 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<link rel="stylesheet" href="/css/reservation.css" />
 
-<div class="container">
-  <h3>
+<div class="container-reservation">
+  <div class="media-reservation"> 
+  <h3 class="reservation-login">
     <c:out value="${action}" /> Reservation
   </h3>
 
-  <form method="POST" action="${destination}" enctype="multipart/form-data">
+  <form method="POST" action="${destination}" enctype="multipart/form-data" style="display:inline-block;">
 
     <div class="form-group hidden">
       <label for="restId">Id</label>
@@ -14,27 +16,27 @@
       <input type="hidden" name="id" value="${reservation.id}" />
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="resoName">Name</label>
-      <input type="text" required="required" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control" />
+      <input type="text" required="required" name="resoName" id="resoName" value="${reservation.resoName}" class="form-control reservation-form" />
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="resoContact">Contact Number</label>
-      <input type="text" required="required" name="resoContact" id="resoContact" value="${reservation.resoContact}" class="form-control" />
+      <input type="text" required="required" name="resoContact" id="resoContact" value="${reservation.resoContact}" class="form-control reservation-form" />
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="numPax">Number of Pax</label>
-      <input type="text" required="required" name="numPax" id="numPax" value="${reservation.numPax}" class="form-control" />
+      <input type="text" required="required" name="numPax" id="numPax" value="${reservation.numPax}" class="form-control reservation-form" />
     </div>
 
-    <div class="form-group">
+    <div>
       <label for="resoDate">Reservation Date</label>
-      <input type="text" required="required" autocomplete="off" name="resoDate" id="resoDate" value="${reservation.resoDate}" class="form-control"/>
+      <input type="text" required="required" autocomplete="off" name="resoDate" id="resoDate" value="${reservation.resoDate}" class="form-control reservation-form"/>
     </div>
 
-    <div class="form-group">
+    <div class="reservation-time">
         <label for="resoTime">Reservation Time</label>
         <select name="resoTime" required="required" id="resoTime" value="${reservation.resoTime}">
             <c:forEach items="${operatingHourList}" var="oh"> 
@@ -52,6 +54,7 @@
         </select> -->
     </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="btn reservation-label">Save</button>
   </form>
+  </div>
 </div>

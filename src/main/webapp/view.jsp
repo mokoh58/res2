@@ -65,7 +65,7 @@ $(window).resize(function(){
 </script> 
 
 <div class="container" id="info">
-  <h3>Restaurant</h3>
+  <h3 class="layout-title"><span>Restaurant</span></h3>
   <div class="media"> 
     <div class="media-header">
         <div class="btn-group">
