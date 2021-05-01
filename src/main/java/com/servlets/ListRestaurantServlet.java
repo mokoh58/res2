@@ -2,6 +2,8 @@ package com.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +13,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,11 +23,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dao.RestaurantDAO;
+import com.dao.ReviewDAO;
+import com.dao.TagsDAO;
 import com.dao.FavouriteDAO;
 import com.dao.ReservationDAO;
 import com.objects.Restaurant;
 import com.objects.Reservation;
 import com.objects.Result;
+import com.objects.Review;
+import com.objects.Tags;
 import com.objects.UserAccount;
 import com.util.DateUtil;
 
@@ -39,12 +47,20 @@ public class ListRestaurantServlet extends HttpServlet {
         RestaurantDAO dao = (RestaurantDAO) this.getServletContext().getAttribute("resDAO");
         ReservationDAO resoDAO = (ReservationDAO) this.getServletContext().getAttribute("resoDAO");
         FavouriteDAO favDao = (FavouriteDAO) this.getServletContext().getAttribute("favouriteDAO");
+        TagsDAO tagsDAO = (TagsDAO) this.getServletContext().getAttribute("tagsDAO");
         String startCursor = req.getParameter("cursor");
         String searchRes = req.getParameter("searchRes");
         String userId = req.getParameter("userId");
+        String ownerId = req.getParameter("ownerId");
+        String recList = req.getParameter("recList");
+        String category = req.getParameter("category");
+        String sortByRating = req.getParameter("sortByRating");
         logger.log(Level.INFO, "searchRes = " + searchRes);
         List<Restaurant> filteredRes = new ArrayList<Restaurant>();
         List<Restaurant> favouriteRes = new ArrayList<Restaurant>();
+        List<Restaurant> ownerRes = new ArrayList<Restaurant>();
+        List<Restaurant> recRes = new ArrayList<Restaurant>();
+        List<Restaurant> catRes = new ArrayList<Restaurant>();
 		List<Restaurant> restaurants = null;
 		String endCursor = null;
 		try {
@@ -54,12 +70,15 @@ public class ListRestaurantServlet extends HttpServlet {
             setRestoCrowdLevel(restaurants, resoDAO, startCursor);
 
             if (searchRes != null) {
+                searchRes = searchRes.toLowerCase();
                 for(Restaurant rest: restaurants) {
-                    if (rest.getRestName().contains(searchRes)) {
+                    String resName = rest.getRestName().toLowerCase();
+                    if (resName.contains(searchRes)) {
                         logger.log(Level.INFO, "filtered res = " + rest.getRestName());
                         filteredRes.add(rest);
                     }
                 }
+                restaurants = filteredRes;
             }
             // Favourites List
             if (userId != null) {
@@ -70,43 +89,129 @@ public class ListRestaurantServlet extends HttpServlet {
                         favouriteRes.add(rest);
                     }
                 }
+                restaurants = favouriteRes;
+            }
+
+            // Category search
+            if (category != null){
+                for (Restaurant rest : restaurants){
+                    List<String> tags = tagsDAO.getStringTags(rest.getId());
+                    if (tags.contains(category))
+                        catRes.add(rest);
+                }
+                restaurants = catRes;
+            }
+
+            // Display owner's restaurants
+            if (ownerId != null){
+                for(Restaurant rest: restaurants) {
+                    if (ownerId.equals(rest.getCreatedById())) {
+                        ownerRes.add(rest);
+                    }
+                }
+                restaurants = ownerRes;
+            }
+
+            if (recList != null){
+                for(Restaurant rest: restaurants) {
+                    if (recList.contains(rest.getId())) {
+                        recRes.add(rest);
+                    }
+                }
+                restaurants = recRes;
             }
 			endCursor = result.getCursor();
 		} catch (Exception e) {
-			throw new ServletException("Error listing restaurants", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
 
-        
+        ReviewDAO reviewDAO = (ReviewDAO) this.getServletContext().getAttribute("reviewDAO");
+        for (Restaurant rest : restaurants){
+            List<Review> reviewList = reviewDAO.getReviewsByRestaurant(rest.getId());
+            int totalRating = 0;
+            int totalReviews = reviewList.size();
+            NumberFormat formatter = new DecimalFormat("#0.0");
+            for (Review review : reviewList){
+                totalRating = totalRating + Integer.parseInt(review.getRating());
+            }  
+            float averageRating = 0.0f;
+            if (totalReviews > 0){
+                averageRating = (float) totalRating / totalReviews;
+            }
+            String average = formatter.format(averageRating);
+            rest.setTotalReviews(String.valueOf(totalReviews));
+            rest.setAverageRating(average);
 
-        if (userId != null){
-            req.getSession().getServletContext().setAttribute("restaurants", favouriteRes);
+            int numOfStars = (int) averageRating;
+            rest.setNumOfStars(numOfStars);
         }
-        else if (searchRes != null) {
-            req.getSession().getServletContext().setAttribute("restaurants", filteredRes);
-        } else {
-            req.getSession().getServletContext().setAttribute("restaurants", restaurants);
+
+        // Recommendations based on ratings
+        if (sortByRating != null && restaurants != null && restaurants.size() > 0){
+            restaurants.sort(Comparator.comparing(Restaurant::getAverageRating).reversed());
         }
+
+        // if (userId != null){
+        //     req.getSession().getServletContext().setAttribute("restaurants", favouriteRes);
+        // }
+        // else if (ownerId != null){
+        //     req.getSession().getServletContext().setAttribute("restaurants", ownerRes);
+        // }
+        // else if (searchRes != null) {
+        //     req.getSession().getServletContext().setAttribute("restaurants", filteredRes);
+        // }
+        // else if (recList != null) {
+        //     req.getSession().getServletContext().setAttribute("restaurants", recRes);
+        // }
+        // else if (category != null){
+        //     req.getSession().getServletContext().setAttribute("restaurants", catRes);
+        // }
+        // else {
+        //     req.getSession().getServletContext().setAttribute("restaurants", restaurants);
+        // }
+
+        req.getSession().getServletContext().setAttribute("restaurants", restaurants);
 		
         StringBuilder restNames = new StringBuilder();
         
-        if (userId != null){
-            for (Restaurant res : favouriteRes) {
-                restNames.append(res.getRestName()).append(" ");
-            }
-        }
-        else if (searchRes != null) {
-            for (Restaurant res : filteredRes) {
-                restNames.append(res.getRestName()).append(" ");
-            }
-        } else {
-            for (Restaurant res : restaurants) {
-                restNames.append(res.getRestName()).append(" ");
-            }
+        // if (userId != null){
+        //     for (Restaurant res : favouriteRes) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+        // else if (ownerId != null){
+        //     for (Restaurant res : ownerRes) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+        // else if (searchRes != null) {
+        //     for (Restaurant res : filteredRes) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+        // else if (recList != null){
+        //     for (Restaurant res : recRes) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+        // else if (category != null){
+        //     for (Restaurant res : catRes) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+        // else {
+        //     for (Restaurant res : restaurants) {
+        //         restNames.append(res.getRestName()).append(" ");
+        //     }
+        // }
+
+        for (Restaurant res : restaurants) {
+            restNames.append(res.getRestName()).append(" ");
         }
         logger.log(Level.INFO, "Loaded restaurants: " + restNames.toString());
         
-        // Only put cursor if not Favourite List
-        if (null == userId){
+        // Only put cursor if not Favourite / Owner List
+        if (null == userId && null == ownerId){
             req.setAttribute("cursor", endCursor);
         }
 		
@@ -121,7 +226,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer activeResoPax = checkActiveReservations(reservations);
 
-            logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
+            //logger.log(Level.INFO, "activeResoPax: " + activeResoPax);
 
             String maxCap = "";
             Integer maxCapInt = 0;
@@ -141,7 +246,7 @@ public class ListRestaurantServlet extends HttpServlet {
 
             Integer currCapacity = maxCapInt - occSeatsInt - activeResoPax;
 
-            logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
+            //logger.log(Level.INFO, "currCapacity: " + currCapacity + " for restaurant: " + item.getRestName());
 
             if(currCapacity <= 0)
                 currCapacity = 0;

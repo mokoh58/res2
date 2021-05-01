@@ -1,5 +1,6 @@
 package com.objects;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Restaurant {
@@ -16,6 +17,9 @@ public class Restaurant {
     private String cuisine;
     private String operatingHours;
     private String crowdLevel;
+    private String averageRating;
+    private String totalReviews;
+    private int numOfStars;
 
 	public static final String REST_NAME = "restName";
 	public static final String ADDRESS = "address";
@@ -228,13 +232,43 @@ public class Restaurant {
 
 	public void setCrowdLevel(String crowdLevel) {
 		this.crowdLevel = crowdLevel;
+    }
+    
+    public String getAverageRating() {
+		return averageRating;
 	}
+
+	public void setAverageRating(String averageRating) {
+		this.averageRating = averageRating;
+    }
+    
+    public String getTotalReviews() {
+		return totalReviews;
+	}
+
+	public void setTotalReviews(String totalReviews) {
+		this.totalReviews = totalReviews;
+    }
+    
+    public int getNumOfStars() {
+		return numOfStars;
+	}
+
+	public void setNumOfStars(int numOfStars) {
+		this.numOfStars = numOfStars;
+    }
 
 	@Override
 	public String toString() {
 		return "Restaurant [restName=" + restName + ", address=" + address + ", maxCapacity=" + maxCapacity + ", occupiedSeats= " + occupiedSeats
 				+ ", contactNumber=" + contactNumber + ", createdBy=" + createdBy + ", createdById=" + createdById
 				+ ", id=" + id + ", imageUrl=" + imageUrl + "]";
-	}
+    }
+    
+    public static Comparator<Restaurant> COMPARE_BY_CROWD_LEVEL = new Comparator<Restaurant>() {
+        public int compare(Restaurant one, Restaurant other) {
+            return one.crowdLevel.compareTo(other.crowdLevel);
+        }
+    };
 
 }
