@@ -10,7 +10,7 @@
 </script>
 
 <div class="container">
-  <h3>Restaurants</h3> 
+  <h3 class="layout-title"><span>Restaurants</span></h3> 
   <c:choose>
   <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
@@ -52,6 +52,50 @@
                         </c:otherwise>
                     </c:choose>
                     </div>
+                    <p>${fn:escapeXml(restaurant.averageRating)} 
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 0}">
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                            </c:if>
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 1}">
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                            </c:if>
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 2}">
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                            </c:if>
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 3}">
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                            </c:if>
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 4}">
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-inactive ml-3"></span>
+                            </c:if>
+                            <c:if test = "${fn:escapeXml(restaurant.numOfStars) == 5}">
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                                <span class="fa fa-star star-active ml-3"></span>
+                            </c:if>
+                        (${fn:escapeXml(restaurant.totalReviews)})</p>
                     <p>${fn:escapeXml(restaurant.address)}</p>
                 </div>
             </div>

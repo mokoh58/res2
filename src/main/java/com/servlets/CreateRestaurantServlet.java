@@ -38,7 +38,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("action", "Add");
+		req.setAttribute("action", "List");
 		req.setAttribute("destination", "create");
 		req.setAttribute("page", "form");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
@@ -62,7 +62,7 @@ public class CreateRestaurantServlet extends HttpServlet {
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new IOException(e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 		}
 
 		String createdByString = "";

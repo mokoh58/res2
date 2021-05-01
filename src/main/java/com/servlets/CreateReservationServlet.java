@@ -81,7 +81,7 @@ public class CreateReservationServlet extends HttpServlet {
             req.setAttribute("page", "MakeReso");
             req.getRequestDispatcher("/base.jsp").forward(req, resp);
         } catch (Exception e) {
-			throw new ServletException("Error loading restaurant for editing", e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class CreateReservationServlet extends HttpServlet {
 				}
 			}
 		} catch (FileUploadException e) {
-			throw new IOException(e);
+			logger.log(Level.INFO, "Exception occured in Servlet: ", e);
         }
         
         try {
@@ -232,9 +232,13 @@ public class CreateReservationServlet extends HttpServlet {
             String code = obj.getCode();
             LocalTime currCode = LocalTime.parse(code,dtf);
 
+            String value = obj.getValue();
+            String[] valueArr = value.split("-", 2);
+            LocalTime operatingEndTime = LocalTime.parse(valueArr[1],dtf);
+
             //logger.log(Level.INFO, "currCode " + currCode.toString());
 
-            if(currCode.equals(endTime) || currCode.isAfter(endTime)) {
+            if(currCode.equals(endTime) || currCode.isAfter(endTime) || operatingEndTime.isAfter(endTime)) {
                 //logger.log(Level.INFO, "currCode Removing at " + i);
                 activeOperatingHoursList.remove(i);
             }

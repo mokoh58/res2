@@ -1,6 +1,8 @@
 package com.servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,6 +45,8 @@ public class ReadRestaurantServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
+        String mapParam = "";
+
         if (null != id){
             req.getSession().setAttribute("currentViewingRestaurantId", id);
         }else {
@@ -58,19 +64,22 @@ public class ReadRestaurantServlet extends HttpServlet {
         String startCursor = req.getParameter("cursor");
         String endCursor = null;
         
-       List<Reservation> reservations = null;
-       try {
-			Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
-			logger.log(Level.INFO, "Retrieved list of all reservations");
-			reservations = result.getResult();
-			endCursor = result.getCursor();
-		} catch (Exception e) {
-			throw new ServletException("Error listing reservations", e);
+        List<Reservation> reservations = null;
+        try {
+            Result<Reservation> result = resoDAO.listReservationsByRestaurant(id, startCursor);
+            //logger.log(Level.INFO, "Retrieved list of all reservations");
+            reservations = result.getResult();
+            endCursor = result.getCursor();
+        } catch (Exception e) {
+            //throw new ServletException("Error listing reservations", e);
+            e.printStackTrace();
         }
+
+        reservations = listResoNotEnded(reservations);
 
         if (req.getSession().getAttribute("userAccount") != null){
             user = (UserAccount)req.getSession().getAttribute("userAccount");
-            logger.log(Level.INFO, "User " + user.getUserAccountId());
+            //logger.log(Level.INFO, "User " + user.getUserAccountId());
             reservations = getUserReservations(reservations, user);
         } else {
             reservations.clear();
@@ -81,6 +90,12 @@ public class ReadRestaurantServlet extends HttpServlet {
         Integer activeResoPax = checkActiveReservations(reservations);
 
         Restaurant res = dao.readRestaurant(id);
+
+        String resAdd = res.getAddress();
+
+        mapParam = URLEncoder.encode(resAdd);
+
+        //logger.log(Level.INFO, "mapParam " + mapParam);
 
         Integer maxCap = Integer.parseInt(res.getMaxCapacity());
         
@@ -94,7 +109,6 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         if(currCapacity <= 0)
             currCapacity = 0;
-
 
         // Handle favourite button
         req.getSession().removeAttribute("favourite"); // Clear first
@@ -127,17 +141,19 @@ public class ReadRestaurantServlet extends HttpServlet {
             else if (review.getRating().equals("5"))
                 rating5++;
         }
-        int averageRating = 0;
-        
+        float averageRating = 0.0f;
+
         if (totalReviews > 0)
-            averageRating = totalRating / totalReviews;
+            averageRating = (float) totalRating / totalReviews;
+
+        NumberFormat formatter = new DecimalFormat("#0.0");
 
         req.setAttribute("rating1", rating1);
         req.setAttribute("rating2", rating2);
         req.setAttribute("rating3", rating3);
         req.setAttribute("rating4", rating4);
         req.setAttribute("rating5", rating5);
-        req.setAttribute("averateRating", averageRating);
+        req.setAttribute("averateRating", formatter.format(averageRating));
         req.setAttribute("totalReviews", totalReviews);
 
 
@@ -154,6 +170,7 @@ public class ReadRestaurantServlet extends HttpServlet {
         }
 
         req.setAttribute("currCapacity", currCapacity.toString());
+        req.setAttribute("mapParam", mapParam);
 		req.setAttribute("restaurant", res);
 		req.setAttribute("page", "view");
 		req.getRequestDispatcher("/base.jsp").forward(req, resp);
@@ -235,9 +252,19 @@ public class ReadRestaurantServlet extends HttpServlet {
             return resoList;
 
         for(Reservation reso: resoList) {
-            logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
+            //logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
 
             if(user.getUserAccountId().equals(reso.getUserAccountId()))
+                reservations.add(reso);
+        }
+
+        return reservations;
+    }
+
+    private List<Reservation> listResoNotEnded(List<Reservation> resoList) {
+        List<Reservation> reservations = new ArrayList<>();
+        for(Reservation reso : resoList) {
+            if(reso.getResoEnded().equals("N")) 
                 reservations.add(reso);
         }
 

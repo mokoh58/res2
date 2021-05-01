@@ -2,7 +2,7 @@
 .column {
   float: left;
   width: 25%;
-  height: 380px;
+  height: 420px;
   padding: 10px;
   color: #3A3A3A;
 }
@@ -75,4 +75,36 @@
     color: #C9404D;
     margin-right: 3px;
     margin-top: 3px;
+}
+
+.star-active {
+    color: #FBC02D;
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.star-active:hover {
+    color: #F9A825;
+    cursor: pointer
+}
+
+.star-inactive {
+    color: #CFD8DC;
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.layout-title {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #D3D3D3; 
+   line-height: 0.1em;
+   margin: 50px 0 80px; 
+   font-family: "Gilroy semi-bold", sans-serif;
+   color: #3A3A3A;
+}
+
+.layout-title span {
+    background:#fff; 
+    padding:0 30px;
 }
