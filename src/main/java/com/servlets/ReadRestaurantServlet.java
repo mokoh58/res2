@@ -47,6 +47,8 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         String mapParam = "";
 
+        Boolean canShowAddSubtract = false;
+
         if (null != id){
             req.getSession().setAttribute("currentViewingRestaurantId", id);
         }else {
@@ -120,6 +122,11 @@ public class ReadRestaurantServlet extends HttpServlet {
             req.getSession().setAttribute("favourite", hasFavourite);
         }
 
+        if(null != user && (user.getAccountType().equals("Administrator") 
+        || (user.getAccountType().equals("Restaurant Owner") && user.getUsername().equals(res.getCreatedBy())))) {
+            canShowAddSubtract = true;
+        }
+
         // Set reviews to request attribute
         List<Review> reviewList = reviewDAO.getReviewsByRestaurant(id);
         req.setAttribute("reviews", reviewList);
@@ -169,6 +176,7 @@ public class ReadRestaurantServlet extends HttpServlet {
             System.out.println("======================" + displayTags);
         }
 
+        req.getSession().setAttribute("canShowAddSubtract", canShowAddSubtract);
         req.setAttribute("currCapacity", currCapacity.toString());
         req.setAttribute("mapParam", mapParam);
 		req.setAttribute("restaurant", res);
