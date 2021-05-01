@@ -93,7 +93,7 @@ public class ReadRestaurantServlet extends HttpServlet {
 
         String resAdd = res.getAddress();
 
-        mapParam = URLEncoder.encode(resAdd, StandardCharsets.UTF_8);
+        mapParam = URLEncoder.encode(resAdd);
 
         //logger.log(Level.INFO, "mapParam " + mapParam);
 
