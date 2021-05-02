@@ -131,7 +131,7 @@ $(window).resize(function(){
             <input type="hidden" name="maxCapacity" id="maxCapacity" value=${restaurant.maxCapacity} />
             <input type="hidden" name="occupiedSeats" id="occupiedSeats" value=${restaurant.occupiedSeats} />
             
-                <c:if test="${userAccount.accountType != 'Consumer'}">
+                <c:if test="${canShowAddSubtract}">
                     <input type="text" required="required" name="addPax" id="addPax" placeholder="0" value="${addPax}" size="3" maxlength="3" />
 
                     <button type="submit" name="add" value="add" class="btn btn-success">Add Pax</button>
