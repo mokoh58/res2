@@ -46,5 +46,7 @@
    - '512M'
    - '--platform'
    - 'managed'
+   - '--max-instances'
+   - '500'
    - '--update-env-vars'
    - 'RES_BUCKET=test3-308406_bucket'
