@@ -77,12 +77,14 @@ public class ReadRestaurantServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        Restaurant res = dao.readRestaurant(id);
+
         reservations = listResoNotEnded(reservations);
 
         if (req.getSession().getAttribute("userAccount") != null){
             user = (UserAccount)req.getSession().getAttribute("userAccount");
             //logger.log(Level.INFO, "User " + user.getUserAccountId());
-            reservations = getUserReservations(reservations, user);
+            reservations = getUserReservations(reservations, user, res.getCreatedBy());
         } else {
             reservations.clear();
         }
@@ -90,8 +92,6 @@ public class ReadRestaurantServlet extends HttpServlet {
         req.getSession().getServletContext().setAttribute("reservations", reservations);
 
         Integer activeResoPax = checkActiveReservations(reservations);
-
-        Restaurant res = dao.readRestaurant(id);
 
         String resAdd = res.getAddress();
 
@@ -225,6 +225,9 @@ public class ReadRestaurantServlet extends HttpServlet {
     }
 
     public Integer checkActiveReservations(List<Reservation> resoList) {
+        if(resoList == null || resoList.size() <= 0)
+            return 0;
+
         ZoneId zid = ZoneId.of("GMT+8");
         ZonedDateTime currTime = ZonedDateTime.now(zid);
 
@@ -253,11 +256,17 @@ public class ReadRestaurantServlet extends HttpServlet {
         return totalPax;
     }
 
-    private List<Reservation> getUserReservations(List<Reservation> resoList, UserAccount user) {
+    private List<Reservation> getUserReservations(List<Reservation> resoList, UserAccount user, String createdBy) {
         List<Reservation> reservations = new ArrayList<>();
 
-        if(!user.getAccountType().equals("Consumer"))
+        logger.log(Level.INFO, "~~~~~Created By:" + createdBy);
+
+        if(user.getAccountType().equals("Administrator") 
+        || (user.getAccountType().equals("Restaurant Owner") && user.getUsername().equals(createdBy)))
             return resoList;
+
+        if(user.getAccountType().equals("Restaurant Owner") && !user.getUsername().equals(createdBy))
+            return reservations;
 
         for(Reservation reso: resoList) {
             //logger.log(Level.INFO, "reso account id " + reso.getUserAccountId());
