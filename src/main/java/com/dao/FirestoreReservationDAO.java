@@ -201,7 +201,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
 
 	@Override
 	public Result<Reservation> listReservations(final String startName) {
-        logger.log(Level.INFO, "In listReservations");
+        //logger.log(Level.INFO, "In listReservations");
 
 		Query restQuery = resoCol.orderBy("restId");
 		if (startName != null) {
@@ -223,7 +223,7 @@ public class FirestoreReservationDAO implements ReservationDAO {
     
     @Override
     public Result<Reservation> listReservationsByRestaurant(final String restId ,final String startName) {
-        logger.log(Level.INFO, "In listReservations by " + restId);
+        //logger.log(Level.INFO, "In listReservations by " + restId);
 
         Query resoQuery = resoCol.orderBy("resoTimeStamp", Query.Direction.ASCENDING).whereEqualTo(Reservation.REST_ID, restId);
 
