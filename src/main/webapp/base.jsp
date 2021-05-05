@@ -18,7 +18,7 @@
 
     <script>
     $( function() {
-        $( "#resoDate" ).datepicker();
+        $( "#resoDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
     } );
 
     $(window).scroll(function() {
