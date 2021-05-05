@@ -14,7 +14,7 @@
     <c:if test="${not empty loginError}">
         <div class="alert">
             <span class="closebtn">&times;</span>  
-            ${loginError}
+            User or password incorrect
             <script>
             var close = document.getElementsByClassName("closebtn");
             var i;
@@ -29,8 +29,6 @@
             </script> 
         </div>
     </c:if>
-
-    <% request.getSession().removeAttribute("loginError"); %>
 
     <div>
       <input type="text" required="required" name="username" id="username" placeholder="Username" value="${fn:escapeXml(userAccount.username)}" class="form-control login-form" />
