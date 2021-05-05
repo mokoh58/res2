@@ -89,7 +89,7 @@ public class AccountLoginServlet extends HttpServlet {
     }
     else {
             logger.log(Level.INFO, "User or password incorrect", userAccount);
-            req.setAttribute("loginError", "User or password incorrect");
+            req.getSession().getServletContext().setAttribute("loginError", "User or password incorrect");
             resp.sendRedirect("/login");
             //resp.sendRedirect("/loginFailed");
     }

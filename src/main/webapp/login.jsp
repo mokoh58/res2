@@ -30,6 +30,8 @@
         </div>
     </c:if>
 
+    <% request.getSession().removeAttribute("loginError"); %>
+
     <div>
       <input type="text" required="required" name="username" id="username" placeholder="Username" value="${fn:escapeXml(userAccount.username)}" class="form-control login-form" />
     </div>
