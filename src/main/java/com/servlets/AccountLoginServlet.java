@@ -88,7 +88,9 @@ public class AccountLoginServlet extends HttpServlet {
         resp.sendRedirect("/restaurants");
     }
     else {
-            logger.log(Level.INFO, "Account not found", userAccount);
+            logger.log(Level.INFO, "User or password incorrect", userAccount);
+            req.getSession().getServletContext().setAttribute("loginError", "User or password incorrect");
+            resp.sendRedirect("/login");
             //resp.sendRedirect("/loginFailed");
     }
     
