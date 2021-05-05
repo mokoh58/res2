@@ -96,7 +96,7 @@
                                 <span class="fa fa-star star-active ml-3"></span>
                             </c:if>
                         (${fn:escapeXml(restaurant.totalReviews)})</p>
-                    <p>${fn:escapeXml(restaurant.address)}</p>
+                    <p class="restaurant-address">${fn:escapeXml(restaurant.address)}</p>
                 </div>
             </div>
         </div>
