@@ -10,7 +10,7 @@
 </script>
 
 <div class="container">
-  <h3 class="layout-title"><span>Restaurants</span></h3> 
+  <h3 class="layout-title"><span>Our Restaurants</span></h3> 
   <c:choose>
   <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
@@ -96,7 +96,7 @@
                                 <span class="fa fa-star star-active ml-3"></span>
                             </c:if>
                         (${fn:escapeXml(restaurant.totalReviews)})</p>
-                    <p>${fn:escapeXml(restaurant.address)}</p>
+                    <p class="restaurant-address">${fn:escapeXml(restaurant.address)}</p>
                 </div>
             </div>
         </div>

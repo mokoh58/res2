@@ -11,6 +11,25 @@
     <c:out value="${action}" /> Login
   </h3>
   <form method="POST" action="${destination}" enctype="multipart/form-data" style="display:inline-block;">
+    <c:if test="${not empty loginError}">
+        <div class="alert">
+            <span class="closebtn">&times;</span>  
+            User or password incorrect
+            <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+            </script> 
+        </div>
+    </c:if>
+
     <div>
       <input type="text" required="required" name="username" id="username" placeholder="Username" value="${fn:escapeXml(userAccount.username)}" class="form-control login-form" />
     </div>
