@@ -233,6 +233,6 @@ public class UpdateReservationServlet extends HttpServlet {
             }
         }
 
-        return activeOperatingHoursList;
+        return activeOperatingHoursList; 
     }
 }
