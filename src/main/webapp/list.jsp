@@ -10,7 +10,7 @@
 </script>
 
 <div class="container">
-  <h3 class="layout-title"><span>Restaurants</span></h3> 
+  <h3 class="layout-title"><span>Our Restaurants</span></h3> 
   <c:choose>
   <c:when test="${empty restaurants}">
   <p>No restaurant found</p>
