@@ -14,7 +14,7 @@
     <c:if test="${not empty loginError}">
         <div class="alert">
             <span class="closebtn">&times;</span>  
-            ${loginError}
+            User or password incorrect
             <script>
             var close = document.getElementsByClassName("closebtn");
             var i;

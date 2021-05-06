@@ -108,3 +108,11 @@
     background:#fff; 
     padding:0 30px;
 }
+
+.restaurant-address {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 220px;    
+}
