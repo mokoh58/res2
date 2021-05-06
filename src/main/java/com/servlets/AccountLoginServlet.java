@@ -36,6 +36,13 @@ public class AccountLoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+
+    if (req.getSession().getAttribute("loginError") != null){
+        req.getSession().removeAttribute("loginError");
+        req.setAttribute("loginError", "true");
+    }
+
+
     req.setAttribute("action", "Account");
     req.setAttribute("destination", "login");
     req.setAttribute("page", "login");
@@ -89,7 +96,7 @@ public class AccountLoginServlet extends HttpServlet {
     }
     else {
             logger.log(Level.INFO, "User or password incorrect", userAccount);
-            req.getSession().getServletContext().setAttribute("loginError", "User or password incorrect");
+            req.getSession().setAttribute("loginError", "User or password incorrect");
             resp.sendRedirect("/login");
             //resp.sendRedirect("/loginFailed");
     }
